@@ -1,13 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>at.fhooe.wels</groupId>
 	<artifactId>transport-ide</artifactId>
 	<version>1.0.0</version>
-	
+
 	<packaging>pom</packaging>
-	
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<modules>
 		<module>model</module>
 		<module>parser</module>
@@ -18,10 +22,10 @@
 		<module>viewer</module>
 		<module>program</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
-			<plugin>    
+			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
@@ -29,7 +33,14 @@
 					<target>14</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
