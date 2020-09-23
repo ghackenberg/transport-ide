@@ -1,0 +1,52 @@
+image: maven:3.6.3-jdk-14
+
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+  - lint
+  - compile
+  - test
+  - package
+  - deploy
+
+lint:
+  stage: lint
+  script:
+    - mvn checkstyle:check
+  artifacts:
+    paths:
+      - '*/target'
+
+compile:
+  stage: compile
+  script:
+    - mvn compile
+  artifacts:
+    paths:
+      - '*/target'
+
+test:
+  stage: test
+  script:
+    - mvn test
+  artifacts:
+    paths:
+      - '*/target'
+
+package:
+  stage: package
+  script:
+    - mvn package
+  artifacts:
+    paths:
+      - '*/target'
+
+deploy:
+  stage: deploy
+  script:
+    - echo 'TODO'
+  artifacts:
+    paths:
+      - '*/target'
