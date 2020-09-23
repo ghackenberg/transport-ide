@@ -1,5 +1,9 @@
 image: maven:3.6.3-jdk-14
 
+variables:
+  MAVEN_CLI_OPTS: '-s settings.xml --batch-mode'
+  MAVEN_OPTS: '-Dmaven.repo.local=.m2/repository'
+
 cache:
   paths:
     - .m2/repository
@@ -14,7 +18,7 @@ stages:
 lint:
   stage: lint
   script:
-    - mvn checkstyle:check
+    - mvn $MAVEN_CLI_OPTS checkstyle:check
   artifacts:
     paths:
       - '*/target'
@@ -22,7 +26,7 @@ lint:
 compile:
   stage: compile
   script:
-    - mvn compile
+    - mvn $MAVEN_CLI_OPTS compile
   artifacts:
     paths:
       - '*/target'
@@ -30,7 +34,7 @@ compile:
 test:
   stage: test
   script:
-    - mvn test
+    - mvn $MAVEN_CLI_OPTS test
   artifacts:
     paths:
       - '*/target'
@@ -38,7 +42,7 @@ test:
 package:
   stage: package
   script:
-    - mvn package
+    - mvn $MAVEN_CLI_OPTS package
   artifacts:
     paths:
       - '*/target'
@@ -46,7 +50,7 @@ package:
 deploy:
   stage: deploy
   script:
-    - echo 'TODO'
+    - mvn $MAVEN_CLI_OPTS deploy
   artifacts:
     paths:
       - '*/target'
