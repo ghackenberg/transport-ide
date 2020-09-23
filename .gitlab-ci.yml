@@ -7,6 +7,7 @@ variables:
 cache:
   paths:
     - .m2/repository
+    - '*/target'
 
 stages:
   - lint
@@ -19,38 +20,23 @@ lint:
   stage: lint
   script:
     - mvn $MAVEN_CLI_OPTS checkstyle:check
-  artifacts:
-    paths:
-      - '*/target'
 
 compile:
   stage: compile
   script:
     - mvn $MAVEN_CLI_OPTS compile
-  artifacts:
-    paths:
-      - '*/target'
 
 test:
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS test
-  artifacts:
-    paths:
-      - '*/target'
 
 package:
   stage: package
   script:
     - mvn $MAVEN_CLI_OPTS package
-  artifacts:
-    paths:
-      - '*/target'
 
 deploy:
   stage: deploy
   script:
     - mvn $MAVEN_CLI_OPTS deploy
-  artifacts:
-    paths:
-      - '*/target'
