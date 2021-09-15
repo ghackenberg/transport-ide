@@ -1,6 +1,8 @@
 package example.program;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import example.controller.Controller;
 import example.controller.implementations.GreedyController;
@@ -12,26 +14,25 @@ import example.model.Segment;
 import example.parser.Parser;
 import example.parser.exceptions.DirectoryException;
 import example.parser.exceptions.MissingException;
+import example.program.dialogs.ModelOpenDialog;
 import example.program.exceptions.ArgumentsException;
 import example.simulator.Simulator;
 import example.simulator.Synchronizer;
 import example.statistics.implementations.ExampleStatistics;
 import example.viewer.MultipleViewer;
 
-public class MultipleProgram {
+public class ControllerComparisonProgram {
 
 	public static void main(String[] args) {
 		try {
 			double maxModelTimeStep = 1000;
 			double ratioModelRealTime = 30;
-			
-			if (args.length < 1)
-				throw new ArgumentsException("Not enough arguments: <path/to/model>");
 		
-			File modelFolder = new File(args[0]);
+			File modelFolder = ModelOpenDialog.choose();
 			
-			if (!modelFolder.exists() || !modelFolder.isDirectory())
-				throw new ArgumentsException("Path to model is not a folder");
+			if (modelFolder == null) {
+				return;
+			}
 			
 			File runsFolder = new File(modelFolder, "runs");
 			
@@ -109,7 +110,13 @@ public class MultipleProgram {
 			Simulator<ExampleStatistics> simulator2 = new Simulator<>(model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
 			Simulator<ExampleStatistics> simulator3 = new Simulator<>(model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
 			
-			new MultipleViewer(simulator1, simulator2, simulator3);
+			List<Simulator<ExampleStatistics>> simulators = new ArrayList<>();
+			
+			simulators.add(simulator1);
+			simulators.add(simulator2);
+			simulators.add(simulator3);
+			
+			new MultipleViewer(simulators);
 			
 			simulator1.start();
 			simulator2.start();

@@ -28,9 +28,8 @@ public class MultipleViewer {
 	private final SplitDockGrid grid;
 	
 	private final List<Viewer> viewers = new ArrayList<>();
-
-	@SafeVarargs
-	public MultipleViewer(Simulator<ExampleStatistics>... simulators) {		
+	
+	public MultipleViewer(List<Simulator<ExampleStatistics>> simulators) {
 		// Create grid
 		grid = new SplitDockGrid();
 		

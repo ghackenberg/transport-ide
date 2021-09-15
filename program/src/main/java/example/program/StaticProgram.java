@@ -13,32 +13,30 @@ import example.model.Model;
 import example.parser.Parser;
 import example.parser.exceptions.DirectoryException;
 import example.parser.exceptions.MissingException;
+import example.program.dialogs.ModelOpenDialog;
 import example.program.exceptions.ArgumentsException;
 import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.SingleViewer;
 import example.viewer.ModelViewer;
+import example.viewer.SingleViewer;
 import example.viewer.charts.DemandDistancesChartViewer;
 import example.viewer.charts.DemandTimesChartViewer;
 import example.viewer.charts.IntersectionCrossingsChartViewer;
 import example.viewer.charts.SegmentTraversalsChartViewer;
 import example.viewer.charts.VehicleDistancesChartViewer;
 
-public class SingleProgram {
+public class StaticProgram {
 
 	public static void main(String[] args) {
 		
 		System.out.println("SingleProgram.main");
 		
 		try {
+			File modelFolder = ModelOpenDialog.choose();
 			
-			if (args.length < 1)
-				throw new ArgumentsException("Not enough arguments: <path/to/model>");
-		
-			File modelFolder = new File(args[0]);
-			
-			if (!modelFolder.exists() || !modelFolder.isDirectory())
-				throw new ArgumentsException("Path to model is not a folder");
+			if (modelFolder == null) {
+				return;
+			}
 			
 			File runsFolder = new File(modelFolder, "runs");
 			
@@ -92,7 +90,6 @@ public class SingleProgram {
 			simulator.start();
 			// Print time
 			System.out.println("Finished in " + Math.round(model.time)+ "ms");
-		
 		} catch (ArgumentsException exception) {
 			
 			System.err.println(exception.getMessage());
