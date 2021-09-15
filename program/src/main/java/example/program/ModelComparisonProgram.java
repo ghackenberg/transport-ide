@@ -25,7 +25,9 @@ public class ModelComparisonProgram {
 		try {
 			double maxModelTimeStep = 1000;
 			double ratioModelRealTime = 30;
-		
+			
+			List<File> folders = new ArrayList<>();
+			
 			List<Model> models = new ArrayList<>();
 			
 			do {
@@ -41,12 +43,21 @@ public class ModelComparisonProgram {
 					runsFolder.mkdir();
 				else if (!runsFolder.isDirectory())
 					throw new ArgumentsException("Path to model contains a runs file");
+
+				File indexRunsFolder = new File(runsFolder, "run-" + folders.size());
+				
+				if (!indexRunsFolder.exists())
+					indexRunsFolder.mkdir();
+				else if (!indexRunsFolder.isDirectory())
+					throw new ArgumentsException("Path to model runs contains a run-" + folders.size() + " file");
 				
 				Parser parser = new Parser();
 				
 				Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 				
 				model.demands.clear();
+				
+				folders.add(indexRunsFolder);
 				
 				models.add(model);
 			} while (true);
@@ -87,7 +98,11 @@ public class ModelComparisonProgram {
 			
 			Synchronizer synchronizer = new Synchronizer(models.size());
 			
-			for (Model model : models) {
+			for (int index = 0; index < models.size(); index++) {
+				File runsFolder = folders.get(index);
+				
+				Model model = models.get(index);
+				
 				// Controller
 				
 				Controller controller = new SmartController(model);
@@ -106,7 +121,7 @@ public class ModelComparisonProgram {
 				
 				// Simulator
 				
-				Simulator<ExampleStatistics> simulator = new Simulator<>(model, controller, statistic, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
+				Simulator<ExampleStatistics> simulator = new Simulator<>(model, controller, statistic, maxModelTimeStep, ratioModelRealTime, runsFolder, synchronizer);
 				
 				simulators.add(simulator);
 			}

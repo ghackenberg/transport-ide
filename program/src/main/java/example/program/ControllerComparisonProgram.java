@@ -41,6 +41,27 @@ public class ControllerComparisonProgram {
 			else if (!runsFolder.isDirectory())
 				throw new ArgumentsException("Path to model contains a runs file");
 			
+			File randomRunsFolder = new File(runsFolder, "random");
+			
+			if (!randomRunsFolder.exists())
+				randomRunsFolder.mkdir();
+			else if (!randomRunsFolder.isDirectory())
+				throw new ArgumentsException("Path to model runs contains a random file");
+			
+			File greedyRunsFolder = new File(runsFolder, "greedy");
+			
+			if (!greedyRunsFolder.exists())
+				greedyRunsFolder.mkdir();
+			else if (!greedyRunsFolder.isDirectory())
+				throw new ArgumentsException("Path to model runs contains a greedy file");
+			
+			File smartRunsFolder = new File(runsFolder, "smart");
+			
+			if (!smartRunsFolder.exists())
+				smartRunsFolder.mkdir();
+			else if (!smartRunsFolder.isDirectory())
+				throw new ArgumentsException("Path to model runs contains a smart file");
+			
 			Parser parser = new Parser();
 			
 			Model model1 = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
@@ -106,9 +127,9 @@ public class ControllerComparisonProgram {
 			
 			Synchronizer synchronizer = new Synchronizer(3);
 			
-			Simulator<ExampleStatistics> simulator1 = new Simulator<>(model1, controller1, statistics1, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
-			Simulator<ExampleStatistics> simulator2 = new Simulator<>(model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
-			Simulator<ExampleStatistics> simulator3 = new Simulator<>(model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, new File("models/basic/runs"), synchronizer);
+			Simulator<ExampleStatistics> simulator1 = new Simulator<>(model1, controller1, statistics1, maxModelTimeStep, ratioModelRealTime, randomRunsFolder, synchronizer);
+			Simulator<ExampleStatistics> simulator2 = new Simulator<>(model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, greedyRunsFolder, synchronizer);
+			Simulator<ExampleStatistics> simulator3 = new Simulator<>(model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, smartRunsFolder, synchronizer);
 			
 			List<Simulator<ExampleStatistics>> simulators = new ArrayList<>();
 			
