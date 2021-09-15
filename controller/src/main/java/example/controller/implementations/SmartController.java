@@ -93,38 +93,40 @@ public class SmartController implements Controller {
 			}
 		}
 		
-		for (Demand demand : model.demands) {
-			if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
-				double otherMinimumWeight = Double.MAX_VALUE;
-				Segment otherMinimumEdge = null;
-				Vehicle otherMinimumVehicle = null;
-				for (Vehicle otherVehicle : model.vehicles) {
-					if (otherVehicle.load + demand.size <= otherVehicle.capacity) {
-						if (otherVehicle.location.segment.end == demand.pickup.location.segment.start) {
-							double distance = otherVehicle.location.segment.getLength() - otherVehicle.location.distance + demand.pickup.location.distance;
-							if (otherMinimumWeight > distance) {
-								otherMinimumWeight = distance;
-								otherMinimumEdge = demand.pickup.location.segment;
-								otherMinimumVehicle = otherVehicle;
-							}
-						} else {
-							SingleSourcePaths<Intersection, Segment> otherPaths = algorithm.getPaths(otherVehicle.location.segment.end);
-							GraphPath<Intersection, Segment> path = otherPaths.getPath(demand.pickup.location.segment.start);
-							if (path.getLength() > 0) {
-								double distance = otherVehicle.location.segment.getLength() - otherVehicle.location.distance + path.getWeight() + demand.pickup.location.distance;
+		if (vehicle.demands.size() == 0) {
+			for (Demand demand : model.demands) {
+				if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
+					double otherMinimumWeight = Double.MAX_VALUE;
+					Segment otherMinimumEdge = null;
+					Vehicle otherMinimumVehicle = null;
+					for (Vehicle otherVehicle : model.vehicles) {
+						if (otherVehicle.load + demand.size <= otherVehicle.capacity) {
+							if (otherVehicle.location.segment.end == demand.pickup.location.segment.start) {
+								double distance = otherVehicle.location.segment.getLength() - otherVehicle.location.distance + demand.pickup.location.distance;
 								if (otherMinimumWeight > distance) {
 									otherMinimumWeight = distance;
-									otherMinimumEdge = path.getEdgeList().get(0);
+									otherMinimumEdge = demand.pickup.location.segment;
 									otherMinimumVehicle = otherVehicle;
+								}
+							} else {
+								SingleSourcePaths<Intersection, Segment> otherPaths = algorithm.getPaths(otherVehicle.location.segment.end);
+								GraphPath<Intersection, Segment> path = otherPaths.getPath(demand.pickup.location.segment.start);
+								if (path.getLength() > 0) {
+									double distance = otherVehicle.location.segment.getLength() - otherVehicle.location.distance + path.getWeight() + demand.pickup.location.distance;
+									if (otherMinimumWeight > distance) {
+										otherMinimumWeight = distance;
+										otherMinimumEdge = path.getEdgeList().get(0);
+										otherMinimumVehicle = otherVehicle;
+									}
 								}
 							}
 						}
 					}
-				}
-				if (otherMinimumVehicle == vehicle) {
-					if (minimumWeight > otherMinimumWeight) {
-						minimumWeight = otherMinimumWeight;
-						minimumEdge = otherMinimumEdge;
+					if (otherMinimumVehicle == vehicle) {
+						if (minimumWeight > otherMinimumWeight) {
+							minimumWeight = otherMinimumWeight;
+							minimumEdge = otherMinimumEdge;
+						}
 					}
 				}
 			}
