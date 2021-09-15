@@ -106,7 +106,6 @@ public class ModelComparisonProgram {
 				// Controller
 				
 				Controller controller = new SmartController(model);
-				
 				controller.reset();
 				
 				controllers.add(controller);
@@ -114,7 +113,6 @@ public class ModelComparisonProgram {
 				// Statistics
 
 				ExampleStatistics statistic = new ExampleStatistics(model);
-				
 				statistic.reset();
 				
 				statistics.add(statistic);

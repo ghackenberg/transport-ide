@@ -30,7 +30,7 @@ public class ModelOpenDialog {
 		if (FOLDER_CHOOSER.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			try {
 				FileWriter writer = new FileWriter(CACHE);
-				writer.write(FOLDER_CHOOSER.getSelectedFile().getAbsolutePath());
+				writer.write(FOLDER_CHOOSER.getSelectedFile().getParentFile().getAbsolutePath());
 				writer.close();
 			} catch (IOException e) {
 				e.printStackTrace();
