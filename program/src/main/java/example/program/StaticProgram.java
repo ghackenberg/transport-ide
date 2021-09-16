@@ -49,7 +49,7 @@ public class StaticProgram {
 			// Create parser
 			Parser parser = new Parser();
 			// Parser model
-			Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
+			Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 			model.reset();
 			// Create controller
 			SwitchableController controller = new SwitchableController();

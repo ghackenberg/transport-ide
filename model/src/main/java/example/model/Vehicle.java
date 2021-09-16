@@ -13,6 +13,7 @@ public class Vehicle {
 	public final Location location = new Location();
 	public final List<Demand> demands = new ArrayList<>();
 	public final List<Vehicle> collisions = new ArrayList<>();
+	public Station station;
 	
 	// Statische Eigenschaften (geparst)
 	public String name;
@@ -32,6 +33,7 @@ public class Vehicle {
 		lane = -1;
 		location.segment = initialLocation.segment;
 		location.distance = initialLocation.distance;
+		station = null;
 	}
 	
 	@Override

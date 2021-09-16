@@ -53,7 +53,7 @@ public class ModelComparisonProgram {
 				
 				Parser parser = new Parser();
 				
-				Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
+				Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 				
 				model.demands.clear();
 				

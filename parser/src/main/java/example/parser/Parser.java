@@ -13,13 +13,14 @@ import example.model.Location;
 import example.model.LocationTime;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 import example.parser.exceptions.DirectoryException;
 import example.parser.exceptions.MissingException;
 
 public class Parser {
 	
-	public Model parse(File intersections, File segments, File vehicles, File demands) throws MissingException, DirectoryException {
+	public Model parse(File intersections, File segments, File stations, File vehicles, File demands) throws MissingException, DirectoryException {
 		
 		System.out.println("Parser.parse");
 		
@@ -27,6 +28,8 @@ public class Parser {
 			throw new MissingException("Intersections file does not exit");
 		if (!segments.exists())
 			throw new MissingException("Segments file does not exit");
+		if (!stations.exists())
+			throw new MissingException("Stations file does not exit");
 		if (!vehicles.exists())
 			throw new MissingException("Vehicles file does not exit");
 		if (!demands.exists())
@@ -36,6 +39,8 @@ public class Parser {
 			throw new DirectoryException("Intersections file is directory");
 		if (segments.isDirectory())
 			throw new DirectoryException("Segments file is directory");
+		if (stations.isDirectory())
+			throw new DirectoryException("Stations file is directory");
 		if (vehicles.isDirectory())
 			throw new DirectoryException("Vehicles file is directory");
 		if (demands.isDirectory())
@@ -60,6 +65,14 @@ public class Parser {
 			reader = new BufferedReader(new FileReader(segments));
 			reader.lines().forEach(line -> {
 				this.parseSegment(model, line);
+			});
+			reader.close();
+			
+			System.out.println("Parsing stations");
+			
+			reader = new BufferedReader(new FileReader(stations));
+			reader.lines().forEach(line -> {
+				this.parseStation(model, line);
 			});
 			reader.close();
 			
@@ -148,6 +161,23 @@ public class Parser {
 		end.incoming.add(segment);
 		// Remember segment
 		model.segments.add(segment);
+		
+	}
+	
+	public void parseStation(Model model, String line) {
+		
+		System.out.println(line);
+		
+		String[] parts = line.split(" ");
+		
+		if (parts.length != 1)
+			throw new IllegalArgumentException(line);
+		
+		Station station = new Station();
+		
+		station.location = resolveLocation(model, parts[0]);
+		
+		model.stations.add(station);
 		
 	}
 	

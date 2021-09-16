@@ -11,6 +11,7 @@ public class Model {
 	// Statische Eigenschaften (geparst)
 	public List<Intersection> intersections = new ArrayList<>();
 	public List<Segment> segments = new ArrayList<>();
+	public List<Station> stations = new ArrayList<>();
 	public List<Vehicle> vehicles = new ArrayList<>();
 	public List<Demand> demands = new ArrayList<>();
 	
