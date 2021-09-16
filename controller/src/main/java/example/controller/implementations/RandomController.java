@@ -19,6 +19,11 @@ public class RandomController implements Controller {
 	public boolean selectStation(Vehicle vehicle, Station station) {
 		return Math.random() > 0.5;
 	}
+	
+	@Override
+	public boolean unselectStation(Vehicle vehicle) {
+		return false;
+	}
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
@@ -26,7 +31,12 @@ public class RandomController implements Controller {
 	}
 
 	@Override
-	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle) {
+	public double selectMaximumSpeedSelectionTimeout(Vehicle vehicle) {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public double selectMaximumStationSelectionTimeout(Vehicle vehicle) {
 		return Double.MAX_VALUE;
 	}
 

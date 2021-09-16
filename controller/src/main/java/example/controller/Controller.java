@@ -18,7 +18,7 @@ public interface Controller {
 	public boolean selectAssignment(Vehicle vehicle, Demand demand);
 	
 	/**
-	 * Decide whether to change battery at station or not.
+	 * Decide whether to charge battery at station or not.
 	 * 
 	 * @param vehicle The vehicle for potential battery charge.
 	 * @param station The station where to charge.
@@ -26,6 +26,15 @@ public interface Controller {
 	 * @return True if charging, false otherwise.
 	 */
 	public boolean selectStation(Vehicle vehicle, Station station);
+
+	/**
+	 * Decide whether to stop charging battery at station or not.
+	 * 
+	 * @param vehicle The vehicle for potential battery charge stop.
+	 * 
+	 * @return True if charging, false otherwise.
+	 */
+	public boolean unselectStation(Vehicle vehicle);
 	
 	/**
 	 * Select the upcoming vehicle speed.
@@ -37,13 +46,22 @@ public interface Controller {
 	public double selectSpeed(Vehicle vehicle);
 	
 	/**
-	 * Select the timeout for new speed decision.
+	 * Select the maximum timeout for new speed decision.
 	 * 
 	 * @param vehicle The vehicle for which the timeout holds.
 	 * 
 	 * @return The timeout in milliseconds of simulation time.
 	 */
-	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle);
+	public double selectMaximumSpeedSelectionTimeout(Vehicle vehicle);
+	
+	/**
+	 * Select the maximum timeout for new station decision.
+	 * 
+	 * @param vehicle The vehicle for which the timeout holds.
+	 * 
+	 * @return The timeout in milliseconds of simulation time.
+	 */
+	public double selectMaximumStationSelectionTimeout(Vehicle vehicle);
 	
 	/**
 	 * Select the next segment after reaching the end of the previous segment.

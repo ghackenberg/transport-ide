@@ -21,6 +21,11 @@ public class ManualController implements Controller {
 	public boolean selectStation(Vehicle vehicle, Station station) {
 		return JOptionPane.showConfirmDialog(null, "Should vehicle " + vehicle + " charge at " + station + "?", "Charge choice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
 	}
+	
+	@Override
+	public boolean unselectStation(Vehicle vehicle) {
+		return false;
+	}
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
@@ -28,7 +33,12 @@ public class ManualController implements Controller {
 	}
 
 	@Override
-	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle) {
+	public double selectMaximumSpeedSelectionTimeout(Vehicle vehicle) {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public double selectMaximumStationSelectionTimeout(Vehicle vehicle) {
 		return Double.MAX_VALUE;
 	}
 

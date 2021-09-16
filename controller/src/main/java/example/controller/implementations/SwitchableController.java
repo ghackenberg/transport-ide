@@ -53,6 +53,11 @@ public class SwitchableController implements Controller {
 	public boolean selectStation(Vehicle vehicle, Station station) {
 		return active.selectStation(vehicle, station);
 	}
+	
+	@Override
+	public boolean unselectStation(Vehicle vehicle) {
+		return active.unselectStation(vehicle);
+	}
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
@@ -60,8 +65,13 @@ public class SwitchableController implements Controller {
 	}
 
 	@Override
-	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle) {
-		return active.selectMaximumSpeedUpdateTimeout(vehicle);
+	public double selectMaximumSpeedSelectionTimeout(Vehicle vehicle) {
+		return active.selectMaximumSpeedSelectionTimeout(vehicle);
+	}
+
+	@Override
+	public double selectMaximumStationSelectionTimeout(Vehicle vehicle) {
+		return active.selectMaximumStationSelectionTimeout(vehicle);
 	}
 
 	@Override
