@@ -34,16 +34,16 @@ public class SmartController implements Controller {
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
 		for (Demand demand : model.demands) {
-			if (demand.done == false && demand.vehicle == null && vehicle.load + demand.size <= vehicle.capacity) {
+			if (demand.done == false && demand.vehicle == null && vehicle.loadLevel + demand.size <= vehicle.loadCapacity) {
 				if (vehicle.location.segment == demand.pickup.location.segment) {
 					if (vehicle.location.distance == demand.pickup.location.distance) {
 						for (Vehicle otherVehicle : model.vehicles) {
 							if (vehicle != otherVehicle) {
-								if (otherVehicle.load + demand.size <= otherVehicle.capacity) {
+								if (otherVehicle.loadLevel + demand.size <= otherVehicle.loadCapacity) {
 									if (otherVehicle.location.segment == demand.pickup.location.segment) {
 										if (otherVehicle.location.distance == demand.pickup.location.distance) {
 											if (otherVehicle.speed == 0) {
-												if (otherVehicle.capacity - otherVehicle.load < vehicle.capacity - vehicle.load) {
+												if (otherVehicle.loadCapacity - otherVehicle.loadLevel < vehicle.loadCapacity - vehicle.loadLevel) {
 													return vehicle.location.segment.speed;
 												}
 											}
@@ -100,7 +100,7 @@ public class SmartController implements Controller {
 					Segment otherMinimumEdge = null;
 					Vehicle otherMinimumVehicle = null;
 					for (Vehicle otherVehicle : model.vehicles) {
-						if (otherVehicle.load + demand.size <= otherVehicle.capacity) {
+						if (otherVehicle.loadLevel + demand.size <= otherVehicle.loadCapacity) {
 							if (otherVehicle.location.segment.end == demand.pickup.location.segment.start) {
 								double distance = otherVehicle.location.segment.getLength() - otherVehicle.location.distance + demand.pickup.location.distance;
 								if (otherMinimumWeight > distance) {

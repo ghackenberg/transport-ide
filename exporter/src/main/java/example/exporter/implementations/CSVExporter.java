@@ -78,7 +78,7 @@ public class CSVExporter implements Exporter<ExampleStatistics> {
 			// Process vehicles
 			for (Vehicle vehicle : model.vehicles) {
 				// Write row
-				writer.write("\n" + vehicle.name + ";" + vehicle.capacity + ";" + statistics.vehicleDistances.get(vehicle));
+				writer.write("\n" + vehicle.name + ";" + vehicle.loadCapacity + ";" + statistics.vehicleDistances.get(vehicle));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

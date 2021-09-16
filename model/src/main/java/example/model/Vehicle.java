@@ -6,7 +6,8 @@ import java.util.List;
 public class Vehicle {
 	
 	// Dynamische Eigenschaften (simuliert)
-	public double load;
+	public double loadLevel;
+	public double batteryLevel;
 	public double speed;
 	public int lane;
 	public final Location location = new Location();
@@ -16,14 +17,17 @@ public class Vehicle {
 	// Statische Eigenschaften (geparst)
 	public String name;
 	public double length;
-	public double capacity;
+	public double loadCapacity;
+	public double batteryCapacity;
+	public double initialBatteryLevel;
 	public double initialSpeed;
 	public Location initialLocation;
 	
 	public void reset() {
 		demands.clear();
 		collisions.clear();
-		load = 0;
+		loadLevel = 0;
+		batteryLevel = initialBatteryLevel;
 		speed = initialSpeed;
 		lane = -1;
 		location.segment = initialLocation.segment;

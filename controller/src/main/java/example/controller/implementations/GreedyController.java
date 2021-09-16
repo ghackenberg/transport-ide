@@ -54,7 +54,7 @@ public class GreedyController implements Controller {
 			for (Demand demand : model.demands) {
 				if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
 					if (vehicle.location.segment.end.outgoing.contains(demand.pickup.location.segment)) {
-						if (vehicle.load + demand.size <= vehicle.capacity) {
+						if (vehicle.loadLevel + demand.size <= vehicle.loadCapacity) {
 							pickup.add(demand.pickup.location.segment);
 						}
 					}

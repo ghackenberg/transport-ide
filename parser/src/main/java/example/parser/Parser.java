@@ -157,16 +157,18 @@ public class Parser {
 		
 		String[] parts = line.split(" ");
 		
-		if (parts.length != 5)
+		if (parts.length != 7)
 			throw new IllegalArgumentException(line);
 		
 		Vehicle vehicle = new Vehicle();
 		
 		vehicle.name = parts[0];
 		vehicle.length = Double.parseDouble(parts[1]);
-		vehicle.capacity = Double.parseDouble(parts[2]);
-		vehicle.initialSpeed = Double.parseDouble(parts[3]);
-		vehicle.initialLocation = resolveLocation(model, parts[4]);
+		vehicle.loadCapacity = Double.parseDouble(parts[2]);
+		vehicle.batteryCapacity = Double.parseDouble(parts[3]);
+		vehicle.initialBatteryLevel = Double.parseDouble(parts[4]);
+		vehicle.initialSpeed = Double.parseDouble(parts[5]);
+		vehicle.initialLocation = resolveLocation(model, parts[6]);
 		
 		model.vehicles.add(vehicle);
 		

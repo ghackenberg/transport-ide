@@ -300,7 +300,7 @@ public class Simulator<S extends Statistics> {
 						// Compare distance on segment
 						if (demand.pickup.location.distance == vehicle.location.distance) {
 							// Compare load vs. capacity
-							if (demand.size + vehicle.load <= vehicle.capacity) {
+							if (demand.size + vehicle.loadLevel <= vehicle.loadCapacity) {
 								// Declined before?
 								if (!declines.get(demand).containsKey(model.time) || declines.get(demand).get(model.time) != vehicle) {
 									// Ask controller for pickup decision
@@ -308,7 +308,7 @@ public class Simulator<S extends Statistics> {
 										// Update demand
 										demand.vehicle = vehicle;
 										// Update vehicle
-										vehicle.load += demand.size;
+										vehicle.loadLevel += demand.size;
 										vehicle.demands.add(demand);
 										// Update statistics
 										statistics.recordPickupAccept(vehicle, demand, model.time);
@@ -344,7 +344,7 @@ public class Simulator<S extends Statistics> {
 						demand.done = true;
 						demand.vehicle = null;
 						// Update vehicle
-						vehicle.load -= demand.size;
+						vehicle.loadLevel -= demand.size;
 						vehicle.demands.remove(index--);
 						// Update statistics
 						statistics.recordDropoff(vehicle, demand, model.time);
@@ -418,7 +418,7 @@ public class Simulator<S extends Statistics> {
 						// Pickup ahead
 						if (demand.pickup.location.distance > vehicle.location.distance) {
 							// Enough capactiy?
-							if (demand.size <= vehicle.capacity - vehicle.load) {
+							if (demand.size <= vehicle.loadCapacity - vehicle.loadLevel) {
 								// Speed in meter per millisecond
 								double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
 								// Delta in meter
