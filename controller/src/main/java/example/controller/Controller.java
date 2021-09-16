@@ -2,6 +2,7 @@ package example.controller;
 
 import example.model.Demand;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public interface Controller {
@@ -15,6 +16,16 @@ public interface Controller {
 	 * @return True if pickup, false otherwise.
 	 */
 	public boolean selectAssignment(Vehicle vehicle, Demand demand);
+	
+	/**
+	 * Decide whether to change battery at station or not.
+	 * 
+	 * @param vehicle The vehicle for potential battery charge.
+	 * @param station The station where to charge.
+	 * 
+	 * @return True if charging, false otherwise.
+	 */
+	public boolean selectStation(Vehicle vehicle, Station station);
 	
 	/**
 	 * Select the upcoming vehicle speed.

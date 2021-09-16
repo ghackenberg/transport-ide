@@ -6,6 +6,7 @@ public class Station {
 	public Vehicle vehicle;
 
 	// Statische Eigenschaften (geparst)
+	public double speed;
 	public Location location;
 	
 	@Override

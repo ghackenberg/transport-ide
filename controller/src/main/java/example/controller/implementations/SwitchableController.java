@@ -6,6 +6,7 @@ import java.util.List;
 import example.controller.Controller;
 import example.model.Demand;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public class SwitchableController implements Controller {
@@ -46,6 +47,11 @@ public class SwitchableController implements Controller {
 	@Override
 	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
 		return active.selectAssignment(vehicle, demand);
+	}
+
+	@Override
+	public boolean selectStation(Vehicle vehicle, Station station) {
+		return active.selectStation(vehicle, station);
 	}
 
 	@Override

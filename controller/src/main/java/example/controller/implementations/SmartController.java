@@ -12,6 +12,7 @@ import example.model.Demand;
 import example.model.Intersection;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public class SmartController implements Controller {
@@ -29,6 +30,11 @@ public class SmartController implements Controller {
 	@Override
 	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
 		return true;
+	}
+
+	@Override
+	public boolean selectStation(Vehicle vehicle, Station station) {
+		return Math.random() > 0.5;
 	}
 
 	@Override

@@ -5,12 +5,18 @@ import java.util.List;
 import example.controller.Controller;
 import example.model.Demand;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public class RandomController implements Controller {
 
 	@Override
 	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
+		return Math.random() > 0.5;
+	}
+
+	@Override
+	public boolean selectStation(Vehicle vehicle, Station station) {
 		return Math.random() > 0.5;
 	}
 

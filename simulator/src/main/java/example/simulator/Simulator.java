@@ -13,6 +13,7 @@ import example.controller.Controller;
 import example.model.Demand;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 import example.simulator.exceptions.CollisionException;
 import example.simulator.exceptions.InvalidException;
@@ -289,38 +290,84 @@ public class Simulator<S extends Statistics> {
 			}
 		}
 		
+		// Unassign station
+		for (Vehicle vehicle : model.vehicles) {
+			// Check vehicle station
+			if (vehicle.station != null) {
+				// Check battery level
+				if (vehicle.batteryLevel == vehicle.batteryCapacity) {
+					// Unassign vehicle
+					vehicle.station.vehicle = null;
+					// Unassign station
+					vehicle.station = null;
+				}
+			}
+		}
+		
+		// Assign station
+		for (Vehicle vehicle : model.vehicles) {
+			// Check vehicle station
+			if (vehicle.station == null) {
+				// Check battery level
+				if (vehicle.batteryLevel < vehicle.batteryCapacity) {
+					// Process stations
+					for (Station station : model.stations) {
+						// Check station
+						if (station.vehicle == null) {
+							// Check segment
+							if (vehicle.location.segment == station.location.segment) {
+								// Check distance
+								if (vehicle.location.distance == station.location.distance) {
+									// Ask controller
+									if (controller.selectStation(vehicle, station)) {
+										// Assign station
+										vehicle.station = station;
+										// Assign vehicle
+										station.vehicle = vehicle;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		// Pickup demands
 		for (Demand demand : model.demands) {
 			// Check demand relevance
 			if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
 				// Process vehicles
 				for (Vehicle vehicle : model.vehicles) {
-					// Compare segment
-					if (demand.pickup.location.segment == vehicle.location.segment) {
-						// Compare distance on segment
-						if (demand.pickup.location.distance == vehicle.location.distance) {
-							// Compare load vs. capacity
-							if (demand.size + vehicle.loadLevel <= vehicle.loadCapacity) {
-								// Declined before?
-								if (!declines.get(demand).containsKey(model.time) || declines.get(demand).get(model.time) != vehicle) {
-									// Ask controller for pickup decision
-									if (controller.selectAssignment(vehicle, demand)) {
-										// Update demand
-										demand.vehicle = vehicle;
-										// Update vehicle
-										vehicle.loadLevel += demand.size;
-										vehicle.demands.add(demand);
-										// Update statistics
-										statistics.recordPickupAccept(vehicle, demand, model.time);
-										// Update model time step
-										modelTimeStep = 0;
-									} else {
-										// Update declines
-										declines.get(demand).put(model.time, vehicle);
-										// Update statistics
-										statistics.recordPickupDecline(vehicle, demand, model.time);
-										// Update model time step
-										modelTimeStep = 0;
+					// Check vehicle
+					if (vehicle.batteryLevel > 0 && vehicle.station == null) {
+						// Compare segment
+						if (demand.pickup.location.segment == vehicle.location.segment) {
+							// Compare distance on segment
+							if (demand.pickup.location.distance == vehicle.location.distance) {
+								// Compare load vs. capacity
+								if (demand.size + vehicle.loadLevel <= vehicle.loadCapacity) {
+									// Declined before?
+									if (!declines.get(demand).containsKey(model.time) || declines.get(demand).get(model.time) != vehicle) {
+										// Ask controller for pickup decision
+										if (controller.selectAssignment(vehicle, demand)) {
+											// Update demand
+											demand.vehicle = vehicle;
+											// Update vehicle
+											vehicle.loadLevel += demand.size;
+											vehicle.demands.add(demand);
+											// Update statistics
+											statistics.recordPickupAccept(vehicle, demand, model.time);
+											// Update model time step
+											modelTimeStep = 0;
+										} else {
+											// Update declines
+											declines.get(demand).put(model.time, vehicle);
+											// Update statistics
+											statistics.recordPickupDecline(vehicle, demand, model.time);
+											// Update model time step
+											modelTimeStep = 0;
+										}
 									}
 								}
 							}
@@ -358,7 +405,7 @@ public class Simulator<S extends Statistics> {
 		// Update vehicle speed
 		for (Vehicle vehicle : model.vehicles) {
 			// Select speed
-			double speed = vehicle.batteryLevel > 0 ? controller.selectSpeed(vehicle) : 0;
+			double speed = vehicle.batteryLevel > 0 && vehicle.station == null ? controller.selectSpeed(vehicle) : 0;
 			// Check speed
 			if (speed > vehicle.location.segment.speed) {
 				throw new InvalidSpeedException(vehicle, speed);
@@ -372,7 +419,7 @@ public class Simulator<S extends Statistics> {
 		// Duration until speed selection
 		for (Vehicle vehicle : model.vehicles) {
 			// Check battery level
-			if (vehicle.batteryLevel > 0) {
+			if (vehicle.batteryLevel > 0 && vehicle.station == null) {
 				// Select timeout
 				double timeout = controller.selectSpeedUpdateTimeout(vehicle);
 				// Check timeout
@@ -423,6 +470,45 @@ public class Simulator<S extends Statistics> {
 		for (Demand demand : model.demands) {
 			if (demand.done == false && demand.dropoff.time > model.time) {
 				modelTimeStep = Math.min(modelTimeStep, demand.dropoff.time - model.time);
+			}
+		}
+		
+		// Duration until station
+		for (Vehicle vehicle : model.vehicles) {
+			// Check speed
+			if (vehicle.speed > 0) {
+				// Process stations
+				for (Station station : model.stations) {
+					// Compare segments
+					if (vehicle.location.segment == station.location.segment) {
+						// Compare distances
+						if (vehicle.location.distance < station.location.distance) {
+							// Speed in meter per millisecond
+							double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+							// Delta in meter
+							double delta = station.location.distance - vehicle.location.distance;
+							// Duration in milliseconds
+							double duration = delta / speed;
+							// Update model time step;
+							modelTimeStep = Math.min(modelTimeStep, duration);
+						}
+					}
+				}
+			}
+		}
+		
+		// Duration until full
+		for (Vehicle vehicle : model.vehicles) {
+			// Check vehicle station
+			if (vehicle.station != null) {
+				// Speed in meter per millisecond
+				double speed = vehicle.station.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+				// Delta in meter
+				double delta = vehicle.batteryCapacity - vehicle.batteryLevel;
+				// Duration in milliseconds
+				double duration = delta / speed;
+				// Update model time step
+				modelTimeStep = Math.min(modelTimeStep, duration);
 			}
 		}
 		
@@ -537,14 +623,19 @@ public class Simulator<S extends Statistics> {
 		// Update statistics
 		statistics.recordStep(modelTimeStep, model.time);
 		
-		// Update vehicle position
+		// Update vehicle state
 		for (Vehicle vehicle : model.vehicles) {
 			// Speed in meter per millisecond
 			double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
 			// Delta in meter
 			double delta = speed * modelTimeStep;
-			// Update battery level
+			// Decrease battery level
 			vehicle.batteryLevel -= delta;
+			// Check vehicle station
+			if (vehicle.station != null) {
+				// Increase battery level
+				vehicle.batteryLevel += vehicle.station.speed * 1000.0 / 60.0 / 60.0 / 1000.0 * modelTimeStep;
+			}
 			// Update distance
 			vehicle.location.distance += delta;
 			// Update statistics

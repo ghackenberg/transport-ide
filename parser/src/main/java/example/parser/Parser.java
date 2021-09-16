@@ -170,12 +170,13 @@ public class Parser {
 		
 		String[] parts = line.split(" ");
 		
-		if (parts.length != 1)
+		if (parts.length != 2)
 			throw new IllegalArgumentException(line);
 		
 		Station station = new Station();
 		
-		station.location = resolveLocation(model, parts[0]);
+		station.speed = Double.parseDouble(parts[0]);
+		station.location = resolveLocation(model, parts[1]);
 		
 		model.stations.add(station);
 		

@@ -7,6 +7,7 @@ import example.controller.Controller;
 import example.model.Demand;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public class GreedyController implements Controller {
@@ -20,6 +21,11 @@ public class GreedyController implements Controller {
 	@Override
 	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
 		return true;
+	}
+
+	@Override
+	public boolean selectStation(Vehicle vehicle, Station station) {
+		return Math.random() > 0.5;
 	}
 
 	@Override

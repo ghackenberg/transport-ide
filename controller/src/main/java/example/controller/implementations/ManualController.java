@@ -7,13 +7,19 @@ import javax.swing.JOptionPane;
 import example.controller.Controller;
 import example.model.Demand;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 
 public class ManualController implements Controller {
 	
 	@Override
 	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
-		return JOptionPane.showConfirmDialog(null, "Should vehicle " + vehicle + " pick up " + demand + "?", "Pickup hoice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+		return JOptionPane.showConfirmDialog(null, "Should vehicle " + vehicle + " pick up " + demand + "?", "Pickup choice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+	}
+
+	@Override
+	public boolean selectStation(Vehicle vehicle, Station station) {
+		return JOptionPane.showConfirmDialog(null, "Should vehicle " + vehicle + " charge at " + station + "?", "Charge choice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
 	}
 
 	@Override
