@@ -43,7 +43,7 @@ public interface Controller {
 	 * 
 	 * @return The timeout in milliseconds of simulation time.
 	 */
-	public double selectSpeedUpdateTimeout(Vehicle vehicle);
+	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle);
 	
 	/**
 	 * Select the next segment after reaching the end of the previous segment.

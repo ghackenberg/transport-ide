@@ -421,7 +421,7 @@ public class Simulator<S extends Statistics> {
 			// Check battery level
 			if (vehicle.batteryLevel > 0 && vehicle.station == null) {
 				// Select timeout
-				double timeout = controller.selectSpeedUpdateTimeout(vehicle);
+				double timeout = controller.selectMaximumSpeedUpdateTimeout(vehicle);
 				// Check timeout
 				if (timeout < 0) {
 					throw new InvalidTimeoutException(vehicle, timeout);
@@ -497,7 +497,7 @@ public class Simulator<S extends Statistics> {
 			}
 		}
 		
-		// Duration until full
+		// Duration until battery full
 		for (Vehicle vehicle : model.vehicles) {
 			// Check vehicle station
 			if (vehicle.station != null) {

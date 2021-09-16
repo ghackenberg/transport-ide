@@ -67,7 +67,7 @@ public class SmartController implements Controller {
 	}
 
 	@Override
-	public double selectSpeedUpdateTimeout(Vehicle vehicle) {
+	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle) {
 		return Double.MAX_VALUE;
 	}
 

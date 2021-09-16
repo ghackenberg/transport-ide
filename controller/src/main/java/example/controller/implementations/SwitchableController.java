@@ -60,8 +60,8 @@ public class SwitchableController implements Controller {
 	}
 
 	@Override
-	public double selectSpeedUpdateTimeout(Vehicle vehicle) {
-		return active.selectSpeedUpdateTimeout(vehicle);
+	public double selectMaximumSpeedUpdateTimeout(Vehicle vehicle) {
+		return active.selectMaximumSpeedUpdateTimeout(vehicle);
 	}
 
 	@Override
