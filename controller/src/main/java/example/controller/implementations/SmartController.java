@@ -104,8 +104,6 @@ public class SmartController implements Controller {
 					if (vehicle.batteryLevel >= distance + getMinimumStationDistance(demand.dropoff.location)) {
 						minimumDistance = distance;
 						minimumSegment = next.value;
-						
-						System.out.println("Targeting dropoff!");
 					}
 				}
 			}
@@ -120,8 +118,6 @@ public class SmartController implements Controller {
 							if (vehicle.batteryLevel >= distance + getMinimumStationDistance(demand.pickup.location)) {
 								minimumDistance = distance;
 								minimumSegment = next.value;
-								
-								System.out.println("Targeting pickup!");
 							}
 						}
 					}
@@ -137,8 +133,6 @@ public class SmartController implements Controller {
 				if (minimumDistance > distance && next.value != null) {
 					minimumDistance = distance;
 					minimumSegment = next.value;
-					
-					System.out.println("Targeting charge!");
 				}
 			}
 		}
@@ -149,8 +143,6 @@ public class SmartController implements Controller {
 			List<Segment> candidates = vehicle.location.segment.end.outgoing;
 			
 			minimumSegment = candidates.get((int) (Math.random() * candidates.size()));
-			
-			System.out.println("Targeting random!");
 		}
 		
 		return minimumSegment;
