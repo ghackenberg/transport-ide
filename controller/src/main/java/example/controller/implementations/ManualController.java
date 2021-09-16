@@ -13,7 +13,7 @@ import example.model.Vehicle;
 public class ManualController implements Controller {
 	
 	@Override
-	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
+	public boolean selectDemand(Vehicle vehicle, Demand demand) {
 		return JOptionPane.showConfirmDialog(null, "Should vehicle " + vehicle + " pick up " + demand + "?", "Pickup choice", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
 	}
 

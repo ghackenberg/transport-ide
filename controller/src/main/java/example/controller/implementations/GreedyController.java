@@ -19,17 +19,13 @@ public class GreedyController implements Controller {
 	}
 
 	@Override
-	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
-		return true;
+	public boolean selectDemand(Vehicle vehicle, Demand demand) {
+		return vehicle.demands.size() == 0;
 	}
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		if (vehicle.batteryLevel / vehicle.batteryCapacity < 0.5) {
-			return true;
-		} else {
-			return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
-		}
+		return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
 	}
 	
 	@Override

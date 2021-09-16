@@ -45,8 +45,8 @@ public class SwitchableController implements Controller {
 	}
 
 	@Override
-	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
-		return active.selectAssignment(vehicle, demand);
+	public boolean selectDemand(Vehicle vehicle, Demand demand) {
+		return active.selectDemand(vehicle, demand);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public interface Controller {
 	 * 
 	 * @return True if pickup, false otherwise.
 	 */
-	public boolean selectAssignment(Vehicle vehicle, Demand demand);
+	public boolean selectDemand(Vehicle vehicle, Demand demand);
 	
 	/**
 	 * Decide whether to charge battery at station or not.

@@ -1,5 +1,7 @@
 package example.controller.implementations;
 
+import java.util.List;
+
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
@@ -10,6 +12,7 @@ import example.controller.Controller;
 import example.controller.adapters.GraphAdapter;
 import example.model.Demand;
 import example.model.Intersection;
+import example.model.Location;
 import example.model.Model;
 import example.model.Segment;
 import example.model.Station;
@@ -28,37 +31,18 @@ public class SmartController implements Controller {
 	}
 
 	@Override
-	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
-		return true;
+	public boolean selectDemand(Vehicle vehicle, Demand demand) {
+		return vehicle.demands.size() == 0;
 	}
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		Segment previous = vehicle.location.segment;
-		
-		SingleSourcePaths<Intersection, Segment> paths = algorithm.getPaths(previous.end);
-		
 		double minimumWeight = Double.MAX_VALUE;
 		
 		for (Station otherStation : model.stations) {
-			if (vehicle.location.segment == otherStation.location.segment && vehicle.location.distance < otherStation.location.distance) {
-				double distance = otherStation.location.distance - vehicle.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-				}
-			} else if (previous.end == otherStation.location.segment.start) {
-				double distance = previous.getLength() - vehicle.location.distance + otherStation.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-				}
-			} else {
-				GraphPath<Intersection, Segment> path = paths.getPath(otherStation.location.segment.start);
-				if (path.getLength() > 0) {
-					double distance = previous.getLength() - vehicle.location.distance + path.getWeight() + otherStation.location.distance;
-					if (minimumWeight > distance) {
-						minimumWeight = distance;
-					}
-				}
+			double distance = getDistance(vehicle.location, otherStation.location, null);
+			if (minimumWeight > distance) {
+				minimumWeight = distance;
 			}
 		}
 		
@@ -72,38 +56,19 @@ public class SmartController implements Controller {
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
-		Segment previous = vehicle.location.segment;
-		
-		SingleSourcePaths<Intersection, Segment> paths = algorithm.getPaths(previous.end);
-		
-		double minimumWeight = Double.MAX_VALUE;
+		double minimumDistance = Double.MAX_VALUE;
 		
 		for (Station station : model.stations) {
-			if (vehicle.location.segment == station.location.segment && vehicle.location.distance < station.location.distance) {
-				double distance = station.location.distance - vehicle.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-				}
-			} else if (previous.end == station.location.segment.start) {
-				double distance = previous.getLength() - vehicle.location.distance + station.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-				}
-			} else {
-				GraphPath<Intersection, Segment> path = paths.getPath(station.location.segment.start);
-				if (path.getLength() > 0) {
-					double distance = previous.getLength() - vehicle.location.distance + path.getWeight() + station.location.distance;
-					if (minimumWeight > distance) {
-						minimumWeight = distance;
-					}
-				}
+			double distance = getDistance(vehicle.location, station.location, null);
+			if (minimumDistance > distance) {
+				minimumDistance = distance;
 			}
 		}
 		
 		for (Station station : model.stations) {
 			if (vehicle.location.segment == station.location.segment) {
 				if (vehicle.location.distance == station.location.distance) {
-					if (vehicle.batteryLevel < minimumWeight) {
+					if (vehicle.batteryLevel < minimumDistance) {
 						return 0;
 					}
 				}
@@ -125,75 +90,38 @@ public class SmartController implements Controller {
 
 	@Override
 	public Segment selectSegment(Vehicle vehicle) {
-		Segment previous = vehicle.location.segment;
+		double minimumDistance = Double.MAX_VALUE;
+		Segment minimumSegment = null;
 		
-		SingleSourcePaths<Intersection, Segment> paths = algorithm.getPaths(previous.end);
+		Reference<Segment> next = new Reference<>();
 		
-		double minimumWeight = Double.MAX_VALUE;
-		Segment minimumEdge = previous.end.outgoing.get((int) (Math.random() * previous.end.outgoing.size()));
-		
-		for (Station station : model.stations) {
-			if (previous.end == station.location.segment.start) {
-				double distance = station.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-					minimumEdge = station.location.segment;
-				}
-			} else {
-				GraphPath<Intersection, Segment> path = paths.getPath(station.location.segment.start);
-				if (path.getLength() > 0) {
-					double distance = path.getWeight() + station.location.distance;
-					if (minimumWeight > distance) {
-						minimumWeight = distance;
-						minimumEdge = path.getEdgeList().get(0);
+		if (vehicle.demands.size() > 0) {
+			// Find closest demand dropoff segment
+			
+			for (Demand demand : vehicle.demands) {
+				double distance = getDistance(vehicle.location, demand.dropoff.location, next);
+				if (minimumDistance > distance && next.value != null) {
+					if (vehicle.batteryLevel >= distance + getMinimumStationDistance(demand.dropoff.location)) {
+						minimumDistance = distance;
+						minimumSegment = next.value;
+						
+						System.out.println("Targeting dropoff!");
 					}
 				}
 			}
-		}
-		
-		if (vehicle.batteryLevel < minimumWeight * 1.5) {
-			return minimumEdge;
-		}
-		
-		minimumWeight = Double.MAX_VALUE;
-		
-		for (Demand demand : vehicle.demands) {
-			if (previous.end == demand.dropoff.location.segment.start) {
-				double distance = demand.dropoff.location.distance;
-				if (minimumWeight > distance) {
-					minimumWeight = distance;
-					minimumEdge = demand.dropoff.location.segment;
-				}
-			} else {
-				GraphPath<Intersection, Segment> path = paths.getPath(demand.dropoff.location.segment.start);
-				if (path.getLength() > 0) {
-					double distance = path.getWeight() + demand.dropoff.location.distance;
-					if (minimumWeight > distance) {
-						minimumWeight = distance;
-						minimumEdge = path.getEdgeList().get(0);
-					}
-				}
-			}
-		}
-		
-		if (vehicle.demands.size() == 0) {
+		} else {
+			// Find closest demand pickup segment
+			
 			for (Demand demand : model.demands) {
 				if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
 					if (vehicle.loadLevel + demand.size <= vehicle.loadCapacity) {
-						if (vehicle.location.segment.end == demand.pickup.location.segment.start) {
-							double distance = demand.pickup.location.distance;
-							if (minimumWeight > distance) {
-								minimumWeight = distance;
-								minimumEdge = demand.pickup.location.segment;
-							}
-						} else {
-							GraphPath<Intersection, Segment> path = paths.getPath(demand.pickup.location.segment.start);
-							if (path.getLength() > 0) {
-								double distance = path.getWeight() + demand.pickup.location.distance;
-								if (minimumWeight > distance) {
-									minimumWeight = distance;
-									minimumEdge = path.getEdgeList().get(0);
-								}
+						double distance = getDistance(vehicle.location, demand.pickup.location, next);
+						if (minimumDistance > distance && next.value != null) {
+							if (vehicle.batteryLevel >= distance + getMinimumStationDistance(demand.pickup.location)) {
+								minimumDistance = distance;
+								minimumSegment = next.value;
+								
+								System.out.println("Targeting pickup!");
 							}
 						}
 					}
@@ -201,7 +129,72 @@ public class SmartController implements Controller {
 			}
 		}
 		
-		return minimumEdge;
+		if (minimumSegment == null) {
+			// Find closest station segment
+			
+			for (Station station : model.stations) {
+				double distance = getDistance(vehicle.location, station.location, next);
+				if (minimumDistance > distance && next.value != null) {
+					minimumDistance = distance;
+					minimumSegment = next.value;
+					
+					System.out.println("Targeting charge!");
+				}
+			}
+		}
+		
+		if (minimumSegment == null) {
+			// Select random segment
+			
+			List<Segment> candidates = vehicle.location.segment.end.outgoing;
+			
+			minimumSegment = candidates.get((int) (Math.random() * candidates.size()));
+			
+			System.out.println("Targeting random!");
+		}
+		
+		return minimumSegment;
+	}
+	
+	class Reference<T> {
+		public T value;
+	}
+	
+	private double getDistance(Location a, Location b, Reference<Segment> next) {
+		if (a.segment == b.segment && a.distance < b.distance) {
+			return b.distance - a.distance;
+		} else if (a.segment.end == b.segment.start) {
+			if (next != null) {
+				next.value = b.segment;
+			}
+			return a.segment.getLength() - a.distance + b.distance;
+		} else {
+			SingleSourcePaths<Intersection, Segment> paths = algorithm.getPaths(a.segment.end);
+			GraphPath<Intersection, Segment> path = paths.getPath(b.segment.start);
+			if (path.getLength() > 0) {
+				if (next != null) {
+					next.value = path.getEdgeList().get(0);
+				}
+				return a.segment.getLength() - a.distance + path.getWeight() + b.distance;
+			} else {
+				return Double.MAX_VALUE;
+			}
+		}
+	}
+	
+	private double getMinimumStationDistance(Location a) {
+		double minimumDistance = Double.MAX_VALUE;
+		for (Station station : model.stations) {
+			if (station.location.segment == a.segment && station.location.distance == a.distance) {
+				return 0;
+			} else {
+				double distance = getDistance(a, station.location, null);
+				if (minimumDistance > distance) {
+					minimumDistance = distance;
+				}
+			}
+		}
+		return minimumDistance;
 	}
 	
 	@Override

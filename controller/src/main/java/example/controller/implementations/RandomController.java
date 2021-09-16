@@ -11,17 +11,13 @@ import example.model.Vehicle;
 public class RandomController implements Controller {
 
 	@Override
-	public boolean selectAssignment(Vehicle vehicle, Demand demand) {
-		return Math.random() > 0.5;
+	public boolean selectDemand(Vehicle vehicle, Demand demand) {
+		return vehicle.demands.size() == 0 && Math.random() > 0.5;
 	}
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		if (vehicle.batteryLevel / vehicle.batteryCapacity < 0.5) {
-			return true;
-		} else {
-			return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
-		}
+		return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
 	}
 	
 	@Override
@@ -31,7 +27,7 @@ public class RandomController implements Controller {
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
-		return vehicle.initialSpeed; //vehicle.location.segment.speed; //return Math.random() * vehicle.location.segment.speed;
+		return vehicle.location.segment.speed;
 	}
 
 	@Override

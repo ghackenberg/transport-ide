@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import example.controller.Controller;
 import example.model.Demand;
@@ -39,7 +41,7 @@ public class Simulator<S extends Statistics> {
 	
 	private Synchronizer synchronizer;
 	
-	private Map<Demand, Map<Double, Vehicle>> declines = new HashMap<>();
+	private Map<Demand, Map<Double, Set<Vehicle>>> declines = new HashMap<>();
 	
 	public interface Handler {
 		void handle(InvalidException exception);
@@ -308,23 +310,20 @@ public class Simulator<S extends Statistics> {
 		for (Vehicle vehicle : model.vehicles) {
 			// Check vehicle station
 			if (vehicle.station == null) {
-				// Check battery level
-				if (vehicle.batteryLevel < vehicle.batteryCapacity) {
-					// Process stations
-					for (Station station : model.stations) {
-						// Check station
-						if (station.vehicle == null) {
-							// Check segment
-							if (vehicle.location.segment == station.location.segment) {
-								// Check distance
-								if (vehicle.location.distance == station.location.distance) {
-									// Ask controller
-									if (controller.selectStation(vehicle, station)) {
-										// Assign station
-										vehicle.station = station;
-										// Assign vehicle
-										station.vehicle = vehicle;
-									}
+				// Process stations
+				for (Station station : model.stations) {
+					// Check station
+					if (station.vehicle == null) {
+						// Check segment
+						if (vehicle.location.segment == station.location.segment) {
+							// Check distance
+							if (vehicle.location.distance == station.location.distance) {
+								// Ask controller
+								if (controller.selectStation(vehicle, station)) {
+									// Assign station
+									vehicle.station = station;
+									// Assign vehicle
+									station.vehicle = vehicle;
 								}
 							}
 						}
@@ -348,9 +347,9 @@ public class Simulator<S extends Statistics> {
 								// Compare load vs. capacity
 								if (demand.size + vehicle.loadLevel <= vehicle.loadCapacity) {
 									// Declined before?
-									if (!declines.get(demand).containsKey(model.time) || declines.get(demand).get(model.time) != vehicle) {
+									if (!declines.get(demand).containsKey(model.time) || !declines.get(demand).get(model.time).contains(vehicle)) {
 										// Ask controller for pickup decision
-										if (controller.selectAssignment(vehicle, demand)) {
+										if (controller.selectDemand(vehicle, demand)) {
 											// Update demand
 											demand.vehicle = vehicle;
 											// Update vehicle
@@ -361,13 +360,20 @@ public class Simulator<S extends Statistics> {
 											// Update model time step
 											modelTimeStep = 0;
 										} else {
+											// Check time
+											if (!declines.get(demand).containsKey(model.time)) {
+												// Add set
+												declines.get(demand).put(model.time, new HashSet<>());
+											}
 											// Update declines
-											declines.get(demand).put(model.time, vehicle);
+											declines.get(demand).get(model.time).add(vehicle);
 											// Update statistics
 											statistics.recordPickupDecline(vehicle, demand, model.time);
 											// Update model time step
 											modelTimeStep = 0;
 										}
+									} else {
+										System.out.println("Already declined!");
 									}
 								}
 							}
