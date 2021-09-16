@@ -16,6 +16,7 @@ import example.simulator.Simulator;
 import example.simulator.exceptions.InvalidException;
 import example.statistics.implementations.ExampleStatistics;
 import example.viewer.charts.DemandTimesChartViewer;
+import example.viewer.charts.VehicleBatteriesChartViewer;
 
 public class MultipleViewer {
 	
@@ -67,6 +68,7 @@ public class MultipleViewer {
 			
 			addViewer(number, 0, 1, 1, new ModelViewer(simulator.getModel(), simulator.getStatistics()));
 			addViewer(number, 1, 1, 1, new DemandTimesChartViewer(simulator.getModel(), simulator.getStatistics()));
+			addViewer(number, 2, 1, 1, new VehicleBatteriesChartViewer(simulator.getModel(), simulator.getStatistics()));
 			
 			simulator.setHandleUpdated(() -> {
 				handleUpdated(number * 2 + 0);

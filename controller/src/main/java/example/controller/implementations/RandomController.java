@@ -17,7 +17,11 @@ public class RandomController implements Controller {
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		return Math.random() > 0.5;
+		if (vehicle.batteryLevel / vehicle.batteryCapacity < 0.5) {
+			return true;
+		} else {
+			return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
+		}
 	}
 	
 	@Override

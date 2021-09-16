@@ -34,7 +34,36 @@ public class SmartController implements Controller {
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		return Math.random() > 0.5;
+		Segment previous = vehicle.location.segment;
+		
+		SingleSourcePaths<Intersection, Segment> paths = algorithm.getPaths(previous.end);
+		
+		double minimumWeight = Double.MAX_VALUE;
+		
+		for (Station otherStation : model.stations) {
+			if (otherStation != station && otherStation.vehicle == null) {
+				if (previous.end == otherStation.location.segment.start) {
+					double distance = previous.getLength() - vehicle.location.distance + otherStation.location.distance;
+					if (minimumWeight > distance) {
+						minimumWeight = distance;
+					}
+				} else {
+					GraphPath<Intersection, Segment> path = paths.getPath(station.location.segment.start);
+					if (path.getLength() > 0) {
+						double distance = previous.getLength() - vehicle.location.distance + path.getWeight() + station.location.distance;
+						if (minimumWeight > distance) {
+							minimumWeight = distance;
+						}
+					}
+				}
+			}
+		}
+		
+		if (vehicle.batteryLevel < minimumWeight) {
+			return true;
+		} else {
+			return Math.random() > 0.5;
+		}
 	}
 	
 	@Override
@@ -44,30 +73,6 @@ public class SmartController implements Controller {
 
 	@Override
 	public double selectSpeed(Vehicle vehicle) {
-		for (Demand demand : model.demands) {
-			if (demand.done == false && demand.vehicle == null && vehicle.loadLevel + demand.size <= vehicle.loadCapacity) {
-				if (vehicle.location.segment == demand.pickup.location.segment) {
-					if (vehicle.location.distance == demand.pickup.location.distance) {
-						for (Vehicle otherVehicle : model.vehicles) {
-							if (vehicle != otherVehicle) {
-								if (otherVehicle.loadLevel + demand.size <= otherVehicle.loadCapacity) {
-									if (otherVehicle.location.segment == demand.pickup.location.segment) {
-										if (otherVehicle.location.distance == demand.pickup.location.distance) {
-											if (otherVehicle.speed == 0) {
-												if (otherVehicle.loadCapacity - otherVehicle.loadLevel < vehicle.loadCapacity - vehicle.loadLevel) {
-													return vehicle.location.segment.speed;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-						return 0;
-					}
-				}
-			}
-		}
 		return vehicle.location.segment.speed;
 	}
 
@@ -89,6 +94,31 @@ public class SmartController implements Controller {
 		
 		double minimumWeight = Double.MAX_VALUE;
 		Segment minimumEdge = previous.end.outgoing.get((int) (Math.random() * previous.end.outgoing.size()));
+		
+		for (Station station : model.stations) {
+			if (station.vehicle == null) {
+				if (previous.end == station.location.segment.start) {
+					double distance = station.location.distance;
+					if (minimumWeight > distance) {
+						minimumWeight = distance;
+						minimumEdge = station.location.segment;
+					}
+				} else {
+					GraphPath<Intersection, Segment> path = paths.getPath(station.location.segment.start);
+					if (path.getLength() > 0) {
+						double distance = path.getWeight() + station.location.distance;
+						if (minimumWeight > distance) {
+							minimumWeight = distance;
+							minimumEdge = path.getEdgeList().get(0);
+						}
+					}
+				}
+			}
+		}
+		
+		if (vehicle.batteryLevel < minimumWeight * 1.2) {
+			return minimumEdge;
+		}
 		
 		for (Demand demand : vehicle.demands) {
 			if (previous.end == demand.dropoff.location.segment.start) {

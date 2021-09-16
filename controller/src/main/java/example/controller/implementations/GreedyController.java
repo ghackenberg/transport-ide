@@ -25,7 +25,11 @@ public class GreedyController implements Controller {
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		return Math.random() > 0.5;
+		if (vehicle.batteryLevel / vehicle.batteryCapacity < 0.5) {
+			return true;
+		} else {
+			return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
+		}
 	}
 	
 	@Override
@@ -50,6 +54,23 @@ public class GreedyController implements Controller {
 
 	@Override
 	public Segment selectSegment(Vehicle vehicle) {
+		// Try station
+		if (vehicle.batteryLevel / vehicle.batteryCapacity < 0.5) {
+			List<Segment> charge = new ArrayList<>();
+			
+			for (Station station : model.stations)  {
+				if (station.vehicle == null) {
+					if (vehicle.location.segment.end.outgoing.contains(station.location.segment)) {
+						charge.add(station.location.segment);
+					}
+				}
+			}
+			
+			if (charge.size() > 0) {
+				return charge.get((int) (Math.random() * charge.size()));
+			}
+		}
+		
 		// Try dropoff
 		List<Segment> dropoff = new ArrayList<>();
 		
