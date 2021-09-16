@@ -358,7 +358,7 @@ public class Simulator<S extends Statistics> {
 		// Update vehicle speed
 		for (Vehicle vehicle : model.vehicles) {
 			// Select speed
-			double speed = controller.selectSpeed(vehicle);
+			double speed = vehicle.batteryLevel > 0 ? controller.selectSpeed(vehicle) : 0;
 			// Check speed
 			if (speed > vehicle.location.segment.speed) {
 				throw new InvalidSpeedException(vehicle, speed);
@@ -371,26 +371,45 @@ public class Simulator<S extends Statistics> {
 		
 		// Duration until speed selection
 		for (Vehicle vehicle : model.vehicles) {
-			// Select timeout
-			double timeout = controller.selectSpeedUpdateTimeout(vehicle);
-			// Check timeout
-			if (timeout < 0) {
-				throw new InvalidTimeoutException(vehicle, timeout);
+			// Check battery level
+			if (vehicle.batteryLevel > 0) {
+				// Select timeout
+				double timeout = controller.selectSpeedUpdateTimeout(vehicle);
+				// Check timeout
+				if (timeout < 0) {
+					throw new InvalidTimeoutException(vehicle, timeout);
+				}
+				// Calculate duration
+				modelTimeStep = Math.min(modelTimeStep, timeout);
 			}
-			// Calculate duration
-			modelTimeStep = Math.min(modelTimeStep, timeout);
+		}
+		
+		// Duration until battery level exhaustion
+		for (Vehicle vehicle : model.vehicles) {
+			// Check speed
+			if (vehicle.speed > 0) {
+				// Speed in meter per millisecond
+				double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+				// Duration in milliseconds
+				double duration = vehicle.batteryLevel / speed;
+				// Update model time step
+				modelTimeStep = Math.min(modelTimeStep, duration);
+			}
 		}
 		
 		// Duration until segment end
 		for (Vehicle vehicle : model.vehicles) {
-			// Speed in meter per millisecond
-			double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
-			// Delta in meter
-			double delta = vehicle.location.segment.getLength() - vehicle.location.distance;
-			// Duration in milliseconds
-			double duration = delta / speed;
-			// Update model time step
-			modelTimeStep = Math.min(modelTimeStep, duration);
+			// Check speed
+			if (vehicle.speed > 0) {
+				// Speed in meter per millisecond
+				double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+				// Delta in meter
+				double delta = vehicle.location.segment.getLength() - vehicle.location.distance;
+				// Duration in milliseconds
+				double duration = delta / speed;
+				// Update model time step
+				modelTimeStep = Math.min(modelTimeStep, duration);
+			}
 		}
 		
 		// Duration until demand appearance
@@ -413,20 +432,23 @@ public class Simulator<S extends Statistics> {
 			if (demand.done == false && demand.vehicle == null && demand.pickup.time <= model.time) {
 				// Process vehicles
 				for (Vehicle vehicle : model.vehicles) {
-					// Pickup on same segment
-					if (demand.pickup.location.segment == vehicle.location.segment) {
-						// Pickup ahead
-						if (demand.pickup.location.distance > vehicle.location.distance) {
-							// Enough capactiy?
-							if (demand.size <= vehicle.loadCapacity - vehicle.loadLevel) {
-								// Speed in meter per millisecond
-								double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
-								// Delta in meter
-								double delta = demand.pickup.location.distance - vehicle.location.distance;
-								// Duration in milliseconds
-								double duration = delta / speed;
-								// Update model time step;
-								modelTimeStep = Math.min(modelTimeStep, duration);
+					// Check speed
+					if (vehicle.speed > 0) {
+						// Pickup on same segment
+						if (demand.pickup.location.segment == vehicle.location.segment) {
+							// Pickup ahead
+							if (demand.pickup.location.distance > vehicle.location.distance) {
+								// Enough capactiy?
+								if (demand.size <= vehicle.loadCapacity - vehicle.loadLevel) {
+									// Speed in meter per millisecond
+									double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+									// Delta in meter
+									double delta = demand.pickup.location.distance - vehicle.location.distance;
+									// Duration in milliseconds
+									double duration = delta / speed;
+									// Update model time step;
+									modelTimeStep = Math.min(modelTimeStep, duration);
+								}
 							}
 						}
 					}
@@ -436,20 +458,23 @@ public class Simulator<S extends Statistics> {
 		
 		// Duration until demand dropoff
 		for (Vehicle vehicle : model.vehicles) {
-			// Process demands
-			for (Demand demand : vehicle.demands) {
-				// Dropoff on same segment
-				if (vehicle.location.segment == demand.dropoff.location.segment) {
-					// Dropoff ahead
-					if (vehicle.location.distance < demand.dropoff.location.distance) {
-						// Speed in meter per millisecond
-						double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
-						// Delta in meter
-						double delta = demand.dropoff.location.distance - vehicle.location.distance;
-						// Duration in milliseconds
-						double duration = delta / speed;
-						// Update model time step;
-						modelTimeStep = Math.min(modelTimeStep, duration);
+			// Check speed
+			if (vehicle.speed > 0) {
+				// Process demands
+				for (Demand demand : vehicle.demands) {
+					// Dropoff on same segment
+					if (vehicle.location.segment == demand.dropoff.location.segment) {
+						// Dropoff ahead
+						if (vehicle.location.distance < demand.dropoff.location.distance) {
+							// Speed in meter per millisecond
+							double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
+							// Delta in meter
+							double delta = demand.dropoff.location.distance - vehicle.location.distance;
+							// Duration in milliseconds
+							double duration = delta / speed;
+							// Update model time step;
+							modelTimeStep = Math.min(modelTimeStep, duration);
+						}
 					}
 				}
 			}
@@ -518,6 +543,8 @@ public class Simulator<S extends Statistics> {
 			double speed = vehicle.speed * 1000.0 / 60.0 / 60.0 / 1000.0;
 			// Delta in meter
 			double delta = speed * modelTimeStep;
+			// Update battery level
+			vehicle.batteryLevel -= delta;
 			// Update distance
 			vehicle.location.distance += delta;
 			// Update statistics
