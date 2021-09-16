@@ -71,8 +71,9 @@ public class MultipleViewer {
 			addViewer(number, 2, 1, 1, new VehicleBatteriesChartViewer(simulator.getModel(), simulator.getStatistics()));
 			
 			simulator.setHandleUpdated(() -> {
-				handleUpdated(number * 2 + 0);
-				handleUpdated(number * 2 + 1);
+				handleUpdated(number * 3 + 0);
+				handleUpdated(number * 3 + 1);
+				handleUpdated(number * 3 + 2);
 			});
 			simulator.setHandleStopped(() -> {
 				handleStopped(number);
