@@ -9,6 +9,7 @@ import example.controller.implementations.SmartController;
 import example.model.Demand;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.parser.Parser;
 import example.parser.exceptions.DirectoryException;
 import example.parser.exceptions.MissingException;
@@ -70,6 +71,28 @@ public class ModelComparisonProgram {
 				
 				int pickupSegmentNumber = (int) (Math.random() * models.get(0).segments.size());
 				int dropoffSegmentNumber = (int) (Math.random() * models.get(0).segments.size());
+				
+				boolean valid = true;
+				
+				for (Model model : models) {
+					for (Station station : model.stations) {
+						if (station.location.segment == model.segments.get(pickupSegmentNumber)) {
+							valid = false;
+						} else if (station.location.segment == model.segments.get(dropoffSegmentNumber)) {
+							valid = false;
+						}
+						if (!valid) {
+							break;
+						}
+					}
+					if (!valid) {
+						break;
+					}
+				}
+				if (!valid) {
+					index--;
+					continue;
+				}
 				
 				for (Model model : models) {
 					Segment pickupSegment = model.segments.get(pickupSegmentNumber);

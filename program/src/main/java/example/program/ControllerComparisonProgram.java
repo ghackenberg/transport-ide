@@ -11,6 +11,7 @@ import example.controller.implementations.SmartController;
 import example.model.Demand;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.parser.Parser;
 import example.parser.exceptions.DirectoryException;
 import example.parser.exceptions.MissingException;
@@ -72,11 +73,39 @@ public class ControllerComparisonProgram {
 			model2.demands.clear();
 			model3.demands.clear();
 			
+			List<Model> models = new ArrayList<>();
+			
+			models.add(model1);
+			models.add(model2);
+			models.add(model3);
+			
 			for (int index = 0; index < 100; index++) {
 				double size = Math.random() * 4;
 				
 				int pickupSegment = (int) (Math.random() * model1.segments.size());
 				int dropoffSegment = (int) (Math.random() * model1.segments.size());
+				
+				boolean valid = true;
+				
+				for (Model model : models) {
+					for (Station station : model.stations) {
+						if (station.location.segment == model.segments.get(pickupSegment)) {
+							valid = false;
+						} else if (station.location.segment == model.segments.get(dropoffSegment)) {
+							valid = false;
+						}
+						if (!valid) {
+							break;
+						}
+					}
+					if (!valid) {
+						break;
+					}
+				}
+				if (!valid) {
+					index--;
+					continue;
+				}
 				
 				Segment pickupSegment1 = model1.segments.get(pickupSegment);
 				Segment pickupSegment2 = model2.segments.get(pickupSegment);
