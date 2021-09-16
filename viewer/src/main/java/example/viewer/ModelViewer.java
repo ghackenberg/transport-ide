@@ -24,6 +24,7 @@ import example.model.Demand;
 import example.model.Intersection;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 import example.statistics.implementations.ExampleStatistics;
 
@@ -39,6 +40,7 @@ public class ModelViewer implements Viewer {
 	
 	private static final Color INTERSECTION_COLOR = Color.GRAY;
 	private static final Color SEGMENT_COLOR = Color.LIGHT_GRAY;
+	private static final Color STATION_COLOR = Color.MAGENTA;
 	private static final Color VEHICLE_DEFAULT_COLOR = Color.BLUE;
 	private static final Color VEHICLE_ACCEPT_COLOR = Color.GREEN;
 	private static final Color VEHICLE_DECLINE_COLOR = Color.RED;
@@ -177,6 +179,10 @@ public class ModelViewer implements Viewer {
 		for (Intersection intersection : model.intersections) {
 			drawIntersection(graphics, intersection);
 		}
+		// Draw stations
+		for (Station station : model.stations) {
+			drawStation(graphics, station);
+		}
 		// Draw demands
 		for (Demand demand : model.demands) {
 			if (!demand.done && demand.pickup.time <= model.time) {
@@ -267,6 +273,24 @@ public class ModelViewer implements Viewer {
 		
 		graphics.setColor(Color.WHITE);
 		graphics.drawString(intersection.name, textX, textY);
+		
+	}
+	
+	private void drawStation(Graphics2D graphics, Station station) {
+		
+		double centerX = calculateX(station.location.toCoordinate());
+		double centerY = calculateY(station.location.toCoordinate());
+		
+		double radius = station.location.segment.lanes * LANE_WIDTH * ratioScreenModel / 2;
+		
+		int arcX = (int) (centerX - radius);
+		int arcY = (int) (centerY - radius);
+		
+		int arcWidth = (int) (radius * 2);
+		int arcHeight = (int) (radius * 2);
+		
+		graphics.setColor(STATION_COLOR);
+		graphics.fillArc(arcX, arcY, arcWidth, arcHeight, 0, 360);
 		
 	}
 	
