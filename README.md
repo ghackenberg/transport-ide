@@ -27,7 +27,7 @@ classDiagram
         Time: Double
     }
     class Station {
-
+        Speed: Double
     }
     class Vehicle {
         BatteryCapacity: Double
@@ -93,4 +93,20 @@ classDiagram
 
     JGraphT <-- SmartController
     Swing <-- ManualController
+```
+
+### Statistics
+
+```mermaid
+classDiagram
+    direction LR
+    class Statistics {
+        RecordCrossing(Vehicle v, Segment p, Segment n, Double t)
+        RecordPickupDecline(Vehicle v, Demand d, Double t)
+        RecordPickupAccept(Vehicle v, Demand d, Double t)
+        RecordDropoff(Vehicle v, Demand d, Double t)
+        RecordSpeed(Vehicle v, Double s, Double t)
+        RecordDistance(Vehicle v, Double d, Double t)
+        RecordStep(Double s, Double t)
+    }
 ```

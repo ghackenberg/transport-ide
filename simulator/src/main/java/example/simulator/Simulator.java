@@ -252,6 +252,11 @@ public class Simulator<S extends Statistics> {
 		// Calculate difference between simulation time advance and actual time advance 
 		final double difference = modelTimeDelta - realTimeDelta;
 		
+		// Debug
+		if (modelTimeDelta == 0) {
+			System.out.println("Model time delta is null");
+		}
+		
 		// Sleep for the difference in time advances
 		if (!pause) {
 			Thread.sleep(Math.max((long) (difference / ratioModelRealTime), 0));
@@ -309,7 +314,7 @@ public class Simulator<S extends Statistics> {
 		// Assign station
 		for (Vehicle vehicle : model.vehicles) {
 			// Check vehicle station
-			if (vehicle.station == null) {
+			if (vehicle.station == null && vehicle.batteryLevel < vehicle.batteryCapacity) {
 				// Process stations
 				for (Station station : model.stations) {
 					// Check station
