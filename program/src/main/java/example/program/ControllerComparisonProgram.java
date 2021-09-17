@@ -26,14 +26,15 @@ public class ControllerComparisonProgram {
 
 	public static void main(String[] args) {
 		try {
-			double maxModelTimeStep = 1000;
-			double ratioModelRealTime = 30;
+			// Choose folder
 		
 			File modelFolder = ModelOpenDialog.choose();
 			
 			if (modelFolder == null) {
 				return;
 			}
+			
+			// Select runs folder
 			
 			File runsFolder = new File(modelFolder, "runs");
 			
@@ -42,12 +43,16 @@ public class ControllerComparisonProgram {
 			else if (!runsFolder.isDirectory())
 				throw new ArgumentsException("Path to model contains a runs file");
 			
+			// Select random runs folder
+			
 			File randomRunsFolder = new File(runsFolder, "random");
 			
 			if (!randomRunsFolder.exists())
 				randomRunsFolder.mkdir();
 			else if (!randomRunsFolder.isDirectory())
 				throw new ArgumentsException("Path to model runs contains a random file");
+			
+			// Select greedy runs folder
 			
 			File greedyRunsFolder = new File(runsFolder, "greedy");
 			
@@ -56,6 +61,8 @@ public class ControllerComparisonProgram {
 			else if (!greedyRunsFolder.isDirectory())
 				throw new ArgumentsException("Path to model runs contains a greedy file");
 			
+			// Select smart runs folder
+			
 			File smartRunsFolder = new File(runsFolder, "smart");
 			
 			if (!smartRunsFolder.exists())
@@ -63,15 +70,23 @@ public class ControllerComparisonProgram {
 			else if (!smartRunsFolder.isDirectory())
 				throw new ArgumentsException("Path to model runs contains a smart file");
 			
+			// Create parser
+			
 			Parser parser = new Parser();
+			
+			// Parse models
 			
 			Model model1 = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 			Model model2 = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 			Model model3 = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 			
+			// Clear demands
+			
 			model1.demands.clear();
 			model2.demands.clear();
 			model3.demands.clear();
+			
+			// List models
 			
 			List<Model> models = new ArrayList<>();
 			
@@ -79,19 +94,37 @@ public class ControllerComparisonProgram {
 			models.add(model2);
 			models.add(model3);
 			
+			// Generate demands
+			
 			for (int index = 0; index < 100; index++) {
+				// Select size
+				
 				double size = Math.random() * 4;
 				
-				int pickupSegment = (int) (Math.random() * model1.segments.size());
-				int dropoffSegment = (int) (Math.random() * model1.segments.size());
+				// Select times
+				
+				double pickupTime = Math.random() * 1000000;
+				double dropoffTime = pickupTime + Math.random() * 100000;
+				
+				// Select segments
+				
+				int pickupSegmentNumber = (int) (Math.random() * model1.segments.size());
+				int dropoffSegmentNumber = (int) (Math.random() * model1.segments.size());
+				
+				// Select distances
+				
+				double pickupDistance = Math.random();
+				double dropoffDistance = Math.random();
+				
+				// Check segment validity
 				
 				boolean valid = true;
 				
 				for (Model model : models) {
 					for (Station station : model.stations) {
-						if (station.location.segment == model.segments.get(pickupSegment)) {
+						if (station.location.segment == model.segments.get(pickupSegmentNumber)) {
 							valid = false;
-						} else if (station.location.segment == model.segments.get(dropoffSegment)) {
+						} else if (station.location.segment == model.segments.get(dropoffSegmentNumber)) {
 							valid = false;
 						}
 						if (!valid) {
@@ -107,36 +140,27 @@ public class ControllerComparisonProgram {
 					continue;
 				}
 				
-				Segment pickupSegment1 = model1.segments.get(pickupSegment);
-				Segment pickupSegment2 = model2.segments.get(pickupSegment);
-				Segment pickupSegment3 = model3.segments.get(pickupSegment);
+				// Process models
 				
-				Segment dropoffSegment1 = model1.segments.get(dropoffSegment);
-				Segment dropoffSegment2 = model2.segments.get(dropoffSegment);
-				Segment dropoffSegment3 = model3.segments.get(dropoffSegment);
-				
-				double pickupTime = Math.random() * 1000000;
-				double dropoffTime = pickupTime + Math.random() * 100000;
-				
-				double pickupDistance = Math.random() * pickupSegment1.getLength();
-				double dropoffDistance = Math.random() * dropoffSegment1.getLength();
-				
-				Demand demand1 = new Demand(pickupSegment1, pickupDistance, pickupTime, dropoffSegment1, dropoffDistance, dropoffTime, size);
-				Demand demand2 = new Demand(pickupSegment2, pickupDistance, pickupTime, dropoffSegment2, dropoffDistance, dropoffTime, size);
-				Demand demand3 = new Demand(pickupSegment3, pickupDistance, pickupTime, dropoffSegment3, dropoffDistance, dropoffTime, size);
-				
-				model1.demands.add(demand1);
-				model2.demands.add(demand2);
-				model3.demands.add(demand3);
+				for (Model model : models) {
+					Segment pickupSegment = model.segments.get(pickupSegmentNumber);
+					Segment dropoffSegment = model.segments.get(dropoffSegmentNumber);
+					
+					Demand demand = new Demand(pickupSegment, pickupDistance * pickupSegment.getLength(), pickupTime, dropoffSegment, dropoffDistance * dropoffSegment.getLength(), dropoffTime, size);
+
+					model.demands.add(demand);
+				}
 			}
 			
-			model1.demands.sort((first, second) -> (int) Math.signum(first.pickup.time - second.pickup.time));
-			model2.demands.sort((first, second) -> (int) Math.signum(first.pickup.time - second.pickup.time));
-			model3.demands.sort((first, second) -> (int) Math.signum(first.pickup.time - second.pickup.time));
+			// Sort demands and reset models
 			
-			model1.reset();
-			model2.reset();
-			model3.reset();
+			for (Model model : models) {
+				model.demands.sort((first, second) -> (int) Math.signum(first.pickup.time - second.pickup.time));
+				
+				model.reset();
+			}
+			
+			// Create controllers
 			
 			Controller controller1 = new RandomController();
 			Controller controller2 = new GreedyController(model2);
@@ -146,6 +170,8 @@ public class ControllerComparisonProgram {
 			controller2.reset();
 			controller3.reset();
 			
+			// Create statistics
+			
 			ExampleStatistics statistics1 = new ExampleStatistics(model1);
 			ExampleStatistics statistics2 = new ExampleStatistics(model2);
 			ExampleStatistics statistics3 = new ExampleStatistics(model3);
@@ -154,11 +180,22 @@ public class ControllerComparisonProgram {
 			statistics2.reset();
 			statistics3.reset();
 			
+			// Create synchronizer
+			
 			Synchronizer synchronizer = new Synchronizer(3);
+			
+			// Define settings
+			
+			double maxModelTimeStep = 1000;
+			double ratioModelRealTime = 30;
+			
+			// Create simulators
 			
 			Simulator<ExampleStatistics> simulator1 = new Simulator<>(model1, controller1, statistics1, maxModelTimeStep, ratioModelRealTime, randomRunsFolder, synchronizer);
 			Simulator<ExampleStatistics> simulator2 = new Simulator<>(model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, greedyRunsFolder, synchronizer);
 			Simulator<ExampleStatistics> simulator3 = new Simulator<>(model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, smartRunsFolder, synchronizer);
+			
+			// List simulators
 			
 			List<Simulator<ExampleStatistics>> simulators = new ArrayList<>();
 			
@@ -166,7 +203,11 @@ public class ControllerComparisonProgram {
 			simulators.add(simulator2);
 			simulators.add(simulator3);
 			
+			// Create viewer
+			
 			new MultipleViewer(simulators);
+			
+			// Start simulators
 			
 			simulator1.start();
 			simulator2.start();

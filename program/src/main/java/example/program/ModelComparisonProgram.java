@@ -24,19 +24,26 @@ public class ModelComparisonProgram {
 
 	public static void main(String[] args) {
 		try {
-			double maxModelTimeStep = 1000;
-			double ratioModelRealTime = 30;
+			// Create parser
+			
+			Parser parser = new Parser();
+			
+			// Parse models
 			
 			List<File> folders = new ArrayList<>();
 			
 			List<Model> models = new ArrayList<>();
 			
 			do {
+				// Choose folder
+				
 				File modelFolder = ModelOpenDialog.choose();
 				
 				if (modelFolder == null) {
 					break;
 				}
+				
+				// Check runs folder
 
 				File runsFolder = new File(modelFolder, "runs");
 				
@@ -52,7 +59,7 @@ public class ModelComparisonProgram {
 				else if (!indexRunsFolder.isDirectory())
 					throw new ArgumentsException("Path to model runs contains a run-" + folders.size() + " file");
 				
-				Parser parser = new Parser();
+				// Parse
 				
 				Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 				
@@ -63,14 +70,29 @@ public class ModelComparisonProgram {
 				models.add(model);
 			} while (true);
 			
+			// Generate demands
+			
 			for (int index = 0; index < 100; index++) {
+				// Select size
+				
 				double size = Math.random() * 4;
+				
+				// Select times
 				
 				double pickupTime = Math.random() * 1000000;
 				double dropoffTime = pickupTime + Math.random() * 100000;
 				
+				// Select segments
+				
 				int pickupSegmentNumber = (int) (Math.random() * models.get(0).segments.size());
 				int dropoffSegmentNumber = (int) (Math.random() * models.get(0).segments.size());
+				
+				// Select distance (in percent)
+				
+				double pickupDistance = Math.random();
+				double dropoffDistance = Math.random();
+				
+				// Check segment validity
 				
 				boolean valid = true;
 				
@@ -94,18 +116,19 @@ public class ModelComparisonProgram {
 					continue;
 				}
 				
+				// Process models
+				
 				for (Model model : models) {
 					Segment pickupSegment = model.segments.get(pickupSegmentNumber);
 					Segment dropoffSegment = model.segments.get(dropoffSegmentNumber);
 					
-					double pickupDistance = Math.random() * pickupSegment.getLength();
-					double dropoffDistance = Math.random() * dropoffSegment.getLength();
-					
-					Demand demand = new Demand(pickupSegment, pickupDistance, pickupTime, dropoffSegment, dropoffDistance, dropoffTime, size);
+					Demand demand = new Demand(pickupSegment, pickupDistance * pickupSegment.getLength(), pickupTime, dropoffSegment, dropoffDistance * dropoffSegment.getLength(), dropoffTime, size);
 					
 					model.demands.add(demand);
 				}
 			}
+			
+			// Sort demands and reset models
 			
 			for (Model model : models) {
 				model.demands.sort((first, second) -> (int) Math.signum(first.pickup.time - second.pickup.time));
@@ -113,13 +136,22 @@ public class ModelComparisonProgram {
 				model.reset();
 			}
 			
+			// Create synchronizer
+			
+			Synchronizer synchronizer = new Synchronizer(models.size());
+			
+			// Define settings
+			
+			double maxModelTimeStep = 1000;
+			double ratioModelRealTime = 30;
+			
+			// Generate controllers, statistics, and simulators
+			
 			List<Controller> controllers = new ArrayList<>();
 			
 			List<ExampleStatistics> statistics = new ArrayList<>();
 			
 			List<Simulator<ExampleStatistics>> simulators = new ArrayList<>();
-			
-			Synchronizer synchronizer = new Synchronizer(models.size());
 			
 			for (int index = 0; index < models.size(); index++) {
 				File runsFolder = folders.get(index);
@@ -147,7 +179,11 @@ public class ModelComparisonProgram {
 				simulators.add(simulator);
 			}
 			
+			// Create viewer
+			
 			new MultipleViewer(simulators);
+			
+			// Start simulators
 			
 			for (Simulator<ExampleStatistics> simulator : simulators) {
 				simulator.start();
