@@ -20,12 +20,12 @@ public class GreedyController implements Controller {
 
 	@Override
 	public boolean selectDemand(Vehicle vehicle, Demand demand) {
-		return vehicle.demands.size() == 0;
+		return true;
 	}
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
+		return true;
 	}
 	
 	@Override

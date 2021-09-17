@@ -12,12 +12,12 @@ public class RandomController implements Controller {
 
 	@Override
 	public boolean selectDemand(Vehicle vehicle, Demand demand) {
-		return vehicle.demands.size() == 0 && Math.random() > 0.5;
+		return Math.random() > 0.5;
 	}
 
 	@Override
 	public boolean selectStation(Vehicle vehicle, Station station) {
-		return Math.random() > vehicle.batteryLevel / vehicle.batteryCapacity;
+		return Math.random() > 0.5;
 	}
 	
 	@Override

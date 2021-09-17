@@ -32,7 +32,7 @@ public class SmartController implements Controller {
 
 	@Override
 	public boolean selectDemand(Vehicle vehicle, Demand demand) {
-		return vehicle.demands.size() == 0;
+		return true;
 	}
 
 	@Override
