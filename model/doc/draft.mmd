@@ -1,0 +1,92 @@
+classDiagram
+    direction LR
+
+    class Job {
+        Quantity: Integer
+    }
+
+    class WorkStation {
+        Name: String
+    }
+
+    class ChargeStation {
+        Name: String
+    }
+
+    class Resource {
+        Name: String
+        Size: String
+    }
+
+    class Operation {
+        Duration: Double
+    }
+
+    class Transition {
+        Duration: Double
+    }
+
+    class Location {
+        Distance: Double
+    }
+
+    class Segment {
+        Lanes: Integer
+        Speed: Double
+    }
+
+    class Intersection {
+        Name: String
+        Latitude: Double
+        Longitude: Double
+        Elevation: Double
+    }
+
+    class Vehicle {
+        Speed: Double
+        Size: Double
+    }
+
+    class Battery {
+        Capacity: Double
+        Level: Double
+    }
+
+    class Load {
+        Duration: Double
+    }
+
+    class Unload {
+        Duration: Double
+    }
+
+    Job --> "1" Resource:Refers to
+
+    Segment --> "1" Intersection:Start
+    Segment --> "1" Intersection:End
+
+    Location --> "1" Segment
+
+    WorkStation --> "1" Location:Located at
+
+    ChargeStation --> "1" Location:Located at
+
+    Battery <-- "1" ChargeStation:Charges
+
+    Vehicle --> "1" Battery:Contains
+    Vehicle --> "1" Location:Located at
+
+    Load "*" <-- Vehicle:Can perform
+    
+    Unload "*" <-- Vehicle:Can perform
+
+    Resource "*" <-- Operation:Requires
+    Resource "*" <-- Operation:Produces
+    Resource "1" <-- Load:Refers to
+    Resource "1" <-- Unload:Refers to
+
+    Transition <-- "1" WorkStation:Can perform
+
+    Operation "1" <-- Transition:From
+    Operation "1" <-- Transition:To
+    Operation <-- "1" WorkStation:Can perform
