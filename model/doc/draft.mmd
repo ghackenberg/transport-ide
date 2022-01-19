@@ -3,27 +3,40 @@ classDiagram
 
     class Job {
         Quantity: Integer
+        OrderTimestamp: Long
+        DeliverTimestamp: Long
     }
 
-    class WorkStation {
+    class Type {
         Name: String
     }
 
-    class ChargeStation {
+    class Object {
         Name: String
+        OwnMass: Double
+        OwnVolume: Double
+        LoadMass: Double
+        LoadVolume: Double
     }
 
-    class Resource {
-        Name: String
-        Size: String
+    class Charger {
+        CurrentSpeed: Double
+        MaximumSpeed: Double
     }
 
     class Operation {
-        Duration: Double
+        Name: String
+        UnitDuration: Double
     }
 
-    class Transition {
-        Duration: Double
+    class Input {
+        UnitQuantity: Double
+        SetupDuration: Double
+        TeardownDuration: Double
+    }
+
+    class Output {
+        UnitQuantity: Double
     }
 
     class Location {
@@ -42,51 +55,39 @@ classDiagram
         Elevation: Double
     }
 
+    class Mover {
+        CurrentSpeed: Double
+        MaximumSpeed: Double
+    }
+
     class Vehicle {
-        Speed: Double
-        Size: Double
+        ChargeCapacity: Double
+        ChargeLevel: Double
     }
 
-    class Battery {
-        Capacity: Double
-        Level: Double
-    }
+    Job "*" --> "1" Type:Has
 
-    class Load {
-        Duration: Double
-    }
+    Segment --> "1" Intersection:Starting at
+    Segment --> "1" Intersection:Ending at
 
-    class Unload {
-        Duration: Double
-    }
+    Location "*" --> "1" Segment:Located on
 
-    Job --> "1" Resource:Refers to
+    Operation "1" --> "*" Input:Seizes
+    Operation "1" --> "*" Input:Consumes
+    Operation "1" --> "*" Output:Produces
 
-    Segment --> "1" Intersection:Start
-    Segment --> "1" Intersection:End
+    Input "*" --> "1" Type:Has
 
-    Location --> "1" Segment
+    Output "*" --> "1" Type:Has
 
-    WorkStation --> "1" Location:Located at
-
-    ChargeStation --> "1" Location:Located at
-
-    Battery <-- "1" ChargeStation:Charges
-
-    Vehicle --> "1" Battery:Contains
-    Vehicle --> "1" Location:Located at
-
-    Load "*" <-- Vehicle:Can perform
+    Charger --|> Object:Is a
     
-    Unload "*" <-- Vehicle:Can perform
+    Vehicle --|> Mover:Is a
+    Vehicle "1" <-- "1" Charger:Charges
 
-    Resource "*" <-- Operation:Requires
-    Resource "*" <-- Operation:Produces
-    Resource "1" <-- Load:Refers to
-    Resource "1" <-- Unload:Refers to
+    Mover --|> Object:Is a
 
-    Transition <-- "1" WorkStation:Can perform
+    Object "*" --> "1" Location:Located at
+    Object "*" --> "1" Object:Located inside
 
-    Operation "1" <-- Transition:From
-    Operation "1" <-- Transition:To
-    Operation <-- "1" WorkStation:Can perform
+    Type "1" <-- "*" Object:Has
