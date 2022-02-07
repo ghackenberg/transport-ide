@@ -1,0 +1,123 @@
+classDiagram
+    direction TB
+
+    class Job {
+        Quantity: Integer
+        OrderTimestamp: Long
+        DeliverTimestamp: Long
+    }
+
+    class Type {
+        Name: String
+        OwnMass: Double
+        OwnVolume: Double
+        LoadMass: Double
+        LoadVolume: Double
+    }
+
+    class Object {
+        Name: String
+    }
+
+    class Charger {
+        CurrentSpeed: Double
+        MaximumSpeed: Double
+    }
+
+    class Operation {
+        Name: String
+    }
+
+    class Parameter {
+        Name: String
+    }
+
+    class Location {
+        Distance: Double
+    }
+
+    class Segment {
+        Lanes: Integer
+        Speed: Double
+    }
+
+    class Intersection {
+        Name: String
+        Latitude: Double
+        Longitude: Double
+        Elevation: Double
+    }
+
+    class Mover {
+        CurrentSpeed: Double
+        MaximumSpeed: Double
+    }
+
+    class Vehicle {
+        ChargeCapacity: Double
+        ChargeLevel: Double
+    }
+
+    class Property {
+        Name: String
+        Type: Class
+    }
+
+    class Value {
+        Value: Object
+    }
+
+    class Precondition {
+    
+    }
+
+    class Postcondition {
+    
+    }
+
+    class ParameterProperty {
+    
+    }
+
+    Job "*" --> "1" Type:Has
+
+    Segment --> "1" Intersection:Starting at
+    Segment --> "1" Intersection:Ending at
+
+    Location "*" --> "1" Segment:Located on
+
+    Operation "1" --> "*" Parameter:Seizes
+    Operation "1" --> "*" Parameter:Consumes
+    Operation "1" --> "*" Parameter:Produces
+
+    Parameter "*" --> "1" Type:Has
+
+    Charger --|> Object:Is a
+    
+    Vehicle --|> Mover:Is a
+    Vehicle "1" <-- "1" Charger:Charges
+
+    Mover --|> Object:Is a
+
+    Object "*" --> "1" Location:Located at
+    Object "*" --> "1" Object:Located inside
+
+    Type "1" <-- "*" Object:Has
+    Type "1" --> "*" Property:Has
+
+    Object "1" --> "*" Value:Has
+
+    Operation "1" --> "*" Postcondition:Has
+
+    Property "*" <-- "1" Value:Has
+
+    Operation "1" --> "*" Precondition:Has
+
+    Parameter "1" <-- "*" ParameterProperty:References
+
+    ParameterProperty "*" --> "1" Property:References
+
+    Precondition "*" --> "*" ParameterProperty:Reads
+
+    Postcondition "*" --> "*" ParameterProperty:Reads
+    Postcondition "*" --> "1" ParameterProperty:Writes
