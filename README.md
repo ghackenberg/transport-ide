@@ -38,20 +38,20 @@ Infrastructure comparison allows one to evaluate system performance for a given 
 
 #### First version
 
-![Model classes](./model/doc/classes-v0.png)
+![Model classes](./diagrams/model/classes-v0.png)
 
 #### Second version
 
-![Model classes](./model/doc/classes-v1.png)
+![Model classes](./diagrams/model/classes-v1.png)
 
 #### Third version
 
-![Model classes](./model/doc/classes-v2.png)
+![Model classes](./diagrams/model/classes-v2.png)
 
 ### 🧩 Controller
 
-![Controller classes](./controller/doc/classes.png)
+![Controller classes](./diagrams/controller/classes.png)
 
 ### 🧩 Statistics
 
-![Statistics classes](./statistics/doc/classes.png)
+![Statistics classes](./diagrams/statistics/classes.png)
