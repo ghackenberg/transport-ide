@@ -23,7 +23,7 @@ Controller comparison allows one to evaluate system performance for a set of con
 
 Infrastructure comparison allows one to evaluate system performance for a given controller algorithmn and a set of transportation infrastructures.
 
-![Infrastructure comparison](./screenshots/infrastructure-comparison.png
+![Infrastructure comparison](./screenshots/infrastructure-comparison.png)
 
 ## Modules
 
