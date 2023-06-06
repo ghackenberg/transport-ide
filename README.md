@@ -1,4 +1,4 @@
-# transport-ide
+# TransportIDE
 
 The goal of **TransportIDE** is to make the life of *transportation infrastructure* and *control algorithm engineers* easier.
 We believe that this engineering domain needs new tools and methodologies to develop better systems with higher performance in shorter time and at lower lifetime cost.
