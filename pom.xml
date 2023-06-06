@@ -13,14 +13,14 @@
 	</properties>
 
 	<modules>
-		<module>model</module>
-		<module>parser</module>
-		<module>controller</module>
-		<module>statistics</module>
-		<module>exporter</module>
-		<module>simulator</module>
-		<module>viewer</module>
-		<module>program</module>
+		<module>modules/model</module>
+		<module>modules/parser</module>
+		<module>modules/controller</module>
+		<module>modules/statistics</module>
+		<module>modules/exporter</module>
+		<module>modules/simulator</module>
+		<module>modules/viewer</module>
+		<module>modules/program</module>
 	</modules>
 
 	<build>
