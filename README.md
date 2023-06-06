@@ -7,19 +7,19 @@ Transport IDE provides a tool for transportation system designers to analyse req
 This software package supports several use cases from basic simulation to controller and infrastructure comparison.
 In the following, we provide brief descriptions and screenshots of the individual use cases.
 
-### Basic simulation
+### 🖼️ Basic simulation
 
 Basic simulation allows one to evaluate system performance for a given controller algorithm and transportation infrastructure.
 
 ![Basic](./screenshots/basic-simulation.png)
 
-### Controller comparison
+### 🖼️ Controller comparison
 
 Controller comparison allows one to evaluate system performance for a set of controller algorithms and a given transportation infrastructure.
 
 ![Controller comparison](./screenshots/controller-comparison.png)
 
-### Infrastructure comparison
+### 🖼️ Infrastructure comparison
 
 Infrastructure comparison allows one to evaluate system performance for a given controller algorithmn and a set of transportation infrastructures.
 
@@ -27,7 +27,7 @@ Infrastructure comparison allows one to evaluate system performance for a given 
 
 ## Modules
 
-### Model
+### 🧩 Model
 
 #### First version
 
@@ -41,10 +41,10 @@ Infrastructure comparison allows one to evaluate system performance for a given 
 
 ![Model classes](./model/doc/classes-v2.png)
 
-### Controller
+### 🧩 Controller
 
 ![Controller classes](./controller/doc/classes.png)
 
-### Statistics
+### 🧩 Statistics
 
 ![Statistics classes](./statistics/doc/classes.png)
