@@ -32,7 +32,27 @@ Infrastructure comparison allows one to evaluate system performance for a given 
 
 ![Infrastructure comparison](./screenshots/infrastructure-comparison.png)
 
+## Requirements
+
+To build and run the project you need to following software packages:
+
+- [OpenJDK](https://openjdk.org/) provides the Java compiler and runtime environment
+- [Apache Maven](https://maven.apache.org/) provides dependency and build management
+
+To calculate fast routes for your vehicles you need the following software package:
+
+- [JGraphT](https://jgrapht.org/) provides graph algorithms (such as shortest path)
+
+To display the simulation state and performance statistics you need the following software packages:
+
+- [DockingFrames](https://www.docking-frames.org/) provides GUI docking components
+- [JFreeChart](https://www.jfree.org/jfreechart/) provides GUI charting components
+
 ## Modules
+
+This software packages comprises a number of modules and their dependencies.
+
+![Model classes](./diagrams/architecture.png)
 
 ### 🧩 Model
 
