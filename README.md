@@ -51,27 +51,47 @@ To display the simulation state and performance statistics you need the followin
 ## Modules
 
 This software packages comprises a number of modules and their dependencies.
+The following diagram provides an overview of the software modules included.
+Technically, the software modules are implemented as Java Jigsaw and Apache Maven modules.
 
 ![Model classes](./diagrams/architecture.png)
 
 ### 🧩 Model
 
+The model represents the core of the application and defines the concepts needed for transportation system design.
+We have developed three versions of the model, while only the first version is implemented in the software today.
+The other versions of the model are subject to future work.
+
 #### First version
+
+The first version of the model allows one to define road infrastructures, charge infrastructures, vehicles, and transportation demands.
 
 ![Model classes](./diagrams/model/classes-v0.png)
 
 #### Second version
 
+The second version of the model allows one to define more complex transportation demands including chains of transportation activities.
+
 ![Model classes](./diagrams/model/classes-v1.png)
 
 #### Third version
+
+The third versiob of the model allows one to define even more complex transportation demands including parameterizable objects and operations.
 
 ![Model classes](./diagrams/model/classes-v2.png)
 
 ### 🧩 Controller
 
+The controller interface is responsible for plugging different control algorithms into the simulation engine.
+Through this mechanism, the simulation engine is decoupled from the control strategies, that drive the system behavior.
+The module also contains different implementations of the controller interface such as a random controller or a JGraphT-based controller.
+
 ![Controller classes](./diagrams/controller/classes.png)
 
 ### 🧩 Statistics
+
+The statistics interface is responsible for collecting performance data during simulation experiments.
+The performance data is necessary to compare infrastructure and control algorithm designs in specific situations.
+The interface assumes that performance data is collected only in specific events such as a vehicle passing a road crossing.
 
 ![Statistics classes](./diagrams/statistics/classes.png)
