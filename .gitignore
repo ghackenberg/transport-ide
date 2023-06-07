@@ -4,3 +4,13 @@
 target
 *.csv
 runs
+
+manuscripts/*/*.aux
+manuscripts/*/*.bbl
+manuscripts/*/*.blg
+manuscripts/*/*.fdb_latexmk
+manuscripts/*/*.fls
+manuscripts/*/*.log
+manuscripts/*/*.out
+manuscripts/*/*.pdf
+manuscripts/*/*.synctex.gz
