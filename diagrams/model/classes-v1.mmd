@@ -6,11 +6,9 @@ classDiagram
         OrderTimestamp: Long
         DeliverTimestamp: Long
     }
-
     class Type {
         Name: String
     }
-
     class Object {
         Name: String
         OwnMass: Double
@@ -18,48 +16,39 @@ classDiagram
         LoadMass: Double
         LoadVolume: Double
     }
-
     class Charger {
         CurrentSpeed: Double
         MaximumSpeed: Double
     }
-
     class Operation {
         Name: String
         UnitDuration: Double
     }
-
     class Input {
         UnitQuantity: Double
         SetupDuration: Double
         TeardownDuration: Double
     }
-
     class Output {
         UnitQuantity: Double
     }
-
     class Location {
         Distance: Double
     }
-
     class Segment {
         Lanes: Integer
         Speed: Double
     }
-
     class Intersection {
         Name: String
         Latitude: Double
         Longitude: Double
         Elevation: Double
     }
-
     class Mover {
         CurrentSpeed: Double
         MaximumSpeed: Double
     }
-
     class Vehicle {
         ChargeCapacity: Double
         ChargeLevel: Double

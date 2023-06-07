@@ -1,5 +1,6 @@
 classDiagram
     direction LR
+
     class Controller {
         SelectDemand(Vehicle v, Demand d) Boolean
         SelectStation(Vehicle v, Station s) Boolean
@@ -23,11 +24,15 @@ classDiagram
 
     }
     class JGraphT {
-        <<library>>
+        
     }
     class Swing {
-        <<library>>
+        
     }
+
+    <<Library>> JGraphT
+    <<Library>> Swing
+
     RandomController --|> Controller
     GreedyController --|> Controller
     SmartController --|> Controller
