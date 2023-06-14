@@ -20,7 +20,7 @@
     
     \section{Introduction}
     \label{sec:intro}
-    TODO~\cite{key}
+    TOD
 
     \subsection*{Research question}
     How can we support the design and test of transportation infrastructures and control algorithms better?
@@ -46,17 +46,18 @@
 
     \section{System theory}
     \label{sec:theory}
-    In the following, we explain the underlying system theory.
-    In Section~\ref{sec:concepts} we introduce the concepts, which can be used for transportation system design.
-    Then, in Section~\ref{sec:events} we describe the discrete event simulation semantics of transportation system designs.
+    In the following, we explain the underlying system theory, which is based on~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}.
+    In Section~\ref{sec:concepts} we introduce the concepts, which can be used for transportation system design, as well as their properties, states, and simple functional relations.
+    Then, in Section~\ref{sec:relations} we show more complex functional relations over the previous concepts, their properties, and their states.
+    Finally, in Section~\ref{sec:events} we describe the events and decisions that must be considered for high-performance state computation using discrete event simulation.
 
-    \subsection{Concepts}
+    \subsection{Concepts, properties, states, and simple functional relations}
     \label{sec:concepts}
-    Figure~\ref{fig:concepts} provides an overview of the concepts included in our approach.
-    We use intersections and segments for describing the transportation infrastructure.
-    Then, we use locations and stations for describing the charging infrastructure.
-    Furthermore, we use locations and vehicles for describing the transportation capacities and their initial state.
-    Finally, we use location-times and demands for describing the transportation loads.
+    Figure~\ref{fig:concepts} provides an overview of the concepts, their properties, and their states.
+    We use intersections $i \in I$ and segments $s \in S$ for describing the drive infrastructure.
+    Then, we use locations $l \in L$ and charge stations $cs \in CS$ for describing the charge infrastructure.
+    Furthermore, we use locations $l$ and vehicles $v \in V$ for describing the transportation capacities.
+    Finally, we use location-times $lt \in LT$ and demands $d \in D$ for describing the transportation loads.
 
     \begin{figure}[htbp]
         \centering
@@ -65,97 +66,132 @@
         \label{fig:concepts}
     \end{figure}
 
-    In the following, we describe each concept in more detail including its attributes and relations.
-    Also, we introduce a basic mathematical notation, which allows us to formulate the discrete event simulation semantics of transportation systems in the next section.
+    In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints.
 
     \paragraph{Intersections}
-    Intersections define the corner stones of the transportation infrastructure.
+    Intersections define the routing points of the drive infrastructure.
     Each intersection must have a coordinate in the corresponding reference coordinate system.
-    Mathematically, intersections can be described as elements $i \in I$ with 
+    Mathematically, intersections can be described as elements $i \in I$ with static property function
     \begin{itemize}
-        \item coordinate property function $P_{I.C}: I \rightarrow \mathbb{R}^3$.
+        \item coordinate $P_{I.C}: I \rightarrow \mathbb{R}^3$.
     \end{itemize}
 
     \paragraph{Segments}
-    Segments define the connections between the intersections.
-    Each segment must define a source intersection and a target intersection, which are connected by the segment.
-    Furthermore, each segment must define a width and a maximum drive speed.
-    Finally, the length of the segment can be computed from the coordinates of the source intersection and the target intersection.
-    Mathematically, segments can be described as elements $(i_s, i_t) \in I \times I = Seg$ with source intersection $i_s$, target intersection $i_t$,
+    Segments define the straight roads of the drive infrastructure.
+    Each segment must define a source and a target intersection, which represent the start and the end coordinates of the straight road.
+    The length of the segment can be computed from the coordinates of the source and the target intersection.
+    Additionally, each segment must define a width and a maximum drive speed.
+    Mathematically, segments can be described as elements $s = (i_s, i_t) \in I \times I = S$ with source intersection $i_s$, target intersection $i_t$, and static property functions
     \begin{itemize}
-        \item width property function $P_{Seg.W}: Seg \rightarrow \mathbb{N}$,
-        \item maximum drive speed property function $P_{Seg.MDS}: Seg \rightarrow \mathbb{R}^+$, and
-        \item length property function $P_{Seg.L}: Seg \rightarrow \mathbb{R}_0^+$ such that $P_{Seg.L}(i_s, i_t) = |P_{I.C}(i_t) - P_{I.C}(i_s)|$, where $|\cdot|: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ represents a suitable distance function.
+        \item length $P_{S.L}: S \rightarrow \mathbb{R}_0^+$ such that the value equals to the Euclidean distance between the coordinates of the source and the target intersection, i.e.\ $P_{S.L}(i_s, i_t) = |P_{I.C}(i_t) - P_{I.C}(i_s)|$,
+        \item width $P_{S.W}: S \rightarrow \mathbb{R}^+$, and
+        \item maximum drive speed $P_{S.MDS}: S \rightarrow \mathbb{R}^+$.
     \end{itemize}
 
     \paragraph{Locations (auxiliary)}
     Locations represent an auxiliary concept and define dedicated positions on the transportation infrastructure.
-    Each location must define a corresponding segment and a travelled distance on that segment.
-    Mathematically, locations can be described as elements $(seg, d) \in Seg \times \mathbb{R}_0^+ = L$ with segment $seg$ and distance $d$ such that $d \leq P_{Seg.L}(seg)$.
+    Each location must define a segment and a travelled distance on that segment.
+    Mathematically, locations can be described as elements $(s, d) \in S \times \mathbb{R}_0^+ = L$ with segment $s$ and distance $d$ such that $d \leq P_{S.L}(s)$.
 
     \paragraph{Location-times (auxiliary)}
     Location-times also represent an auxiliary concept and define dedicated positions on the transportation infrastructure at particular time points.
     Each location-time must define a corresponding location and the desired time point.
-    Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{R}_0^+ = LT$ with location $l$ and time point $t$.
+    Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{T} = LT$ with location $l$ and time point $t$.
 
-    \paragraph{Stations}
-    Stations define the charging infrastructure for vehicles to refill their batteries.
-    Each station must define a location on the transportation infrastructure and a maximum charge speed.
-    Mathematically, stations can be described as elements $sta \in Sta$ with
+    \paragraph{Charge stations}
+    Charge stations define the charge infrastructure for vehicles to refill their batteries.
+    Each charge station must define a location and a maximum charge speed.
+    Mathematically, stations can be described as elements $cs \in CS$ with static property functions
     \begin{itemize}
-        \item location property function $P_{Sta.L}: Sta \rightarrow L$ and
-        \item maximum charge speed property function $P_{Sta.MCS}: Sta \rightarrow \mathbb{R}^+$.
+        \item location $P_{CS.L}: CS \rightarrow L$ and
+        \item maximum charge speed $P_{CS.MCS}: CS \rightarrow \mathbb{R}^+$.
+    \end{itemize}
+    Furthermore, during simulation the state of stations $cs$ can be described using dynamic state functions
+    \begin{itemize}
+        \item current vehicles $S_{CS.CV}: CS \times \mathbb{T} \rightarrow \mathbb{P}(V)$, and
+        \item current charge speed $S_{CS.CCS}: CS \times \mathbb{T} \rightarrow \mathbb{R}^+$ such that the value is smaller than or equal to the maximum charge speed of the charge station, i.e.\ $\forall t \in \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$.
     \end{itemize}
 
     \paragraph{Vehicles}
     Vehicles define the transportation capacities available on the transportation infrastructure.
-    Each vehicle must define a battery capacity, a demand capacity, a maximum drive speed, and a maximum charge speed.
-    Furthermore, each vehicle must define an initial location on the transportation infrastructure and an initial battery level.
-    Mathematically, vehicles can be described as elements $v \in V$ with
+    Each vehicle must define a maximum battery level, a maximum demand level, a maximum drive speed, and a maximum charge speed, an initial location, and an initial battery level.
+    Mathematically, vehicles can be described as elements $v \in V$ with static property functions
     \begin{itemize}
-        \item battery capacity property function $P_{V.BC}: V \rightarrow \mathbb{R}^+$,
-        \item demand capacity property function $P_{V.DC}: V \rightarrow \mathbb{R}^+$,
-        \item maximum drive speed property function $P_{V.MDS}: V \rightarrow \mathbb{R}^+$,
-        \item maximum charge speed property function $P_{V.MCS}: V \rightarrow \mathbb{R}^+$,
-        \item initial location property function $P_{V.IL}: V \rightarrow L$, and
-        \item initial battery level property function $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$.
+        \item maximum battery level $P_{V.MBL}: V \rightarrow \mathbb{R}^+$,
+        \item maximum demand level $P_{V.MDL}: V \rightarrow \mathbb{R}^+$,
+        \item maximum drive speed $P_{V.MDS}: V \rightarrow \mathbb{R}^+$,
+        \item maximum charge speed $P_{V.MCS}: V \rightarrow \mathbb{R}^+$,
+        \item initial location $P_{V.IL}: V \rightarrow L$, and
+        \item initial battery level $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$.
+    \end{itemize}
+    Furthermore, during simulation the state of vehicles $v$ can be described using dynamic state functions
+    \begin{itemize}
+        \item current demands $S_{V.CD}: V \times \mathbb{T} \rightarrow \mathbb{P}(D)$,
+        \item current charge station $S_{V.CCS}: V \times \mathbb{T} \rightarrow CS \cup \{\perp\}$ such that, if the current charge station of the vehicle is not empty, the current vehicles of the charge station include the vehicle, i.e.\ $\forall t \in \mathbb{T}, cs = S_{V.CSS}(v,t): cs \neq \perp \Leftrightarrow v \in S_{CS.CV}(cs,t)$,
+        \item current location $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ such that, if the current charge station of the vehicle is not empty, the current vehicle location equals to the location of the charge station, i.e.\ $\forall t \in \mathbb{T}, cs = S_{V.CCS}(v,t): cs \neq \perp \Rightarrow S_{V.CL}(v,t)=P_{CS.L}(cs)$,
+        \item current battery level $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that the value is smaller than or equal to the maximum battery level of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CBL}(v,t) \leq P_{V.MBL}(v)$,
+        \item current demand level $S_{V.CDL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that is smaller than or equal to the maximum demand level of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDL}(v,t) \leq P_{V.MDL}(v)$,
+        \item current drive speed $S_{V.CDS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$, and
+        \item current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
     \end{itemize}
 
     \paragraph{Demands}
     Demands define the transportation loads that temporarily consume the transportation capacities.
-    Each demand must define a pick-up location and earliest pick-up time as well as a drop-off location and a latest drop-off time.
-    Mathematically, demands can be described as elements $d \in D$ with
+    Each demand must define a size, a pick-up location, a drop-off location, an earliest pick-up time, and a latest drop-off time.
+    Mathematically, demands can be described as elements $d \in D$ with static property functions
     \begin{itemize}
-        \item pick-up property function $P_{D.PU}: D \rightarrow LT$ with $P_{D.PU}(d) = (l_d^{PU},t_d^{PU})$, and
-        \item drop-off property function $P_{D.DO}: D \rightarrow LT$ with $P_{D.DO}(d) = (l_d^{DO},t_d^{DO})$ such that $l_d^{PU} \neq l_d^{DO}$ and $t_d^{PU} < t_d^{DO}$.
+        \item size $P_{D.S}: D \rightarrow \mathbb{R}^+$,
+        \item pick-up location and earliest time $P_{D.PULT}: D \rightarrow LT$ with $P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT})$, and
+        \item drop-off location and latest time $P_{D.DOLT}: D \rightarrow LT$ with $P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT})$ such that the pick-up location is different from the drop-off location, i.e.\ $l_d^{PULT} \neq l_d^{DOLT}$, and the earliest pick-up time is before the latest drop-off time, i.e.\ $t_d^{PULT} < t_d^{DOLT}$.
     \end{itemize}
+    Furthermore, during simulation the state of demands $d$ can be described using dynamic state functions
+    \begin{itemize}
+        \item current vehicle $S_{D.CV}: D \times \mathbb{T} \rightarrow V \cup \{\perp\}$ such that, if the current vehicle of the demand is not empty, the current demands of the vehicle include the demand, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Leftrightarrow d \in S_{V.CD}(v,t)$, and
+        \item current location $S_{D.CL}: D \times \mathbb{T} \rightarrow L$ such that, if the current vehicle is not empty, the current demand location equals to the current vehicle location, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Rightarrow S_{D.CL}(d,t)=S_{V.CL}(v,t)$.
+    \end{itemize}
+
+    \subsection{Complex functional relations}
+    \label{sec:relations}
+    In addition to the simple functional relations some more complex functional relations can be defined over the previous concepts, properties, and states:
+
+    \paragraph{Current charge speed of charge stations}
+    The current charge speeds of the charge stations must be derived from the current vehicles of the charge stations and their current charge speeds, i.e.\ $\forall t \in \mathbb{T}, cs \in CS:$
+    \[
+        S_{CS.CCS}(cs,t)=\sum_{v \in \mathcal{V}}S_{V.CCS}(v,t) \textrm{ with } \mathcal{V}=S_{CS.CV}(cs,t)
+    \]
+
+    \paragraph{Current demand level of vehicles}
+    The current demand levels of the vehicles must be derived from the current demands of the vehicles and their sizes, i.e.\ $\forall t \in \mathbb{T}, v \in V:$
+    \[
+        S_{V.CDL}(v,t)=\sum_{d \in \mathcal{D}}^{}P_{D.S}(d) \textrm{ with } \mathcal{D}=S_{V.CD}(v,t)
+    \]
 
     \subsection{Events}
     \label{sec:events}
     TODO
 
-    \subsubsection{E1 -- Vehicle at intersection}
+    \paragraph{Vehicle at intersection}
     TODO
 
-    \subsubsection{E2 -- Faster vehicle at slower vehicle back}
+    \paragraph{Faster vehicle at slower vehicle back}
     TODO
 
-    \subsubsection{E3 -- Slower vehicle at faster vehicle back}
+    \paragraph{Slower vehicle at faster vehicle back}
     TODO
 
-    \subsubsection{E4 -- Vehicle at demand pick-up location}
+    \paragraph{Vehicle at demand pick-up location}
     TODO
 
-    \subsubsection{E5 -- Vehicle at demand drop-off location}
+    \paragraph{Vehicle at demand drop-off location}
     TODO
 
-    \subsubsection{E6 -- Vehicle at station}
+    \paragraph{Vehicle at station}
     TODO
 
-    \subsubsection{E7 -- Vehicle battery full}
+    \paragraph{Vehicle battery full}
     TODO
 
-    \subsubsection{E8 -- Vehicle battery empty}
+    \paragraph{Vehicle battery empty}
     TODO
 
     \section{Software architecture}
