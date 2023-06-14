@@ -45,33 +45,106 @@
 
     \section{System theory}
     \label{sec:theory}
+    In the following, we explain the underlying system theory.
+    In Section~\ref{sec:concepts} we introduce the concepts, which can be used for transportation system design.
+    Then, in Section~\ref{sec:events} we describe the discrete event simulation semantics of transportation system designs.
+
+    \subsection{Concepts}
+    \label{sec:concepts}
+    Figure~\ref{fig:concepts} provides an overview of the concepts included in our approach.
+    We use intersections and segments for describing the transportation infrastructure.
+    Then, we use locations and stations for describing the charging infrastructure.
+    Furthermore, we use locations and vehicles for describing the transportation capacities and their initial state.
+    Finally, we use location-times and demands for describing the transportation loads.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.png}
+        \caption{Concepts in UML class diagram notation}
+        \label{fig:concepts}
+    \end{figure}
+
+    In the following, we describe each concept in more detail including its attributes and relations.
+    Also, we introduce a basic mathematical notation, which allows us to formulate the discrete event simulation semantics of transportation systems in the next section.
+
+    \paragraph{Intersections}
+    Intersections define the corner stones of the transportation infrastructure.
+    Each intersection must have a unique name, so that it can be referenced by the other concepts.
+    Furthermore, each intersection must have a coordinate in the corresponding reference coordinate system.
+    Mathematically, intersections can be described as elements $i \in I$ with coordinate property function $P_{I.C}: I \rightarrow R^3$.
+
+    \paragraph{Segments}
+    Segments define the connections between the intersections.
+    Each segment must define a source intersection and a target intersection, which are connected by the segment.
+    Furthermore, each segment must define a width (e.g.\ a number of lanes) and a maximum speed.
+    Finally, the length of the segment can be computed from the coordinates of the source intersection and the target intersection.
+    Mathematically, segments can be described as elements $(i_s, i_t) \in I \times I = Seg$ with source intersection $i_s$, target intersection $i_t$, width property function $P_{Seg.W}: Seg \rightarrow N$, speed property function $P_{Seg.S}: Seg \rightarrow N$, and length property function $P_{Seg.L}: Seg \rightarrow R$ such that $P_{Seg.L}(i_s, i_t) = |P_{I.C}(i_t) - P_{I.C}(i_s)|$.
+
+    \paragraph{Locations}
+    Locations define dedicated positions on the transportation infrastructure.
+    Each location must define a corresponding segment and a travelled distance on that segment.
+    Mathematically, locations can be described as elements $(seg, d) \in Seg \times R = L$ with segment $seg$ and travelled distance $d$ such that $d \geq 0$ and $d \leq P_{Seg.L}(seg)$.
+
+    \paragraph{Location-times}
+    Location-times define dedicated positions on the transportation infrastructure at particular time points.
+    Each location-time must define a corresponding location and the desired time point.
+    Mathematically, location-times can be described as elements $(l, t) \in L \times R = LT$ with location $l$ and time point $t$ such that $t \geq 0$.
+
+    \paragraph{Stations}
+    Stations define the charging infrastructure for vehicles to refill their batteries.
+    Each station must define a location on the transportation infrastructure and a maximum charge speed.
+    Mathematically, stations can be described as elements $sta \in Sta$ with location property function $P_{Sta.L}: Sta \rightarrow L$ and speed property function $P_{Sta.S}: Sta \rightarrow R$ such that $P_{Sta.S}(sta) \geq 0$.
+
+    \paragraph{Vehicles}
+    TODO
+
+    \paragraph{Demands}
+    TODO
+
+    \subsection{Events}
+    \label{sec:events}
+    TODO
+
+    \subsubsection{E1 -- Vehicle at intersection}
+    TODO
+
+    \subsubsection{E2 -- Faster vehicle at slower vehicle back}
+    TODO
+
+    \subsubsection{E3 -- Slower vehicle at faster vehicle back}
+    TODO
+
+    \subsubsection{E4 -- Vehicle at demand pick-up location}
+    TODO
+
+    \subsubsection{E5 -- Vehicle at demand drop-off location}
+    TODO
+
+    \subsubsection{E6 -- Vehicle at station}
+    TODO
+
+    \subsubsection{E7 -- Vehicle battery full}
+    TODO
+
+    \subsubsection{E8 -- Vehicle battery empty}
     TODO
 
     \section{Software architecture}
     \label{sec:arch}
     TODO Figure~\ref{fig:0}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.7\textwidth]{../../diagrams/architecture.png}
         \caption{Module architecture}
         \label{fig:0}
     \end{figure}
 
-    \subsection{Model}
-    TODO Figure~\ref{fig:1}
-
-    \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.png}
-        \caption{Data model}
-        \label{fig:1}
-    \end{figure}
-
     \subsection{Controller}
+    \label{sec:controller}
     TODO Figure~\ref{fig:2}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=\textwidth]{../../diagrams/controller/classes.png}
         \caption{Controller interface}
@@ -94,9 +167,10 @@
     TODO
 
     \subsection{Statistics}
+    \label{sec:statistics}
     TODO Figure~\ref{fig:3}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=0.5\textwidth]{../../diagrams/statistics/classes.png}
         \caption{Statistics interface}
@@ -108,9 +182,10 @@
     TODO
 
     \subsection{Basic simulation}
+    \label{sec:basic}
     TODO Figure~\ref{fig:4}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
         \caption{Basic simulation}
@@ -118,9 +193,10 @@
     \end{figure}
 
     \subsection{Controller comparison}
+    \label{sec:controller-comparison}
     TODO Figure~\ref{fig:5}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
         \caption{Controller comparison}
@@ -128,9 +204,10 @@
     \end{figure}
 
     \subsection{Infrastructure comparison}
+    \label{sec:infrastructure-comparison}
     TODO Figure~\ref{fig:6}
 
-    \begin{figure}
+    \begin{figure}[htbp]
         \centering
         \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
         \caption{Infrastructure comparison}
