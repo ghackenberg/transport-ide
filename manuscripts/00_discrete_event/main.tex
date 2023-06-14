@@ -1,5 +1,6 @@
 \documentclass{article}
 
+\usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage[colorlinks,linkcolor=blue]{hyperref}
 
@@ -69,37 +70,65 @@
 
     \paragraph{Intersections}
     Intersections define the corner stones of the transportation infrastructure.
-    Each intersection must have a unique name, so that it can be referenced by the other concepts.
-    Furthermore, each intersection must have a coordinate in the corresponding reference coordinate system.
-    Mathematically, intersections can be described as elements $i \in I$ with coordinate property function $P_{I.C}: I \rightarrow R^3$.
+    Each intersection must have a coordinate in the corresponding reference coordinate system.
+    Mathematically, intersections can be described as elements $i \in I$ with 
+    \begin{itemize}
+        \item coordinate property function $P_{I.C}: I \rightarrow \mathbb{R}^3$.
+    \end{itemize}
 
     \paragraph{Segments}
     Segments define the connections between the intersections.
     Each segment must define a source intersection and a target intersection, which are connected by the segment.
-    Furthermore, each segment must define a width (e.g.\ a number of lanes) and a maximum speed.
+    Furthermore, each segment must define a width and a maximum drive speed.
     Finally, the length of the segment can be computed from the coordinates of the source intersection and the target intersection.
-    Mathematically, segments can be described as elements $(i_s, i_t) \in I \times I = Seg$ with source intersection $i_s$, target intersection $i_t$, width property function $P_{Seg.W}: Seg \rightarrow N$, speed property function $P_{Seg.S}: Seg \rightarrow N$, and length property function $P_{Seg.L}: Seg \rightarrow R$ such that $P_{Seg.L}(i_s, i_t) = |P_{I.C}(i_t) - P_{I.C}(i_s)|$.
+    Mathematically, segments can be described as elements $(i_s, i_t) \in I \times I = Seg$ with source intersection $i_s$, target intersection $i_t$,
+    \begin{itemize}
+        \item width property function $P_{Seg.W}: Seg \rightarrow \mathbb{N}$,
+        \item maximum drive speed property function $P_{Seg.MDS}: Seg \rightarrow \mathbb{R}^+$, and
+        \item length property function $P_{Seg.L}: Seg \rightarrow \mathbb{R}_0^+$ such that $P_{Seg.L}(i_s, i_t) = |P_{I.C}(i_t) - P_{I.C}(i_s)|$, where $|\cdot|: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ represents a suitable distance function.
+    \end{itemize}
 
-    \paragraph{Locations}
-    Locations define dedicated positions on the transportation infrastructure.
+    \paragraph{Locations (auxiliary)}
+    Locations represent an auxiliary concept and define dedicated positions on the transportation infrastructure.
     Each location must define a corresponding segment and a travelled distance on that segment.
-    Mathematically, locations can be described as elements $(seg, d) \in Seg \times R = L$ with segment $seg$ and travelled distance $d$ such that $d \geq 0$ and $d \leq P_{Seg.L}(seg)$.
+    Mathematically, locations can be described as elements $(seg, d) \in Seg \times \mathbb{R}_0^+ = L$ with segment $seg$ and distance $d$ such that $d \leq P_{Seg.L}(seg)$.
 
-    \paragraph{Location-times}
-    Location-times define dedicated positions on the transportation infrastructure at particular time points.
+    \paragraph{Location-times (auxiliary)}
+    Location-times also represent an auxiliary concept and define dedicated positions on the transportation infrastructure at particular time points.
     Each location-time must define a corresponding location and the desired time point.
-    Mathematically, location-times can be described as elements $(l, t) \in L \times R = LT$ with location $l$ and time point $t$ such that $t \geq 0$.
+    Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{R}_0^+ = LT$ with location $l$ and time point $t$.
 
     \paragraph{Stations}
     Stations define the charging infrastructure for vehicles to refill their batteries.
     Each station must define a location on the transportation infrastructure and a maximum charge speed.
-    Mathematically, stations can be described as elements $sta \in Sta$ with location property function $P_{Sta.L}: Sta \rightarrow L$ and speed property function $P_{Sta.S}: Sta \rightarrow R$ such that $P_{Sta.S}(sta) \geq 0$.
+    Mathematically, stations can be described as elements $sta \in Sta$ with
+    \begin{itemize}
+        \item location property function $P_{Sta.L}: Sta \rightarrow L$ and
+        \item maximum charge speed property function $P_{Sta.MCS}: Sta \rightarrow \mathbb{R}^+$.
+    \end{itemize}
 
     \paragraph{Vehicles}
-    TODO
+    Vehicles define the transportation capacities available on the transportation infrastructure.
+    Each vehicle must define a battery capacity, a demand capacity, a maximum drive speed, and a maximum charge speed.
+    Furthermore, each vehicle must define an initial location on the transportation infrastructure and an initial battery level.
+    Mathematically, vehicles can be described as elements $v \in V$ with
+    \begin{itemize}
+        \item battery capacity property function $P_{V.BC}: V \rightarrow \mathbb{R}^+$,
+        \item demand capacity property function $P_{V.DC}: V \rightarrow \mathbb{R}^+$,
+        \item maximum drive speed property function $P_{V.MDS}: V \rightarrow \mathbb{R}^+$,
+        \item maximum charge speed property function $P_{V.MCS}: V \rightarrow \mathbb{R}^+$,
+        \item initial location property function $P_{V.IL}: V \rightarrow L$, and
+        \item initial battery level property function $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$.
+    \end{itemize}
 
     \paragraph{Demands}
-    TODO
+    Demands define the transportation loads that temporarily consume the transportation capacities.
+    Each demand must define a pick-up location and earliest pick-up time as well as a drop-off location and a latest drop-off time.
+    Mathematically, demands can be described as elements $d \in D$ with
+    \begin{itemize}
+        \item pick-up property function $P_{D.PU}: D \rightarrow LT$ with $P_{D.PU}(d) = (l_d^{PU},t_d^{PU})$, and
+        \item drop-off property function $P_{D.DO}: D \rightarrow LT$ with $P_{D.DO}(d) = (l_d^{DO},t_d^{DO})$ such that $l_d^{PU} \neq l_d^{DO}$ and $t_d^{PU} < t_d^{DO}$.
+    \end{itemize}
 
     \subsection{Events}
     \label{sec:events}
