@@ -51,8 +51,11 @@
     Then, in Section~\ref{sec:relations} we show more complex functional relations over the previous concepts, their properties, and their states.
     Finally, in Section~\ref{sec:events} we describe the events and decisions that must be considered for high-performance state computation using discrete event simulation.
 
-    \subsection{Concepts, properties, states, and simple functional relations}
+    \subsection{Basic definitions}
     \label{sec:concepts}
+    TODO
+
+    \subsubsection{Concepts, properties, states, and simple functional relations}
     Figure~\ref{fig:concepts} provides an overview of the concepts, their properties, and their states.
     We use intersections $i \in I$ and segments $s \in S$ for describing the drive infrastructure.
     Then, we use locations $l \in L$ and charge stations $cs \in CS$ for describing the charge infrastructure.
@@ -101,12 +104,13 @@
     \paragraph{Charge stations}
     Charge stations define the charge infrastructure for vehicles to refill their batteries.
     Each charge station must define a location and a maximum charge speed.
-    Mathematically, stations can be described as elements $cs \in CS$ with static property functions
+    Mathematically, charge stations can be described as elements $cs \in CS$ with static property functions
     \begin{itemize}
         \item location $P_{CS.L}: CS \rightarrow L$ and
         \item maximum charge speed $P_{CS.MCS}: CS \rightarrow \mathbb{R}^+$.
     \end{itemize}
-    Furthermore, during simulation the state of stations $cs$ can be described using dynamic state functions
+    Furthermore, the dynamic state of charge stations comprises the current vehicles and the current charge speed.
+    Mathematically, the state of charge stations $cs$ can be described using dynamic state functions with corresponding simple functional relations
     \begin{itemize}
         \item current vehicles $S_{CS.CV}: CS \times \mathbb{T} \rightarrow \mathbb{P}(V)$, and
         \item current charge speed $S_{CS.CCS}: CS \times \mathbb{T} \rightarrow \mathbb{R}^+$ such that the value is smaller than or equal to the maximum charge speed of the charge station, i.e.\ $\forall t \in \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$.
@@ -124,7 +128,8 @@
         \item initial location $P_{V.IL}: V \rightarrow L$, and
         \item initial battery level $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$.
     \end{itemize}
-    Furthermore, during simulation the state of vehicles $v$ can be described using dynamic state functions
+    Furthermore, the dynamic state of vehicles comprises the current location, the current demands, the current demand level, the current charge station, the current battery level, the current drive speed, and the current charge speed.
+    Mathematically, the state of vehicles $v$ can be described using dynamic state functions with corresponding simple functional relations
     \begin{itemize}
         \item current demands $S_{V.CD}: V \times \mathbb{T} \rightarrow \mathbb{P}(D)$,
         \item current charge station $S_{V.CCS}: V \times \mathbb{T} \rightarrow CS \cup \{\perp\}$ such that, if the current charge station of the vehicle is not empty, the current vehicles of the charge station include the vehicle, i.e.\ $\forall t \in \mathbb{T}, cs = S_{V.CSS}(v,t): cs \neq \perp \Leftrightarrow v \in S_{CS.CV}(cs,t)$,
@@ -144,14 +149,14 @@
         \item pick-up location and earliest time $P_{D.PULT}: D \rightarrow LT$ with $P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT})$, and
         \item drop-off location and latest time $P_{D.DOLT}: D \rightarrow LT$ with $P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT})$ such that the pick-up location is different from the drop-off location, i.e.\ $l_d^{PULT} \neq l_d^{DOLT}$, and the earliest pick-up time is before the latest drop-off time, i.e.\ $t_d^{PULT} < t_d^{DOLT}$.
     \end{itemize}
-    Furthermore, during simulation the state of demands $d$ can be described using dynamic state functions
+    Furthermore, the dynamic state of demands comprises the current vehicle and the current location.
+    Mathematically, the state of demands $d$ can be described using dynamic state functions with corresponding simple functional relations
     \begin{itemize}
         \item current vehicle $S_{D.CV}: D \times \mathbb{T} \rightarrow V \cup \{\perp\}$ such that, if the current vehicle of the demand is not empty, the current demands of the vehicle include the demand, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Leftrightarrow d \in S_{V.CD}(v,t)$, and
         \item current location $S_{D.CL}: D \times \mathbb{T} \rightarrow L$ such that, if the current vehicle is not empty, the current demand location equals to the current vehicle location, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Rightarrow S_{D.CL}(d,t)=S_{V.CL}(v,t)$.
     \end{itemize}
 
-    \subsection{Complex functional relations}
-    \label{sec:relations}
+    \subsubsection{Complex functional relations}
     In addition to the simple functional relations some more complex functional relations can be defined over the previous concepts, properties, and states:
 
     \paragraph{Current charge speed of charge stations}
@@ -166,7 +171,11 @@
         S_{V.CDL}(v,t)=\sum_{d \in \mathcal{D}}^{}P_{D.S}(d) \textrm{ with } \mathcal{D}=S_{V.CD}(v,t)
     \]
 
-    \subsection{Events}
+    \subsection{State transitions}
+    \label{sec:transitions}
+    TODO
+
+    \subsection{Discrete events}
     \label{sec:events}
     TODO
 
