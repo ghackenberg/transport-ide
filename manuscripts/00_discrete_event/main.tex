@@ -1,12 +1,15 @@
-\documentclass{article}
+\documentclass{IEEEtran}
 
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage[colorlinks,linkcolor=blue]{hyperref}
+\usepackage{todonotes}
 
 \begin{document}
     \title{\textbf{TransportIDE} -- An integrated transportation system design and test environment}
-    \author{Georg Hackenberg}
+    \author{Dominik Ascher and Georg Hackenberg}
     \maketitle
     
     \begin{abstract}
@@ -22,18 +25,18 @@
     \label{sec:intro}
     TOD
 
-    \subsection*{Research question}
+    \subsection{Research question}
     How can we support the design and test of transportation infrastructures and control algorithms better?
     Which modeling and simulation technique represents an appropriate abstraction for the domain?
     Which software architecture is appropriate for an integrated design and test environment?
     Which application scenarios should be supported on top of this environment?
 
-    \subsection*{Research methodology}
+    \subsection{Research methodology}
     To answer the above questions, we apply and combine two research methodologies.
     First we conduct a literature review to understand the state of the art in transportation system design and test.
     Second we use iterative and incremental software development with regular feedback from stakeholders to develop our a new dedicated approach.
 
-    \subsection*{Document outline}
+    \subsection{Document outline}
     In the following, w e first present related work on transportation system design and test in Section~\ref{sec:related}.
     Then we describe the underlying system theory of our approach in Section~\ref{sec:theory}.
     Afterwards, we explain our software architecture in Section~\ref{sec:arch}.
@@ -62,12 +65,12 @@
     Furthermore, we use locations $l$ and vehicles $v \in V$ for describing the transportation capacities.
     Finally, we use location-times $lt \in LT$ and demands $d \in D$ for describing the transportation loads.
 
-    \begin{figure}[htbp]
+    \begin{figure*}[t]
         \centering
-        \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.png}
+        \includegraphics[scale=0.5]{../../diagrams/model/classes-v0.png}
         \caption{Concepts in UML class diagram notation}
         \label{fig:concepts}
-    \end{figure}
+    \end{figure*}
 
     In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints.
 
@@ -179,113 +182,128 @@
     \label{sec:events}
     TODO
 
-    \paragraph{Vehicle at intersection}
+    \subsubsection{Vehicle at intersection}
     TODO
-
-    \paragraph{Faster vehicle at slower vehicle back}
-    TODO
-
-    \paragraph{Slower vehicle at faster vehicle back}
-    TODO
-
-    \paragraph{Vehicle at demand pick-up location}
-    TODO
-
-    \paragraph{Vehicle at demand drop-off location}
-    TODO
-
-    \paragraph{Vehicle at station}
-    TODO
-
-    \paragraph{Vehicle battery full}
-    TODO
-
-    \paragraph{Vehicle battery empty}
-    TODO
-
-    \section{Software architecture}
-    \label{sec:arch}
-    TODO Figure~\ref{fig:0}
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.7\textwidth]{../../diagrams/architecture.png}
-        \caption{Module architecture}
-        \label{fig:0}
+        \includegraphics[scale=0.5]{../../events/vehicle-at-intersection.png}
+        \caption{Vehicle at intersection}
+        \label{fig:vehicle-at-intersection}
     \end{figure}
 
-    \subsection{Controller}
+    \subsubsection{Faster vehicle front at slower vehicle back}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../events/faster-vehicle-front-at-slower-vehicle-back.png}
+        \caption{Faster vehicle f.\ at slower vehicle b.}
+        \label{fig:faster-vehicle-front-at-slower-vehicle-back}
+    \end{figure}
+
+    \subsubsection{Slower vehicle front at faster vehicle back}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../events/slower-vehicle-front-at-faster-vehicle-back.png}
+        \caption{Slower vehicle f.\ at faster vehicle b.}
+        \label{fig:slower-vehicle-front-at-faster-vehicle-back}
+    \end{figure}
+
+    \subsubsection{Demand appear}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../events/demand.png}
+        \caption{Demand appear}
+        \label{fig:demand}
+    \end{figure}
+
+    \subsubsection{Vehicle at demand pick-up location}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../events/vehicle-at-demand-pick-up.png}
+        \caption{Vehicle at demand pick-up}
+        \label{fig:vehicle-at-demand-pick-up}
+    \end{figure}
+
+    \subsubsection{Vehicle at demand drop-off location}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../events/vehicle-at-demand-drop-off.png}
+        \caption{Vehicle at demand drop-off}
+        \label{fig:vehicle-at-demand-drop-off}
+    \end{figure}
+
+    \subsubsection{Vehicle at station}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \missingfigure[figwidth=88mm]{Vehicle at station}
+        \caption{Vehicle at station}
+        \label{fig:vehicle-at-station}
+    \end{figure}
+
+    \subsubsection{Vehicle battery full}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \missingfigure[figwidth=88mm]{Vehicle battery full}
+        \caption{Vehicle battery full}
+        \label{fig:vehicle-battery-full}
+    \end{figure}
+
+    \subsubsection{Vehicle battery empty}
+    TODO
+
+    \begin{figure}[htbp]
+        \centering
+        \missingfigure[figwidth=88mm]{Vehicle battery empty}
+        \caption{Vehicle battery empty}
+        \label{fig:vehicle-battery-empty}
+    \end{figure}
+
+    \subsection{Control interface}
     \label{sec:controller}
-    TODO Figure~\ref{fig:2}
+    TODO Figure~\ref{fig:controller}
 
-    \begin{figure}[htbp]
+    \begin{figure}[t]
         \centering
-        \includegraphics[width=\textwidth]{../../diagrams/controller/classes.png}
+        \includegraphics[scale=0.5]{../../diagrams/controller/classes-minimal.png}
         \caption{Controller interface}
-        \label{fig:2}
+        \label{fig:controller}
     \end{figure}
 
-    \subsubsection{Manual}
+    \subsubsection{Manual controller}
     TODO
 
-    \subsubsection{Random}
+    \subsubsection{Random controller}
     TODO
     
-    \subsubsection{Greedy}
+    \subsubsection{Greedy controller}
     TODO
 
-    \subsubsection{Smart}
+    \subsubsection{Smart controller}
     TODO
 
-    \subsubsection{Switchable}
-    TODO
-
-    \subsection{Statistics}
+    \subsection{Statistics interface}
     \label{sec:statistics}
-    TODO Figure~\ref{fig:3}
+    TODO Figure~\ref{fig:statistics}
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=0.5\textwidth]{../../diagrams/statistics/classes.png}
+        \includegraphics[scale=0.5]{../../diagrams/statistics/classes.png}
         \caption{Statistics interface}
-        \label{fig:3}
-    \end{figure}
-
-    \section{Software application}
-    \label{sec:app}
-    TODO
-
-    \subsection{Basic simulation}
-    \label{sec:basic}
-    TODO Figure~\ref{fig:4}
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
-        \caption{Basic simulation}
-        \label{fig:4}
-    \end{figure}
-
-    \subsection{Controller comparison}
-    \label{sec:controller-comparison}
-    TODO Figure~\ref{fig:5}
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
-        \caption{Controller comparison}
-        \label{fig:5}
-    \end{figure}
-
-    \subsection{Infrastructure comparison}
-    \label{sec:infrastructure-comparison}
-    TODO Figure~\ref{fig:6}
-
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
-        \caption{Infrastructure comparison}
-        \label{fig:6}
+        \label{fig:statistics}
     \end{figure}
 
     \section{Conclusion}

@@ -1,0 +1,12 @@
+classDiagram
+    direction LR
+
+    class Controller {
+        SelectDemand(Vehicle v, Demand d) Boolean
+        SelectStation(Vehicle v, Station s) Boolean
+        UnselectStation(Vehicle v) Boolean
+        SelectSegment(Vehicle v) Segment
+        SelectSpeed(Vehicle v) Double
+        SelectMaximumSpeedSelectionTimeout(Vehicle v) Double
+        SelectMaximumStationSelectionTimeout(Vehicle v) Double
+    }
