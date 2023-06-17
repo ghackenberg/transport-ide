@@ -23,7 +23,9 @@
     
     \section{Introduction}
     \label{sec:intro}
-    TOD
+    TODO
+
+    \newpage
 
     \subsection{Research question}
     How can we support the design and test of transportation infrastructures and control algorithms better?
@@ -42,12 +44,24 @@
     Afterwards, we explain our software architecture in Section~\ref{sec:arch}.
     Thereafter, we demonstrate three software applications in Section~\ref{sec:app}.
     Finally, we draw our conclusion in Section~\ref{sec:con}.
+    
+    \begin{figure*}[t]
+        \centering
+        \includegraphics[scale=0.5]{../../diagrams/model/classes-v0.png}
+        \caption{Concepts in UML class diagram notation}
+        \label{fig:concepts}
+    \end{figure*}
+
+    \newpage
 
     \section{Related work}
     \label{sec:related}
     TODO
 
+    \newpage
+
     \section{System theory}
+    
     \label{sec:theory}
     In the following, we explain the underlying system theory, which is based on~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}.
     In Section~\ref{sec:concepts} we introduce the concepts, which can be used for transportation system design, as well as their properties, states, and simple functional relations.
@@ -64,16 +78,15 @@
     Then, we use locations $l \in L$ and charge stations $cs \in CS$ for describing the charge infrastructure.
     Furthermore, we use locations $l$ and vehicles $v \in V$ for describing the transportation capacities.
     Finally, we use location-times $lt \in LT$ and demands $d \in D$ for describing the transportation loads.
-
-    \begin{figure*}[t]
-        \centering
-        \includegraphics[scale=0.5]{../../diagrams/model/classes-v0.png}
-        \caption{Concepts in UML class diagram notation}
-        \label{fig:concepts}
-    \end{figure*}
-
     In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints.
 
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../concepts/intersection.png}
+        \caption{Intersection}
+        \label{fig:intersection}
+    \end{figure}
+    
     \paragraph{Intersections}
     Intersections define the routing points of the drive infrastructure.
     Each intersection must have a coordinate in the corresponding reference coordinate system.
@@ -81,6 +94,13 @@
     \begin{itemize}
         \item coordinate $P_{I.C}: I \rightarrow \mathbb{R}^3$.
     \end{itemize}
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../concepts/segment.png}
+        \caption{Segment}
+        \label{fig:segment}
+    \end{figure}
 
     \paragraph{Segments}
     Segments define the straight roads of the drive infrastructure.
@@ -104,6 +124,13 @@
     Each location-time must define a corresponding location and the desired time point.
     Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{T} = LT$ with location $l$ and time point $t$.
 
+    \begin{figure}[htbp]
+        \centering
+        \missingfigure[figwidth=88mm]{Charge station}
+        \caption{Charge station}
+        \label{fig:charge-station}
+    \end{figure}
+
     \paragraph{Charge stations}
     Charge stations define the charge infrastructure for vehicles to refill their batteries.
     Each charge station must define a location and a maximum charge speed.
@@ -118,6 +145,13 @@
         \item current vehicles $S_{CS.CV}: CS \times \mathbb{T} \rightarrow \mathbb{P}(V)$, and
         \item current charge speed $S_{CS.CCS}: CS \times \mathbb{T} \rightarrow \mathbb{R}^+$ such that the value is smaller than or equal to the maximum charge speed of the charge station, i.e.\ $\forall t \in \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$.
     \end{itemize}
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../concepts/vehicle.png}
+        \caption{Vehicle}
+        \label{fig:vehicle}
+    \end{figure}
 
     \paragraph{Vehicles}
     Vehicles define the transportation capacities available on the transportation infrastructure.
@@ -142,6 +176,13 @@
         \item current drive speed $S_{V.CDS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$, and
         \item current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
     \end{itemize}
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[scale=0.5]{../../concepts/demand.png}
+        \caption{Demand}
+        \label{fig:demand}
+    \end{figure}
 
     \paragraph{Demands}
     Demands define the transportation loads that temporarily consume the transportation capacities.
