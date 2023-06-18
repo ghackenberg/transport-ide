@@ -7,6 +7,7 @@ import example.model.Demand;
 import example.model.Intersection;
 import example.model.Model;
 import example.model.Segment;
+import example.model.Station;
 import example.model.Vehicle;
 import example.statistics.Statistics;
 
@@ -21,6 +22,8 @@ public class ExampleStatistics implements Statistics {
 	public Map<Demand, Map<Double, Vehicle>> demandDropoffTimes = new HashMap<>();
 	public Map<Segment, Integer> segmentTraversals = new HashMap<>();
 	public Map<Intersection, Integer> intersectionCrossings = new HashMap<>();
+	public Map<Station, Map<Double, Vehicle>> chargeStartTimes = new HashMap<>();
+	public Map<Station, Map<Double, Vehicle>> chargeEndTimes = new HashMap<>();
 	
 	public ExampleStatistics(Model model) {
 		this.model = model;
@@ -69,6 +72,18 @@ public class ExampleStatistics implements Statistics {
 	}
 
 	@Override
+	public void recordChargeStart(Vehicle vehicle, Station station, double time) {
+		// Update charge start times
+		chargeStartTimes.get(station).put(time, vehicle);
+	}
+
+	@Override
+	public void recordChargeEnd(Vehicle vehicle, Station station, double time) {
+		// Update charge end times
+		chargeEndTimes.get(station).put(time, vehicle);
+	}
+
+	@Override
 	public void recordStep(double step, double time) {
 		
 	}
@@ -82,6 +97,8 @@ public class ExampleStatistics implements Statistics {
 		demandDropoffTimes.clear();
 		segmentTraversals.clear();
 		intersectionCrossings.clear();
+		chargeStartTimes.clear();
+		chargeEndTimes.clear();
 		
 		// Process intersections
 		model.intersections.forEach(intersection -> {
@@ -110,6 +127,13 @@ public class ExampleStatistics implements Statistics {
 			demandDropoffTimes.put(demand, new HashMap<>());
 			// Initialize demand distances
 			demandDistances.put(demand, 0.0);
+		});
+		// Process stations
+		model.stations.forEach(station -> {
+			// Initialize charge start times
+			chargeStartTimes.put(station, new HashMap<>());
+			// Initialize charge end times 
+			chargeEndTimes.put(station, new HashMap<>());
 		});
 	}
 

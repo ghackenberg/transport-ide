@@ -303,10 +303,14 @@ public class Simulator<S extends Statistics> {
 			if (vehicle.station != null) {
 				// Check battery level
 				if (vehicle.batteryLevel == vehicle.batteryCapacity || controller.unselectStation(vehicle)) {
+					// Remember station
+					Station station = vehicle.station;
 					// Unassign vehicle
 					vehicle.station.vehicle = null;
 					// Unassign station
 					vehicle.station = null;
+					// Update statistics
+					statistics.recordChargeEnd(vehicle, station, modelTimeStep);
 				}
 			}
 		}
@@ -329,6 +333,8 @@ public class Simulator<S extends Statistics> {
 									vehicle.station = station;
 									// Assign vehicle
 									station.vehicle = vehicle;
+									// Update statistics
+									statistics.recordChargeStart(vehicle, station, modelTimeStep);
 								}
 							}
 						}

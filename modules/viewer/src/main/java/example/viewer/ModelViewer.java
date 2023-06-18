@@ -45,6 +45,10 @@ public class ModelViewer implements Viewer {
 	private static final Color VEHICLE_ACCEPT_COLOR = Color.GREEN;
 	private static final Color VEHICLE_DECLINE_COLOR = Color.RED;
 	private static final Color VEHICLE_COLLISION_COLOR = Color.ORANGE;
+	private static final Color VEHICLE_BATTERY_LEVEL_FOREGROUND_COLOR = Color.PINK;
+	private static final Color VEHICLE_BATTERY_LEVEL_BACKGROUND_COLOR = Color.GRAY;
+	private static final Color VEHICLE_DEMAND_LEVEL_FOREGROUND_COLOR = Color.GREEN;
+	private static final Color VEHICLE_DEMAND_LEVEL_BACKGROUND_COLOR = Color.GRAY;
 	private static final Color DEMAND_COLOR = Color.DARK_GRAY;
 	private static final Color DEMAND_UNDERDUE_COLOR = Color.GREEN;
 	private static final Color DEMAND_OVERDUE_COLOR = Color.RED;
@@ -193,6 +197,14 @@ public class ModelViewer implements Viewer {
 		for (Vehicle vehicle : model.vehicles) {
 			drawSpeed(graphics, vehicle);
 		}
+		// Draw battery levels
+		for (Vehicle vehicle : model.vehicles) {
+			drawBatteryLevel(graphics, vehicle);
+		}
+		// Draw demand levels
+		for (Vehicle vehicle : model.vehicles) {
+			drawDemandLevel(graphics, vehicle);
+		}
 		// Draw vehicles
 		for (Vehicle vehicle : model.vehicles) {
 			drawVehicle(graphics, vehicle);
@@ -334,6 +346,88 @@ public class ModelViewer implements Viewer {
 		
 	}
 	
+	private void drawBatteryLevel(Graphics2D graphics, Vehicle vehicle) {
+		
+		double deltaX = calculateDeltaX(vehicle.location.segment);
+		double deltaY = calculateDeltaY(vehicle.location.segment);
+		
+		double stepX = Math.cos(Math.PI / 2) * deltaX - Math.sin(Math.PI / 2) * deltaY;
+		double stepY = Math.sin(Math.PI / 2) * deltaX + Math.cos(Math.PI / 2) * deltaY;
+		
+		double centerX = calculateCenterX(vehicle);
+		double centerY = calculateCenterY(vehicle);
+		
+		double vehicleLength = ratioScreenModel * vehicle.length / 2;
+		double vehicleWidth =  ratioScreenModel * VEHICLE_WIDTH / 2;
+		
+		double factor1 = 1.1;
+		double factor2 = 1.3;
+		
+		double percentage = vehicle.batteryLevel / vehicle.batteryCapacity;
+		
+		// Background
+		Polygon background = new Polygon();
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) + stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor1) + stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) - stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor1) - stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) - stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor2) - stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) + stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor2) + stepY * vehicleWidth));
+
+		graphics.setColor(VEHICLE_BATTERY_LEVEL_BACKGROUND_COLOR);
+		graphics.fillPolygon(background);
+		
+		// Foreground
+		Polygon foreground = new Polygon();
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) + stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor1) + stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) - stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor1) - stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) - stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor2) - stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) + stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor2) + stepY * vehicleWidth * percentage));
+
+		graphics.setColor(VEHICLE_BATTERY_LEVEL_FOREGROUND_COLOR);
+		graphics.fillPolygon(foreground);
+		
+	}
+	
+	private void drawDemandLevel(Graphics2D graphics, Vehicle vehicle) {
+		
+		double deltaX = calculateDeltaX(vehicle.location.segment);
+		double deltaY = calculateDeltaY(vehicle.location.segment);
+		
+		double stepX = Math.cos(Math.PI / 2) * deltaX - Math.sin(Math.PI / 2) * deltaY;
+		double stepY = Math.sin(Math.PI / 2) * deltaX + Math.cos(Math.PI / 2) * deltaY;
+		
+		double centerX = calculateCenterX(vehicle);
+		double centerY = calculateCenterY(vehicle);
+		
+		double vehicleLength = ratioScreenModel * vehicle.length / 2;
+		double vehicleWidth =  ratioScreenModel * VEHICLE_WIDTH / 2;
+		
+		double factor1 = 1.4;
+		double factor2 = 1.6;
+		
+		double percentage = vehicle.loadLevel / vehicle.loadCapacity;
+		
+		// Background
+		Polygon background = new Polygon();
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) + stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor1) + stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) - stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor1) - stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) - stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor2) - stepY * vehicleWidth));
+		background.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) + stepX * vehicleWidth), (int) (centerY - deltaY * (vehicleLength * factor2) + stepY * vehicleWidth));
+
+		graphics.setColor(VEHICLE_DEMAND_LEVEL_BACKGROUND_COLOR);
+		graphics.fillPolygon(background);
+		
+		// Foreground
+		Polygon foreground = new Polygon();
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) + stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor1) + stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor1) - stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor1) - stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) - stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor2) - stepY * vehicleWidth * percentage));
+		foreground.addPoint((int) (centerX - deltaX * (vehicleLength * factor2) + stepX * vehicleWidth * percentage), (int) (centerY - deltaY * (vehicleLength * factor2) + stepY * vehicleWidth * percentage));
+
+		graphics.setColor(VEHICLE_DEMAND_LEVEL_FOREGROUND_COLOR);
+		graphics.fillPolygon(foreground);
+		
+	}
+	
 	private void drawVehicle(Graphics2D graphics, Vehicle vehicle) {
 
 		double vehicleFront = vehicle.location.distance + vehicle.length / 2;
@@ -395,6 +489,17 @@ public class ModelViewer implements Viewer {
 				}
 			}
 		}
+		boolean charge = false;
+		for (Station station : model.stations) {
+			if (statistics.chargeStartTimes.get(station).get(model.time) == vehicle) {
+				charge = true;
+				break;
+			}
+			if (statistics.chargeEndTimes.get(station).get(model.time) == vehicle) {
+				charge = true;
+				break;
+			}
+		}
 		
 		double deltaX = calculateDeltaX(vehicle.location.segment);
 		double deltaY = calculateDeltaY(vehicle.location.segment);
@@ -410,7 +515,7 @@ public class ModelViewer implements Viewer {
 		
 		double radius = Math.sqrt(vehicleLength * vehicleLength + vehicleWidth * vehicleWidth) * 1.1;
 		
-		if (vehicle.location.distance == vehicle.location.segment.getLength() || decide || dropoff || attach || detach) {
+		if (vehicle.location.distance == vehicle.location.segment.getLength() || decide || dropoff || attach || detach || charge) {
 			graphics.setColor(Color.RED);
 			graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 10 }, 0));
 			graphics.drawArc((int) (centerX - radius), (int) (centerY - radius), (int) (radius * 2), (int) (radius * 2), 0, 360);
