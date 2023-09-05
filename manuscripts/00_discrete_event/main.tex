@@ -70,7 +70,6 @@
   \section{Introduction}
 \label{sec:intro}
 
-\subsection{Motivation}
 Meeting sustainability goals \cite{sachs2019six} is a driving factor of the transformation of transportation systems and increasing their efficiency. However, with respect to most efficient design and operation, deriving sound infrastructure and control strategies for as well as the interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges. In addition, quality assurance of these systems and services is a critical challenge within the system-of-systems they act within, as the latter are made up of constituting systems and services with heterogenous goals and stakeholders, which are fundamentally required by intelligent and connected transportation paradigms. For this, systematic development methods addressing these challenges and emerging domain paradigms are required.    
 
 Demand-responsive transport \cite{brake_demand_2004} as well as the transportation electrification \cite{pereirinha2018main} represent two current key emerging domain paradigms in transportation systems. The former describes covering transportation demands arising from passengers or freights demanding transport from a given source origin to a target destination using a supply of vehicles, which are dispatched with respect to covering a set of objectives such as shortest-traveling time, energy-efficient operation, or their balanced distribution on the transport infrastructure. Then, transportation electrification describes the increasing penetration of electric vehicles in the transport system, which pose new challenges over traditional, i.e. combustion engine, vehicles such as possibily more limited ranges, which have to considered in accordance to the available and still developing charging infrastructure. 
@@ -111,7 +110,6 @@ Then, in Section~\ref{sec:events}, we describe the events and decisions that mus
 %Thereafter, we demonstrate three software applications in Section~\ref{sec:app}.
 Finally, in Section~\ref{sec:con}, we conclude with an outlook on future work.
 
-
 \begin{figure*}[t]
 	\centering
 	\includegraphics[scale=0.35]{../../diagrams/model/classes-v0.png}
@@ -125,7 +123,7 @@ Finally, in Section~\ref{sec:con}, we conclude with an outlook on future work.
 % Briefly explain system theory of existing work
 \label{sec:theory}
 In the following, we explain the underlying system theory, which is based on~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}.
-In Section~\ref{sec:concepts} we introduce basic definitions and concepts, which can be used for transportation system design such as properties, states as well as simple and complex functional relations. Then in Section~\ref{sec:transitions}, we describe state transitions based on aforementioned relations and properties.
+In Section~\ref{sec:concepts} we introduce basic definitions and concepts, which can be used for transportation system design such as properties, states as well as simple and complex functional relations. 
 %Then, in Section~\ref{sec:transitions} we show more complex functional relations over the previous concepts, their properties, and their states.
 %Finally, in Section~\ref{sec:events} we describe the events and decisions that must be considered for high-performance state computation using discrete event simulation.
 
@@ -143,42 +141,36 @@ Furthermore, we use locations $l$ and vehicles $v \in V$ for describing the tran
 Finally, we use location-times $lt \in LT$ and demands $d \in D$ for describing the transportation loads.
 In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints.
 
+\vspace{4mm}
 
-%\begin{figure}[htbp]
-	%\centering
-	%\includegraphics[scale=0.5]{../../concepts/intersection.png}
-	%\caption{Intersection}
-	%\label{fig:intersection}
-%\end{figure}
-
-\paragraph{Intersections}
 \begin{wrapfigure}{r}{0.15\textwidth}
 	\centering
 		\includegraphics[scale=0.5]{../../concepts/intersection.png}
 		%\caption{Intersection}
 		%\label{fig:intersection}
 \end{wrapfigure}
+
+\noindent
+\textbf{Intersections}
+--
 Intersections define the routing points of the drive infrastructure.
 Each intersection must have a coordinate in the corresponding reference coordinate system.
 Mathematically, intersections can be described as elements $i \in I$ with static property function
 \begin{itemize}
 	\item coordinate $P_{I.C}: I \rightarrow \mathbb{R}^3$.
 \end{itemize}
+\vspace{2mm}
 
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[scale=0.5]{../../concepts/segment.png}
-%	\caption{Segment}
-%	\label{fig:segment}
-%\end{figure}
-
-\paragraph{Segments}
-\begin{wrapfigure}{r}{0.35\textwidth}
+\begin{wrapfigure}{r}{0.3\textwidth}
 	\centering
 		\includegraphics[scale=0.4]{../../concepts/segment.png}
 		%\caption{Segment}
 		%\label{fig:segment}
 \end{wrapfigure}
+
+\noindent
+\textbf{Segments}
+--
 Segments define the straight roads of the drive infrastructure.
 Each segment must define a source and a target intersection, which represent the start and the end coordinates of the straight road.
 The length of the segment can be computed from the coordinates of the source and the target intersection.
@@ -189,31 +181,32 @@ Mathematically, segments can be described as elements $s = (i_s, i_t) \in I \tim
 	\item width $P_{S.W}: S \rightarrow \mathbb{R}^+$, and
 	\item maximum drive speed $P_{S.MDS}: S \rightarrow \mathbb{R}^+$.
 \end{itemize}
-
-\paragraph{Locations (auxiliary)}
+\vspace{2mm}
+\textbf{Locations (auxiliary)}
+--
 Locations represent an auxiliary concept and define dedicated positions on the transportation infrastructure.
 Each location must define a segment and a travelled distance on that segment.
 Mathematically, locations can be described as elements $(s, d) \in S \times \mathbb{R}_0^+ = L$ with segment $s$ and distance $d$ such that $d \leq P_{S.L}(s)$.
 
-\paragraph{Location-times (auxiliary)}
+\vspace{4mm}
+\noindent
+\textbf{Location-times (auxiliary)}
 Location-times also represent an auxiliary concept and define dedicated positions on the transportation infrastructure at particular time points.
 Each location-time must define a corresponding location and the desired time point.
 Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{T} = LT$ with location $l$ and time point $t$.
 
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[scale=0.33]{../../concepts/charge-station.png}
-%	\caption{Charge station}
-%	\label{fig:charge-station}
-%\end{figure}
+\vspace{4mm}
 
-\paragraph{Charge stations}
-\begin{wrapfigure}{r}{0.35\textwidth}
+\begin{wrapfigure}{r}{0.3\textwidth}
 	\centering
-		\includegraphics[scale=0.25]{../../concepts/charge-station.png}
-		%\caption{Charge station}
-		%\label{fig:charge-station}	
+	\includegraphics[scale=0.25]{../../concepts/charge-station.png}
+	%\caption{Charge station}
+	%\label{fig:charge-station}	
 \end{wrapfigure}
+
+\noindent
+\textbf{Charge stations}
+--
 Charge stations define the charge infrastructure for vehicles to refill their batteries.
 Each charge station must define a location and a maximum charge speed.
 Mathematically, charge stations can be described as elements $cs \in CS$ with static property functions
@@ -227,21 +220,18 @@ Mathematically, the state of charge stations $cs$ can be described using dynamic
 	\item current vehicles $S_{CS.CV}: CS \times \mathbb{T} \rightarrow \mathbb{P}(V)$, and
 	\item current charge speed $S_{CS.CCS}: CS \times \mathbb{T} \rightarrow \mathbb{R}^+$ such that the value is smaller than or equal to the maximum charge speed of the charge station, i.e.\ $\forall t \in \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$.
 \end{itemize}
+\vspace{2mm}
 
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[scale=0.5]{../../concepts/vehicle.png}
-%	\caption{Vehicle}
-%	\label{fig:vehicle}
-%\end{figure}
-
-\paragraph{Vehicles}
-\begin{wrapfigure}{r}{0.35\textwidth}
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
-		\includegraphics[scale=0.5]{../../concepts/vehicle.png}
-		%	\caption{Vehicle}
-		%	\label{fig:vehicle}	
+	\includegraphics[scale=0.7]{../../concepts/vehicle.png}
+	%	\caption{Vehicle}
+	%	\label{fig:vehicle}	
 \end{wrapfigure}
+
+\noindent
+\textbf{Vehicles}
+--
 Vehicles define the transportation capacities available on the transportation infrastructure.
 Each vehicle must define a maximum battery level, a maximum demand level, a maximum drive speed, and a maximum charge speed, an initial location, and an initial battery level.
 Mathematically, vehicles can be described as elements $v \in V$ with static property functions
@@ -268,7 +258,13 @@ Mathematically, the state of vehicles $v$ can be described using dynamic state f
 	\item (ACTION!) current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
 	% Note: $\forall (v,t) \in V \times \mathbb{T}?
 \end{itemize}
-Dynamic action functions (only limit the time domain!) ...
+
+% TODO GGF. STREICHEN
+% TODO GGF. STREICHEN
+% Fokus auf Eventbeschreibung
+\noindent
+In addition, vehicles define dynamic action functions (which only limit the time domain), such that
+
 \begin{itemize}
 	\item Charge-start $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v)$
 	\item Charge-end $A_{V.CE}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v)$
@@ -287,7 +283,7 @@ Dynamic action functions (only limit the time domain!) ...
 	
 	\item Charge speed $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.L}(v)$
 \end{itemize}
-For dynamic constraint functions we consider the following:
+Then, for vehicles dynamic constraint functions we consider the following:
 \begin{itemize}
 	\item Collisions TODO
 	\item Target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
@@ -303,7 +299,7 @@ For dynamic constraint functions we consider the following:
 	% Note: Changed to: than allowed by segment to cs, a
 	% Cover: cs,ccs<cs,mcs AND v,ccs<v,mcs, AND PLUS v,ccs<cs,mcs?
 \end{itemize}
-
+\vspace{2mm}
 %\begin{figure}[htbp]
 %	\centering
 %	\includegraphics[scale=0.5]{../../concepts/demand.png}
@@ -311,16 +307,19 @@ For dynamic constraint functions we consider the following:
 %	\label{fig:demand}
 %\end{figure}
 
-\paragraph{Demands}
 \begin{wrapfigure}{r}{0.35\textwidth}
 	\centering
-		\includegraphics[scale=0.5]{../../concepts/demand.png}
-		%	\caption{Demand}
-		%	\label{fig:demand}
+	\includegraphics[scale=0.5]{../../concepts/demand.png}
+	%	\caption{Demand}
+	%	\label{fig:demand}
 \end{wrapfigure}
+
+\noindent
+\textbf{Demands}
+--
 Demands define the transportation loads that temporarily consume the transportation capacities.
 Each demand must define a size, a pick-up location, a drop-off location, an earliest pick-up time, and a latest drop-off time.
-Mathematically, demands can be described as elements $d \in D$ with static property functions
+Mathematically, demands can be described as elements $d \in D$ with static property functions such that
 
 \begin{itemize}
 	\item size $P_{D.S}: D \rightarrow \mathbb{R}^+$,
@@ -328,58 +327,71 @@ Mathematically, demands can be described as elements $d \in D$ with static prope
 	\item drop-off location and latest time $P_{D.DOLT}: D \rightarrow LT$ with $P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT})$ such that the pick-up location is different from the drop-off location, i.e.\ $l_d^{PULT} \neq l_d^{DOLT}$, and the earliest pick-up time is before the latest drop-off time, i.e.\ $t_d^{PULT} < t_d^{DOLT}$.
 \end{itemize}
 Furthermore, the dynamic state of demands comprises the current vehicle and the current location.
-Mathematically, the state of demands $d$ can be described using dynamic state functions with corresponding simple functional relations
+Mathematically, the state of demands $d$ can be described using dynamic state functions with corresponding simple functional relations such that
 \begin{itemize}
 	\item current vehicle $S_{D.CV}: D \times \mathbb{T} \rightarrow V \cup \{\perp\}$ such that, if the current vehicle of the demand is not empty, the current demands of the vehicle include the demand, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Leftrightarrow d \in S_{V.CD}(v,t)$, and
 	\item current location $S_{D.CL}: D \times \mathbb{T} \rightarrow L$ such that, if the current vehicle is not empty, the current demand location equals to the current vehicle location, i.e.\ $\forall t \in \mathbb{T}, v = S_{D.CV}(d,t): v \neq \perp \Rightarrow S_{D.CL}(d,t)=S_{V.CL}(v,t)$.
 \end{itemize}
 
 \subsubsection{Complex functional relations}
+% TODO GGF. streichen
+% TODO GGF. streichen
+
 \label{sec:complex}
 In addition to the simple functional relations some more complex functional relations can be defined over the previous concepts, properties, and states, which we describe and detail subsequently.
 
-\paragraph{Current charge speed of charge stations}
+\vspace{4mm}
+\noindent
+\textbf{Current charge speed of charge stations}
+--
 The current charge speeds of the charge stations must be derived from the current vehicles of the charge stations and their current charge speeds, i.e.\ $\forall t \in \mathbb{T}, cs \in CS:$
 \[
 S_{CS.CCS}(cs,t)=\sum_{v \in \mathcal{V}}S_{V.CCS}(v,t) \textrm{ with } \mathcal{V}=S_{CS.CV}(cs,t)
 \]
 
-\paragraph{Current demand level of vehicles}
+\vspace{2mm}
+\noindent
+\textbf{Current demand level of vehicles}
+--
 The current demand levels of the vehicles must be derived from the current demands of the vehicles and their sizes, i.e.\ $\forall t \in \mathbb{T}, v \in V:$
 \[
 S_{V.CDL}(v,t)=\sum_{d \in \mathcal{D}}^{}P_{D.S}(d) \textrm{ with } \mathcal{D}=S_{V.CD}(v,t)
 \]
-
-\subsection{State transitions}
-\label{sec:transitions}
-TODO
+% OMITTED
+%\subsection{State transitions}
+%\label{sec:transitions}
 
 \section{Discrete events}
 \label{sec:events}
 Based on the defined properties as well as utilized simple and complex functional relations, we subsequently describe events.
-
-\subsubsection{Vehicle at intersection before}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
 		\includegraphics[scale=0.35]{../../events/vehicle-at-intersection-before.png}
 		%\caption{Vehicle at intersection before}
 		%\label{fig:vehicle-at-intersection-before}
 \end{wrapfigure}
+
+\noindent
+\textbf{Vehicle at intersection before}
+--
 The following describes the event of a vehicle being located before an intersection. 
 The following describes the event of a vehicle being located before an intersection. 
 The following describes the event of a vehicle being located before an intersection. 
 The following describes the event of a vehicle being located before an intersection. 
 The following describes the event of a vehicle being located before an intersection. 
 
-\subsubsection{Vehicle at intersection after}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
 		\includegraphics[scale=0.35]{../../events/vehicle-at-intersection-after.png}
 		%\caption{Vehicle at intersection after}
 		%\label{fig:vehicle-at-intersection-after}
 \end{wrapfigure}
+
+\noindent
+\textbf{Vehicle at intersection after}
+--
 The following describes the event of a vehicle being located after an intersection. 
 The following describes the event of a vehicle being located after an intersection. 
 The following describes the event of a vehicle being located after an intersection. 
@@ -387,43 +399,53 @@ The following describes the event of a vehicle being located after an intersecti
 The following describes the event of a vehicle being located after an intersection. 
 The following describes the event of a vehicle being located after an intersection. 
 
-\subsubsection{Faster vehicle front at slower vehicle back}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
-		\includegraphics[scale=0.35]{../../events/faster-vehicle-front-at-slower-vehicle-back.png}
-		%\caption{Faster vehicle f.\ at slower vehicle b.}
-		%\label{fig:faster-vehicle-front-at-slower-vehicle-back}
+	\includegraphics[scale=0.35]{../../events/faster-vehicle-front-at-slower-vehicle-back.png}
+	%\caption{Faster vehicle f.\ at slower vehicle b.}
+	%\label{fig:faster-vehicle-front-at-slower-vehicle-back}
 \end{wrapfigure}
 
+\noindent
+\textbf{Faster vehicle front at slower vehicle back}
+--
 The following describes the event of a faster vehicles front being located at a slower vehicles back.
 The following describes the event of a faster vehicles front being located at a slower vehicles back.
 The following describes the event of a faster vehicles front being located at a slower vehicles back.
 The following describes the event of a faster vehicles front being located at a slower vehicles back.
 
-\subsubsection{Slower vehicle front at faster vehicle back}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
 	\includegraphics[scale=0.35]{../../events/slower-vehicle-front-at-faster-vehicle-back.png}
 	%\caption{Slower vehicle f.\ at faster vehicle b.}
 	%\label{fig:slower-vehicle-front-at-faster-vehicle-back}
 \end{wrapfigure}
+
+\noindent
+\textbf{Slower vehicle front at faster vehicle back}
+--
+The following describes the event of a slower vehicles front being located at a faster vehicles back.
 The following describes the event of a slower vehicles front being located at a faster vehicles back.
 The following describes the event of a slower vehicles front being located at a faster vehicles back.
 The following describes the event of a slower vehicles front being located at a faster vehicles back.
 The following describes the event of a slower vehicles front being located at a faster vehicles back.
 
 
-\subsubsection{Demand appear}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
 		\includegraphics[scale=0.35]{../../events/demand.png}
 		%\caption{Demand appear}
 		%\label{fig:demand}
 \end{wrapfigure}
 
+\noindent
+\textbf{Demand appear}
+--
 The following describes the event of a demand appearing on the traffic infrastructure.
 The following describes the event of a demand appearing on the traffic infrastructure.
 The following describes the event of a demand appearing on the traffic infrastructure.
@@ -431,29 +453,35 @@ The following describes the event of a demand appearing on the traffic infrastru
 The following describes the event of a demand appearing on the traffic infrastructure.
 The following describes the event of a demand appearing on the traffic infrastructure.
 
-\subsubsection{Vehicle at demand pick-up location}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
-		\includegraphics[scale=0.35]{../../events/vehicle-at-demand-pick-up.png}
-		%\caption{Vehicle at demand pick-up}
-		%\label{fig:vehicle-at-demand-pick-up}
+	\includegraphics[scale=0.35]{../../events/vehicle-at-demand-pick-up.png}
+	%\caption{Vehicle at demand pick-up}
+	%\label{fig:vehicle-at-demand-pick-up}
 \end{wrapfigure}
 
+\noindent
+\textbf{Vehicle at demand pick-up location}
+--
 The following describes the event of a vehicle being located at a demand pick-up location.
 The following describes the event of a vehicle being located at a demand pick-up location.
 The following describes the event of a vehicle being located at a demand pick-up location.
 The following describes the event of a vehicle being located at a demand pick-up location.
 
-\subsubsection{Vehicle at demand drop-off location}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
-		\includegraphics[scale=0.35]{../../events/vehicle-at-demand-drop-off.png}
-		%\caption{Vehicle at demand drop-off}
-		%\label{fig:vehicle-at-demand-drop-off}
+	\includegraphics[scale=0.35]{../../events/vehicle-at-demand-drop-off.png}
+	%\caption{Vehicle at demand drop-off}
+	%\label{fig:vehicle-at-demand-drop-off}
 \end{wrapfigure}
 
+\noindent
+\textbf{Vehicle at demand drop-off location}
+--
 The following describes the event of a vehicle being located at a demand drop-off location.
 The following describes the event of a vehicle being located at a demand drop-off location.
 The following describes the event of a vehicle being located at a demand drop-off location.
@@ -461,22 +489,27 @@ The following describes the event of a vehicle being located at a demand drop-of
 The following describes the event of a vehicle being located at a demand drop-off location.
 The following describes the event of a vehicle being located at a demand drop-off location.
 
-\subsubsection{Vehicle at station}
-\
-\begin{wrapfigure}{r}{0.35\textwidth}
+\vspace{4mm}
+
+\begin{wrapfigure}{r}{0.25\textwidth}
 	\centering
-		\includegraphics[scale=0.35]{../../events/vehicle-at-demand-drop-off.png}
-		%\caption{Vehicle at station}
-		%\label{fig:vehicle-at-station}
+	\includegraphics[scale=0.35]{../../events/vehicle-at-demand-drop-off.png}
+	%\caption{Vehicle at station}
+	%\label{fig:vehicle-at-station}
 \end{wrapfigure}
 
+\noindent
+\textbf{Vehicle at station}
+--
 The following describes the event of a vehicle being located at a charging station.
 The following describes the event of a vehicle being located at a charging station.
 The following describes the event of a vehicle being located at a charging station.
 The following describes the event of a vehicle being located at a charging station.
 
-\subsubsection{Vehicle battery full}
-\
+\vspace{4mm}
+\noindent
+\textbf{Vehicle battery full}
+--
 %\begin{figure}[htbp]
 %	\centering
 %	\missingfigure[figwidth=88mm]{Vehicle battery full}
@@ -488,8 +521,10 @@ The following describes the event of a vehicles battery being full.
 The following describes the event of a vehicles battery being full.
 The following describes the event of a vehicles battery being full.
 
-\subsubsection{Vehicle battery empty}
-\
+\vspace{4mm}
+\noindent
+\textbf{Vehicle battery empty}
+--
 %\begin{figure}[htbp]
 %	\centering
 %	\missingfigure[figwidth=88mm]{Vehicle battery empty}
@@ -501,47 +536,10 @@ The following describes the event of a vehicles battery being empty.
 The following describes the event of a vehicles battery being empty.
 The following describes the event of a vehicles battery being empty.
 
-%\subsection{Control interface}
-%\label{sec:controller}
-%TODO Figure~\ref{fig:controller}
-
-%\begin{figure}[t]
-%	\centering
-%	\includegraphics[scale=0.4]{../../diagrams/controller/classes-minimal.png}
-%	\caption{Controller interface}
-%	\label{fig:controller}
-%\end{figure}
-
-%\subsubsection{Manual controller}
-%TODO
-
-%\subsubsection{Random controller}
-%TODO
-
-%\subsubsection{Greedy controller}
-%TODO
-
-%\subsubsection{Smart controller}
-%TODO
-
-%\subsection{Statistics interface}
-%\label{sec:statistics}
-%TODO Figure~\ref{fig:statistics}
-
-%\begin{figure}[htbp]
-%	\centering
-%	\includegraphics[scale=0.4]{../../diagrams/statistics/classes.png}
-%	\caption{Statistics interface}
-%	\label{fig:statistics}
-%\end{figure}
-
 \section{Related work}
 \label{sec:related}
-On a domain-specific level, related work includes traffic simulators such as PTV Vissim \cite{fellendorf_vissim_1994}, MATSim \cite{w_axhausen_multi-agent_2016}, and SUMO  \cite{lopez_microscopic_2018}, which represent state-of-the-art traffic simulation tools.
-
-In terms of co-simulation approaches, Eclipse MOSAIC \cite{schunemann_v2x_2011, noauthor_eclipse_nodate} is an open architecture for multiscale simulations for smart and connected mobility, where it utilizes a runtime-environment for coupling discrete event simulators from multiple domains.
-
-For related work, we firstly consider relevant approaches for autonomous mobility-on-demand systems as well as for demand-responsive transport. Then, secondly, we consider frameworks for domain-specific system design of transport systems.
+TODO
+% DES/Transport Simulation Discrete Event Simulation
 
 \section{Conclusion}
 \label{sec:con}
