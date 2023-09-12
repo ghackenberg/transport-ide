@@ -246,15 +246,15 @@ Furthermore, the dynamic state of vehicles comprises the current location, the c
 Mathematically, the state of vehicles $v$ can be described using dynamic state functions with corresponding simple functional relations
 \begin{itemize}
 	\item current demands $S_{V.CD}: V \times \mathbb{T} \rightarrow \mathbb{P}(D)$,
-	\item current charging station $S_{V.CCS}: V \times \mathbb{T} \rightarrow CS \cup \{\perp\}$ such that, if the current charging station of the vehicle is not empty, the current vehicles of the charging station include the vehicle, i.e.\ $\forall t \in \mathbb{T}, cs = S_{V.CSS}(v,t): cs \neq \perp \Leftrightarrow v \in S_{CS.CV}(cs,t)$,
+	\item current charging station $S_{V.CCS}: V \times \mathbb{T} \rightarrow CS \cup \{\perp\}$ such that, if the current charging station of the vehicle is not empty, the current vehicles of the charging station include the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: cs = S_{V.CSS}(v,t): cs \neq \perp \Leftrightarrow v \in S_{CS.CV}(cs,t)$,
 	% Note: Can the following derived from former?
-	\item current location $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ such that, if the current charging station of the vehicle is not empty, the current vehicle location equals to the location of the charging station, i.e.\ $\forall t \in \mathbb{T}, cs = S_{V.CCS}(v,t): cs \neq \perp \Rightarrow S_{V.CL}(v,t)=P_{CS.L}(cs)$,
-	\item current battery level $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that the value is smaller than or equal to the maximum battery level of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CBL}(v,t) \leq P_{V.MBL}(v)$,
+	\item current location $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ such that, if the current charging station of the vehicle is not empty, the current vehicle location equals to the location of the charging station, i.e.\ $\forall (v,t) \in V \times \mathbb{T}, \exists cs \in CS: cs = S_{V.CCS}(v,t): cs \neq \perp \Rightarrow S_{V.CL}(v,t)=P_{CS.L}(cs)$,
+	\item current battery level $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that the value is smaller than or equal to the maximum battery level of the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: S_{V.CBL}(v,t) \leq P_{V.MBL}(v)$,
 	% Note: Move to dynamic constraints?
-	\item current demand level $S_{V.CDL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that the value is smaller than or equal to the maximum demand level of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDL}(v,t) \leq P_{V.MDL}(v)$,
-	\item (ACTION!) current drive speed $S_{V.CDS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$, and
+	\item current demand level $S_{V.CDL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ such that the value is smaller than or equal to the maximum demand level of the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: S_{V.CDL}(v,t) \leq P_{V.MDL}(v)$,
+	%\item (ACTION!) current drive speed $S_{V.CDS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$, and
 	% Note: $\forall (v,t) \in V \times \mathbb{T}?
-	\item (ACTION!) current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
+	%\item (ACTION!) current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
 	% Note: $\forall (v,t) \in V \times \mathbb{T}?
 \end{itemize}
 
@@ -265,19 +265,21 @@ Mathematically, the state of vehicles $v$ can be described using dynamic state f
 In addition, vehicles define dynamic action functions (which only limit the time domain), such that
 
 \begin{itemize}
-	\item Charge-start $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
+	\item charge-start $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
 	% TODO Location Time instead of Location
-	\item Charge-end $A_{V.CE}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
-	\item Pick-up $A_{V.DPU}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location and pick-up time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{PULT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
+	\item charge-end $A_{V.CE}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
+	\item pick-up $A_{V.DPU}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location and pick-up time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{PULT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
 	% Note replace with pickup event? 
 	% Note: (not asked if not enough demand capacity left)
 	% Note: Versus current location of domains
-	\item Drop-Off $A_{V.DDO}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand drop-off location and drop-off time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{DOLT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
+	\item drop-off $A_{V.DDO}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand drop-off location and drop-off time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{DOLT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
 		% Note some redundancy with Pick-up
 		% TODO
-	\item Route $A_{V.R}: V \times \mathbb{T} \rightarrow S$ only defined ...
+	\item route $A_{V.R}: V \times \mathbb{T} \rightarrow S$ only defined ...
 	% Note: Route vs. current target segment
-	\item Drive speed $A_{V.DS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle has a location $\forall (v,t) \in V \times \mathbb{T}: \exists (l, t) \in L \times \mathbb{T} \wedge l = (s, d) \in S \times \mathbb{R}_0^+: S_{V.CL}(v) = LT(l) \wedge d \leq P_{S.L}(s)$
+	\item drive speed $A_{V.DS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle has a location $\forall (v,t) \in V \times \mathbb{T}: \exists (l, t) \in L \times \mathbb{T} \wedge l = (s, d) \in S \times \mathbb{R}_0^+: S_{V.CL}(v) = LT(l) \wedge d \leq P_{S.L}(s)$ and such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: A_{V.DS}(v,t) \leq P_{V.MDS}(v)$.
+		\item current charge speed $A_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: A_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
+	% Note: $\forall (v,t) \in V \times \mathbb{T}?
 	% TODO Check	
 	
 
@@ -287,17 +289,17 @@ In addition, vehicles define dynamic action functions (which only limit the time
 Then, for vehicles dynamic constraint functions we consider the following:
 \begin{itemize}
 	% TODO Collisions
-	\item Collisions TODO
-	\item Target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
+	\item collisions TODO
+	\item target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
 	% Set P of outgoing edges
 	% TODO \wedge Outgoing(i_t) = {P(i_t) | s' \in S} \and  \exists i_t, \exists i_t' \mathrm{such that} s' = (i_t, i_t')$
 	% Note TODO "outgoing" function is not defined yet
 	
-	\item Higher drive speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$
-	\item Higher drive speed than allowed by the segment $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S: S_{V.CDS}(v,t) \leq P_{S.MDS}(s)$
+	\item higher drive speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$
+	\item higher drive speed than allowed by the segment $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S: S_{V.CDS}(v,t) \leq P_{S.MDS}(s)$
 	% Note: Notation: Segments vs. States!
-	\item Higher charge speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$
-	\item Higher charge speed than allowed by the charging station $\forall (cs,t) \in CS \times \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$
+	\item higher charge speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$
+	\item higher charge speed than allowed by the charging station $\forall (cs,t) \in CS \times \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$
 	% Note: Changed to: than allowed by segment to cs, a
 	% Cover: cs,ccs<cs,mcs AND v,ccs<v,mcs, AND PLUS v,ccs<cs,mcs?
 \end{itemize}
@@ -389,6 +391,7 @@ For the event of a vehicle being located before an intersection to occur, we con
 
 \noindent
 \textbf{Vehicle at intersection after}
+--
 % Rework for event occuring once
 For the event of a vehicle being located after an intersection to occur, we consider a vehicle $\exists v \in V$ at time $t \in T$, such that $E_{V.LIA}: V \times \mathbb{T} \rightarrow \mathbb{B}$ which is only defined if the vehicles distance driven on the current segments is smaller than the length of the current segment $\forall (v,t) \in V \times \mathbb{T}: \exists lt \in LT: S_{V.CL}(v,t) = lt \wedge lt = (l, t) \wedge l = (s, d) \wedge d < P_{S.L}(s)$
 
