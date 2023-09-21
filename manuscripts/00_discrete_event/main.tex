@@ -58,19 +58,17 @@
 %
 \maketitle
 %\abstract*{AA.}
-\abstract{Due to many reasons transportation systems have to become more and more efficient.
-	This observation holds true both for person transport and for good transport, on public infrastructure and on private infrastructure.
-	Designing efficient transportation systems is a difficult undertaking due to the vast size of the solution space and the emergent dynamics of the system components.
-	Transportation system designers need appropriate tools to explore the design space and test solutions quickly and reliably.
-	In this paper, we propose a simulation-based environment for transportation system design and test, which is built on a solid system theory.
-	Furthermore, we demonstrate possible applications such as comparison of different infrastructure and control algorithm designs.}
+\abstract{As transportation systems have to become more intelligent, efficient and, ultimately, sustainable, the complexity of designing these systems has increased fundamentally.
+	%This observation holds true both for person transport and for good transport, on public infrastructure and on private infrastructure.
+	Designing efficient transportation systems is a difficult undertaking due to the vast size of the solution space and the emergent dynamics of the system components, which have to be considered. Therefore, transportation system engineers need appropriate tools and methods to wholistically explore the design space and test solutions quickly and reliably. In this paper, we propose a simulation-based environment using discrete event simulation (DES) for transportation system design, which is based on a formal system theory. For this, we describe the necessary static properties, dynamic state functions, constraints as well as events describing the design space of our simulation environment in the scope of mobility-on-demand problems.}
+	%Furthermore, we demonstrate possible applications such as comparison of different infrastructure and control algorithm designs.}
 \vspace{-2mm}
   \section{Introduction}
 \label{sec:intro}
 
-Meeting sustainability goals \cite{sachs2019six} is a driving factor of the transformation of transportation systems and increasing their efficiency. However, with respect to most efficient design and operation, deriving sound infrastructure and control strategies for as well as the interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges. In addition, quality assurance of these systems and services is a critical challenge within the system-of-systems they act within, as the latter are made up of constituting systems and services with heterogenous goals and stakeholders, which are fundamentally required by intelligent and connected transportation paradigms. For this, systematic development methods addressing these challenges and emerging domain paradigms are required.    
+Meeting sustainability goals \cite{sachs2019six} is a driving factor of the transformation of transportation systems and increasing their efficiency. However, with respect to most efficient design and operation, deriving sound infrastructure and control strategies for as well as the interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges. In addition, quality assurance of these systems and services is a critical challenge within the system-of-systems they act within, as the latter are made up of constituting systems and services with heterogenous goals and stakeholders, which are fundamentally required by intelligent and connected transportation paradigms. For this, systematic development methods addressing these challenges as well as emerging domain paradigms are required.    
 
-Demand-responsive transport \cite{brake_demand_2004} as well as the transportation electrification \cite{pereirinha2018main} represent two current key emerging domain paradigms in transportation systems. The former describes covering transportation demands arising from passengers or freights demanding transport from a given source origin to a target destination using a supply of vehicles, which are dispatched with respect to covering a set of objectives such as shortest-traveling time, energy-efficient operation, or their balanced distribution on the transport infrastructure. Then, transportation electrification describes the increasing penetration of electric vehicles in the transport system, which pose new challenges over traditional, i.e. combustion engine, vehicles such as possibily more limited ranges, which have to considered in accordance to or constrained by a given charging infrastructure. 
+Demand-responsive transport \cite{brake_demand_2004} as well as the transportation electrification \cite{pereirinha2018main} represent two current key emerging domain paradigms in transportation systems. The former describes covering transportation demands arising from passengers or freights demanding transport from a given source origin to a target destination using a supply of vehicles, which are dispatched with respect to covering a set of objectives such as shortest-traveling time, energy-efficient operation, or their balanced distribution on the transport infrastructure. Then, transportation electrification describes the increasing penetration of electric vehicles in the transportation system, which pose new challenges over traditional, i.e. combustion engine, vehicles such as possibily more limited ranges, which have to considered in accordance to or constrained by a given charging infrastructure. 
 \vspace{-2mm}
 
 \subsection{Related Work}
@@ -78,22 +76,26 @@ In terms of simulation frameworks tailored to the transport domain, traffic simu
 
 As simulation complexity increases with the number of vehicles, where simulation of the behavior of all vehicles is required while advancing simulation time, required time for simulation increases accordingly. 
 
+To describe, evaluate and compare integrated transportation system design options systematically, we previously introduced an approach for modeling integrated intelligent transportation system properties using a formal foundation. However, due to the inherent complexity in defining large-scale problems and evaluating them using simulation, our approach was only applicable to limited scale, i.e. microscopic design problems, and allowed fixed simulation resolution only, where for instance detection of collisions between traffic participants, was dependant on discrete-time resolution.  
+
 \subsection{Problem Statement}
 
 Despite this situation, current approaches and model-based development methodologies for the design of transportation systems are not able to holistically address aforementioned challenges. On the one hand side, transportation infrastructures and control algorithms need to be holistically evaluated, based on the heterogenous systems they are composed of and the heterogenous requirements they have to adhere to. On the other hand side, current modeling approaches for system design do not offer appropriate domain abstractions in terms of their modeling complexity, or their provided structural or behavioral modeling capabilities to describe these systems on a required level of detail. In addition, the approaches do not offer support for evaluating heterogenous application scenarios in terms of a shared configuration space easing the modeling task, which supports reuse of modeling concepts and effective evaluation of possible design options. 
 %\newpage
+
+Which events to describe for the specific system, and of those, which events are relevant?
 \vspace{-2mm}
 
-\subsection{Research questions}
-With respect to these challenges, we pose the following research questions:
-\begin{itemize}
-	\item RQ1: How can we support the design and test of transportation infrastructures and control algorithms better?
-	\item RQ2: Which modeling and simulation technique represents an appropriate abstraction for the domain?
-	%\item RQ3: Which software architecture is appropriate for an integrated design and test environment?
-	\item RQ3: Which application scenarios should be supported on top of this environment?
-	\item RQ4: Which events to describe for the specific system, and of those, which events are relevant?
-\end{itemize}
-\vspace{-2mm}
+%\subsection{Research questions}
+%With respect to these challenges, we pose the following research questions:
+%\begin{itemize}
+%	\item RQ1: How can we support the design and test of transportation infrastructures and control algorithms better?
+%	\item RQ2: Which modeling and simulation technique represents an appropriate abstraction for the domain?
+%	%\item RQ3: Which software architecture is appropriate for an integrated design and test environment?
+%	\item RQ3: Which application scenarios should be supported on top of this environment?
+%	\item RQ4: Which events to describe for the specific system, and of those, which events are relevant?
+%\end{itemize}
+%\vspace{-2mm}
 
 \subsection{Contribution}
 % Previous approach - Complexity Reduction of simulation using DES, Formalization of system concepts using notation/foundation 
@@ -102,13 +104,15 @@ With respect to these challenges, we pose the following research questions:
 %Second we use iterative and incremental software development with regular feedback from stakeholders to develop our a new dedicated approach.
 To address these challenges and the above research questions, subsequently, we introduce a systematic and iterative approach for transportation system design.
 
-To describe, evaluate and compare integrated transportation system design options systematically, we previously introduced an approach for modeling integrated intelligent transportation system properties using a formal foundation. However, due to the inherent complexity in defining large-scale problems and evaluating them using simulation, our approach was only applicable to limited scale, i.e. microscopic design problems, and allowed fixed simulation resolution only, where for instance detection of collisions between traffic participants, was dependant on discrete-time resolution.  
+%To describe, evaluate and compare integrated transportation system design options systematically, we previously introduced an approach for modeling integrated intelligent transportation system properties using a formal foundation. However, due to the inherent complexity in defining large-scale problems and evaluating them using simulation, our approach was only applicable to limited scale, i.e. microscopic design problems, and allowed fixed simulation resolution only, where for instance detection of collisions between traffic participants, was dependant on discrete-time resolution.  
+
+Key Question: Formalization of events, minimum set of states, proposal
 
 In this work, we improve upon our previous approach by employing Discrete Event Simulation (DES), which helps reduce simulation complexity significantly, thereby allowing one to now model and evaluate microscopic to macroscopic design problems using our proposed design abstraction. This is achieved by focusing on relevant events impacting the design problem at hand only, thereby reducing modeling effort, while omitting unimportant details negatively impacting simulation performance. In this work, we therefore introduce our approach and describe relevant events. 
-\vspace{-2mm}
 % Showing validity of proposed approach, discussion of validity with respect to real-world phenomena, compared with other approaches from literature, i.e. differences 
 
-\subsection{Structure}
+%TODO Merge Structure and Contribution
+%\subsection{Structure}
 %In the following, we first present related work on transportation system design and test in Section~\ref{sec:related}.
 In the following, we describe the underlying system theory of our approach in Section~\ref{sec:theory}.
 Then, in Section~\ref{sec:events}, we describe the events and decisions that must be considered for high-performance state computation using discrete event simulation. 
@@ -138,7 +142,7 @@ In the following, we explain the underlying system theory, which is based on~\ci
 Figure~\ref{fig:concepts} provides an overview of the model concepts, their properties, and their states.
 \begin{figure*}[t] 
 	\centering
-	\includegraphics[scale=0.35]{../../diagrams/model/classes-v0.png}
+	\includegraphics[scale=0.30]{../../diagrams/model/classes-v0.png}
 	\caption{Concepts in UML class diagram notation}
 	\label{fig:concepts}
 \end{figure*}
@@ -146,29 +150,39 @@ We use intersections $i \in I$ and segments $s \in S$ for describing the drive i
 Then, we use locations $l \in L$ and charging stations $cs \in CS$ for describing the charge infrastructure.
 Furthermore, we use locations $l$ and vehicles $v \in V$ for describing the transportation capacities.
 Finally, we use location-times $lt \in LT$ and demands $d \in D$ for describing the transportation loads.
-In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints. We describe intersections and segments in Section \ref{sec:intersections-segments}, locations and location-times in Section \ref{sec:locations-locationtimes}, as well as, finally, charging stations, demands and vehicles in Section \ref{sec:chargingstations-demands-vehicles}.
+In the following, we describe each concept in more detail including its static (i.e.\ time-independent) properties and dynamic (i.e.\ time-dependent) states as well as simple constraints. We describe intersections, segments and locations in Section \ref{sec:intersections-segments}, as well as, finally, charging stations, demands and vehicles in Section \ref{sec:chargingstations-demands-vehicles}.
+
+%TODO state, dynamic, action, constraints? 
+
 \vspace{-2mm}
-
-\subsection{Intersections and Segments}
+% TODO Location-Times
+\subsection{Intersections, Segments and Locations}
 \label{sec:intersections-segments}
-In this Section, we subsequenly describe intersections as well as segments of the transportation infrastructure. These concepts are visualized in Figure \ref{fig:intersections-segments}.
+In this Section, we subsequenly describe intersections and segments of the transportation infrastructure as well as locations. These concepts are visualized in Figure \ref{fig:intersections-segments}.
 
+% TODO Figure for Location, Location on Segment, Distance on Segment
 \begin{figure}
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.3\textwidth}
 		\centering
 		\includegraphics[scale=0.4]{../../concepts/intersection.png}
 		\caption{Intersection}
 		\label{fig:intersection}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{.3\textwidth}
 		\centering
 		\includegraphics[scale=0.4]{../../concepts/segment.png}
 		\caption{Segment}
 		\label{fig:segment}
 	\end{subfigure}
 	\hfill
-	\caption{Intersections and Segments}
+		\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[scale=0.4]{../../concepts/segment.png}
+		\caption{Location}
+		\label{fig:location}
+	\end{subfigure}
+	\caption{Intersections, Segments and Locations}
 	\label{fig:intersections-segments}	
 \end{figure}
 \vspace{4mm}
@@ -197,9 +211,9 @@ Mathematically, segments can be described as elements $s = (i_s, i_t) \in I \tim
 \end{itemize}
 \vspace{-2mm}
 
-\subsection{Locations and Location-Times}
-\label{sec:locations-locationtimes}	
-In this Section, we subsequently describe locations and location-times on the transportation infrastructure.
+%\subsection{Locations and Location-Times}
+%\label{sec:locations-locationtimes}	
+%In this Section, we subsequently describe locations and location-times on the transportation infrastructure.
 
 \vspace{4mm}
 \noindent
@@ -208,13 +222,13 @@ represent an auxiliary concept and define dedicated positions on the transportat
 Each location must define a segment and a travelled distance on that segment.
 Mathematically, locations can be described as elements $(s, d) \in S \times \mathbb{R}_0^+ = L$ with segment $s$ and distance $d$ such that $d \leq P_{S.L}(s)$.
 
-\vspace{4mm}
-\noindent
-\textbf{Location-times}
- also represent an auxiliary concept and define dedicated positions on the transportation infrastructure at particular time points.
-Each location-time must define a corresponding location and the desired time point.
-Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{T} = LT$ with location $l$ and time point $t$.
-\vspace{-2mm}
+%\vspace{4mm}
+%\noindent
+%\textbf{Location-times}
+% also represent an auxiliary concept and define dedicated positions on the transportation infrastructure at particular time points.
+%Each location-time must define a corresponding location and the desired time point.
+%Mathematically, location-times can be described as elements $(l, t) \in L \times \mathbb{T} = LT$ with location $l$ and time point $t$.
+%\vspace{-2mm}
 
 \noindent
 \subsection{Charging Stations, Demands and Vehicles}
@@ -226,21 +240,21 @@ In this Section, we subsquently describe charging stations, demands as well as v
 	\hfill
 	\begin{subfigure}{.3\textwidth}
 		\centering
-		\includegraphics[scale=0.3]{../../concepts/charge-station.png}
+		\includegraphics[scale=0.25]{../../concepts/charge-station.png}
 		\caption{Charging Station}
 		\label{fig:charging-station}	
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{.3\textwidth}
 		\centering
-		\includegraphics[scale=0.5]{../../concepts/demand.png}
+		\includegraphics[scale=0.4]{../../concepts/demand.png}
 		\caption{Demand}
 		\label{fig:demand}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}{.3\textwidth}
 		\centering
-		\includegraphics[scale=0.7]{../../concepts/vehicle.png}
+		\includegraphics[scale=0.6]{../../concepts/vehicle.png}
 		\caption{Vehicle}
 		\label{fig:vehicle}	
 	\end{subfigure}
@@ -252,53 +266,64 @@ In this Section, we subsquently describe charging stations, demands as well as v
 \noindent
 \textbf{Charging Stations} (see Figure \ref{fig:charging-station})
 define the charging infrastructure for vehicles to refill their batteries.
-Each charging station must define a location and a maximum charge speed.
-Mathematically, charging stations can be described as elements $cs \in CS$ with static property functions
+%Each charging station must define a location and a maximum charge speed.
+Charging stations $cs \in CS$ define the following static property functions $P_{CS}$:
 \begin{itemize}
-	\item location $P_{CS.L}: CS \rightarrow L$ and
+	\item location $P_{CS.L}: CS \rightarrow L$, and
 	\item maximum charge speed $P_{CS.MCS}: CS \rightarrow \mathbb{R}^+$.
 \end{itemize}
-Furthermore, the dynamic state of charging stations comprises the current vehicles and the current charge speed.
-Mathematically, the state of charging stations $cs$ can be described using dynamic state functions with corresponding simple functional relations
+%Furthermore, the dynamic state of charging stations comprises the current vehicles and the current charge speed.
+%Mathematically, the state of charging stations $cs$ can be described using dynamic state functions with corresponding simple functional relations
+In addition, computer simulations typically sample the following dynamic state functions $S_{CS}$ for charging stations $cs \in CS$:
+%TODO Empty vehicle description
 \begin{itemize}
-	\item current vehicle $S_{CS.CV}: CS \times \mathbb{T} \rightarrow V \cup \{\perp\}$, and
+	\item current vehicle $S_{CS.CV}: CS \times \mathbb{T} \rightarrow V \cup \{\perp\}$, with $\perp$ representing no vehicle assigned, and
 	\item current charge speed $S_{CS.CCS}: CS \times \mathbb{T} \rightarrow \mathbb{R}^+$ such that the value is smaller than or equal to the maximum charge speed of the charging station, i.e.\ $\forall t \in \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$.
 \end{itemize}
 
 \vspace{2mm}
 \noindent
 \textbf{Demands} (see Figure \ref{fig:demand})
- define the transportation loads that temporarily consume the transportation capacities.
-Each demand must define a size, a pick-up location, a drop-off location, an earliest pick-up time, and a latest drop-off time.
-Mathematically, demands can be described as elements $d \in D$ with static property functions such that
+ define the transportation loads that temporarily consume the transportation capacities. Each demand $d \in D$ defines the following static property functions $P_D$:
+%Each demand must define a size, a pick-up location, a drop-off location, an earliest pick-up time, and a latest drop-off time.
+%Mathematically, demands can be described as elements $d \in D$ with static property functions such that
 
 \begin{itemize}
 	\item size $P_{D.S}: D \rightarrow \mathbb{R}^+$,
 	\item pick-up location and earliest time $P_{D.PULT}: D \rightarrow LT$ with $P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT})$, and
 	\item drop-off location and latest time $P_{D.DOLT}: D \rightarrow LT$ with $P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT})$ such that the pick-up location is different from the drop-off location, i.e.\ $l_d^{PULT} \neq l_d^{DOLT}$, and the earliest pick-up time is before the latest drop-off time, i.e.\ $t_d^{PULT} < t_d^{DOLT}$.
 \end{itemize}
-Furthermore, the dynamic state of demands comprises the current vehicle and the current location.
-Mathematically, the state of demands $d$ can be described using dynamic state functions with corresponding simple functional relations such that
+In addition, computer simulations typically sample the following dynamic state functions $S_{D}$ for demands $d \in D$:
+% of demands comprises the current vehicle and the current location.
+%Mathematically, the state of demands $d$ can be described using dynamic state functions with corresponding simple functional relations such that
 \begin{itemize}
 	\item current vehicle $S_{D.CV}: D \times \mathbb{T} \rightarrow V \cup \{\perp\}$, and
 	\item current location $S_{D.CL}: D \times \mathbb{T} \rightarrow L$.
 \end{itemize}
+
+% TODO Note that currently we do not consider a time delay in assignment/loading
+
 \vspace{2mm}
 \noindent
 \textbf{Vehicles} (see Figure \ref{fig:vehicle})
- define the transportation capacities available on the transportation infrastructure.
-Each vehicle must define a maximum battery level, a maximum demand level, a maximum drive speed, and a maximum charge speed, an initial location, and an initial battery level.
-Mathematically, vehicles can be described as elements $v \in V$ with static property functions
+ define the transportation capacities available on the transportation infrastructure. Each vehicle $v \in V$ must define the following static property functions $P_V$:
+ %Each vehicle must define a maximum battery level, a maximum demand level, a maximum drive speed, and a maximum charge speed, an initial location, and an initial battery level.
+%Mathematically, vehicles can be described as elements $v \in V$ with static property functions
 \begin{itemize}
+	\item length $P_{V.L}: V \rightarrow \mathbb{R}_0^+$
+	\item width $P_{V.W}: V \rightarrow \mathbb{R}_0^+$  
 	\item maximum battery level $P_{V.MBL}: V \rightarrow \mathbb{R}^+$,
 	\item maximum demand level $P_{V.MDL}: V \rightarrow \mathbb{R}^+$,
 	\item maximum drive speed $P_{V.MDS}: V \rightarrow \mathbb{R}^+$,
 	\item maximum charge speed $P_{V.MCS}: V \rightarrow \mathbb{R}^+$,
 	\item initial location $P_{V.IL}: V \rightarrow L$, and
-	\item initial battery level $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$ such that that the value is greater than or equal to the minimum battery level and lower than or equal to the maximum battery level of the vehicle, i.e.\ $0. \leq P_{V.IBL}(v) \leq P_{V.MBL}(v)$,
+	\item initial battery level $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$ such that that the value is greater than or equal to the minimum battery level and lower than or equal to the maximum battery level of the vehicle, i.e.\ $0 \leq P_{V.IBL}(v) \leq P_{V.MBL}(v)$,
 \end{itemize}
-Furthermore, the dynamic state of vehicles comprises the current location, the current demands, the current demand level, the current charging station, the current battery level, the current drive speed, and the current charge speed.
-Mathematically, the state of vehicles $v$ can be described using dynamic state functions with corresponding simple functional relations
+In addition, computer simulations typically sample the following dynamic state functions $S_{V}$ for vehicles $v \in V$:
+%Furthermore, the dynamic state of vehicles comprises the current location, the current demands, the current demand level, the current charging station, the current battery level, the current drive speed, and the current charge speed.
+%Mathematically, the state of vehicles $v$ can be described using dynamic state functions with corresponding simple functional relations
+
+% TODO Informal Descriptions of constraints
 \begin{itemize}
 	\item current demands $S_{V.CD}: V \times \mathbb{T} \rightarrow \mathbb{P}(D)$,
 	\item current charging station $S_{V.CCS}: V \times \mathbb{T} \rightarrow CS \cup \{\perp\}$ such that, if the current charging station of the vehicle is not empty, the current vehicles of the charging station include the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: cs = S_{V.CSS}(v,t): cs \neq \perp \Leftrightarrow v \in S_{CS.CV}(cs,t)$,
@@ -319,52 +344,49 @@ Mathematically, the state of vehicles $v$ can be described using dynamic state f
 	%\item (ACTION!) current charge speed $S_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
 	% Note: $\forall (v,t) \in V \times \mathbb{T}?
 \end{itemize}
-
-% TODO GGF. STREICHEN
-% TODO GGF. STREICHEN
-% Fokus auf Eventbeschreibung
 \noindent
-In addition, vehicles define dynamic action functions (which only limit the time domain), such that
 
-\begin{itemize}
-	\item charge-start $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
-	% TODO Location Time instead of Location
-	\item charge-end $A_{V.CE}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
-	\item pick-up $A_{V.DPU}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location and pick-up time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{PULT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
-	% Note replace with pickup event? 
-	% Note: (not asked if not enough demand capacity left)
-	% Note: Versus current location of domains
-	\item drop-off $A_{V.DDO}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand drop-off location and drop-off time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{DOLT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
-		% Note some redundancy with Pick-up
-		% TODO
-	\item route $A_{V.R}: V \times \mathbb{T} \rightarrow S$ only defined ...
-	% Note: Route vs. current target segment
-	\item drive speed $A_{V.DS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle has a location $\forall (v,t) \in V \times \mathbb{T}: \exists (l, t) \in L \times \mathbb{T} \wedge l = (s, d) \in S \times \mathbb{R}_0^+: S_{V.CL}(v) = LT(l) \wedge d \leq P_{S.L}(s)$ and such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: A_{V.DS}(v,t) \leq P_{V.MDS}(v)$.
-		\item current charge speed $A_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: A_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
-	% Note: $\forall (v,t) \in V \times \mathbb{T}?
-	% TODO Check	
-	
+% Fokus auf Eventbeschreibung
+%In addition, each vehicle $v \in V$ defines dynamic action functions $A_V$ as follows:
+%
+%\begin{itemize}
+%	\item charge-start $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
+%	% TODO Location Time instead of Location
+%	\item charge-end $A_{V.CE}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.CL}(v, t)$
+%	\item pick-up $A_{V.DPU}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location and pick-up time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{PULT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
+%	% Note replace with pickup event? 
+%	% Note: (not asked if not enough demand capacity left)
+%	% Note: Versus current location of domains
+%	\item drop-off $A_{V.DDO}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand drop-off location and drop-off time is after earliest pickup time and before latest drop-off time $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D \wedge  P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}): l_d^{DOLT} = S_{V.CL}(v,t) \wedge t_d^{PULT} \leq t \leq t_d^{DOLT}$
+%		% Note some redundancy with Pick-up
+%		% TODO
+%	\item route $A_{V.R}: V \times \mathbb{T} \rightarrow S$ only defined ...
+%	% Note: Route vs. current target segment
+%	\item drive speed $A_{V.DS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle has a location $\forall (v,t) \in V \times \mathbb{T}: \exists (l, t) \in L \times \mathbb{T} \wedge l = (s, d) \in S \times \mathbb{R}_0^+: S_{V.CL}(v) = LT(l) \wedge d \leq P_{S.L}(s)$ and such that the value is smaller than or equal to the maximum drive speed of the vehicle, i.e.\ $\forall t \in \mathbb{T}: A_{V.DS}(v,t) \leq P_{V.MDS}(v)$.
+%		\item current charge speed $A_{V.CCS}: S \times \mathbb{T}$ such that the value is smaller than or equal to the maximum charge speed of the vehicle, i.e.\ $\forall (v,t) \in V \times \mathbb{T}: A_{V.CCS}(v,t) \leq P_{V.MCS}(v)$.
+%	% Note: $\forall (v,t) \in V \times \mathbb{T}?
+%	% TODO Check	
+%	\item Charge speed $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.L}(v)$
+%\end{itemize}
 
-	
-	\item Charge speed $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.L}(v)$
-\end{itemize}
-Then, for vehicles dynamic constraint functions we consider the following:
-\begin{itemize}
+% TODO Inline Definition von Constraints
+
+%In addition, we define dynamic constraint functions for vehicles $v \in V$ as follows. %Then, for vehicles dynamic constraint functions we consider the following:
+%\begin{itemize}
 	% TODO Collisions
-	\item collisions TODO
-	\item target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
+	%\item collisions TODO 
+	% TODO Rework Target Segment not in List of outgoing segments without actions
+	%\item target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
 	% Set P of outgoing edges
 	% TODO \wedge Outgoing(i_t) = {P(i_t) | s' \in S} \and  \exists i_t, \exists i_t' \mathrm{such that} s' = (i_t, i_t')$
 	% Note TODO "outgoing" function is not defined yet
-	
-	\item higher drive speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$
-	\item higher drive speed than allowed by the segment $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S: S_{V.CDS}(v,t) \leq P_{S.MDS}(s)$
-	% Note: Notation: Segments vs. States!
-	\item higher charge speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$
-	\item higher charge speed than allowed by the charging station $\forall (cs,t) \in CS \times \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$
-	% Note: Changed to: than allowed by segment to cs, a
-	% Cover: cs,ccs<cs,mcs AND v,ccs<v,mcs, AND PLUS v,ccs<cs,mcs?
-\end{itemize}
+	% time t on segment 1, previous time t', teilen keine punkte und intersections, 
+
+	%\item higher drive speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CDS}(v,t) \leq P_{V.MDS}(v)$
+	%\item higher drive speed than allowed by the segment $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S: S_{V.CDS}(v,t) \leq P_{S.MDS}(s)$
+	%\item higher charge speed than supported by the vehicle $\forall (v,t) \in V \times \mathbb{T}: S_{V.CCS}(v,t) \leq P_{V.MCS}(v)$
+	%\item higher charge speed than allowed by the charging station $\forall (cs,t) \in CS \times \mathbb{T}: S_{CS.CCS}(cs,t) \leq P_{CS.MCS}(cs)$
+%\end{itemize}
 \vspace{-2mm}
 
 \section{Discrete events}
@@ -474,8 +496,10 @@ This Section describes demand events which occur based on demand appearance or v
 
 
 \noindent
-\textbf{Demand appears} (see Figure \ref{fig:demand-appears}) occurs...
-
+%TODO demand is assigned to vehicle
+% TODO Rework
+\textbf{Demand appears} (see Figure \ref{fig:demand-appears}) 
+occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$, such that the demand $d$ at time $t$ has an assigned current vehicle $v$, i.e. $S_{D.CV}(d, t) = v$, and such that the demand $d$ is contained in the set of vehicles $v$ current demands, i.e. $S_{V.CD}(v, t) = \{d \in D \mid S_{D.CV}(d, t) = v\}  \cup \{d\}$.
 \vspace{4mm}
 
 \noindent
@@ -536,6 +560,10 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such th
 \textbf{Vehicle battery becomes full}
 occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t) = P_{V.MBL}(v)$, and for all previous times $t' \in T$ with $t' < t$, where the current battery level of vehicle $v$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t') = P_{V.MBL}(v)$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ does not equal the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t'') \neq P_{V.MBL}(v)$.
 
+% TODO Section Headings rework, e.g. charge speed, drive speed
+%\subsection{Speed Events}
+%Adapt existing section headings
+
 %\begin{figure}[htbp]
 %	\centering
 %	\missingfigure[figwidth=88mm]{Vehicle battery empty}
@@ -548,7 +576,8 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such th
 
 \section{Conclusion and Outlook}
 \label{sec:con}
-TODO
+In this work, we proposed a simulation environment for transportation system design, which is based on a formal system theory. For this, we presented necessary static properties, dynamic state functions, constraints as well as events describing the design space of our simulation environment in the scope of mobility-on-demand problems. The environment allows for reduction of simulation complexity using DES by focusing on relevant events impacting the design problem at hand only, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling and simulation effort.
+%Future work
 \vspace{-2mm}
 
 \bibliographystyle{plain}
