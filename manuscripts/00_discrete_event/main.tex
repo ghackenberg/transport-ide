@@ -45,12 +45,16 @@
 
  \title*{\textbf{TransportIDE} -- An integrated transportation system design and simulation environment}
 \titlerunning{TransportIDE} 
+%\author{Anonymous Author and Anonymous Author}
 \author{Dominik Ascher and Georg Hackenberg}
 % Use \authorrunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
 \institute{Dominik Ascher \at Distributed Artificial Intelligence Laboratory, Faculty of Electrical Engineering and Computer Science, Technical University of Berlin, 10587 Berlin, Germany, \email{ascher@tu-berlin.de}
 	\and Georg Hackenberg \at School of Engineering, University of Applied Sciences Upper Austria, 4600 Wels, Austria,
 	\email{georg.hackenberg@fh-wels.at}}
+%\institute{Anonymous Author \at Space reserved for author affiliation
+%\and Anonymous Author \at Space reserved for author affiliation
+%}
 %
 % Use the package "url.sty" to avoid
 % problems with special characters
@@ -187,7 +191,6 @@ In this Section, we subsequenly describe intersections and segments of the trans
 	\caption{Intersections, segments and locations.}
 	\label{fig:intersections-segments}	
 \end{figure}
-\vspace{4mm}
 
 \noindent
 \textbf{Intersections} (see Figure \ref{fig:intersection})
@@ -236,8 +239,6 @@ Mathematically, \textit{locations} can be described as elements $(s, d) \in S \t
 \subsection{Charging Stations, Demands and Vehicles}
 \label{sec:chargingstations-demands-vehicles}	
 In this Section, we subsquently describe charging stations, demands as well as vehicles. These concepts are visualized in Figure \ref{fig:chargingstations-demands-vehicles}.
-\vspace{4mm}
-
 \begin{figure}
 	\hfill
 	\begin{subfigure}{.3\textwidth}
@@ -372,16 +373,13 @@ In addition, computer simulations typically sample the following dynamic state f
 %	\item Charge speed $A_{V.CS}: V \times \mathbb{T} \rightarrow \mathbb{R}$ only defined if vehicle is at charging station $\forall (v,t) \in V \times \mathbb{T}: \exists cs \in CS: P_{CS.L}(cs) = S_{V.L}(v)$
 %\end{itemize}
 
-% TODO Inline Definition von Constraints
 
 %In addition, we define dynamic constraint functions for vehicles $v \in V$ as follows. %Then, for vehicles dynamic constraint functions we consider the following:
 %\begin{itemize}
-	% TODO Collisions
 	%\item collisions TODO 
-	% TODO Rework Target Segment not in List of outgoing segments without actions
 	%\item target segment not in list of outgoing segments of intersection $\forall (v,t) \in V \times \mathbb{T}: \exists s \in S \wedge s = (i_s, i_t) \in I \times I: A_{V.R}(v, t) \in Outgoing(i_t)$
 	% Set P of outgoing edges
-	% TODO \wedge Outgoing(i_t) = {P(i_t) | s' \in S} \and  \exists i_t, \exists i_t' \mathrm{such that} s' = (i_t, i_t')$
+	%  \wedge Outgoing(i_t) = {P(i_t) | s' \in S} \and  \exists i_t, \exists i_t' \mathrm{such that} s' = (i_t, i_t')$
 	% Note TODO "outgoing" function is not defined yet
 	% time t on segment 1, previous time t', teilen keine punkte und intersections, 
 
@@ -399,9 +397,8 @@ Based on the system theory in terms of static property as well as dynamic state 
 
 \subsection{Routing Events}
 \label{sec:routing-events}
-This Section describes routing events which occur based on vehicle positioning at the start or at the end of segments, and which are visualized in Figure \ref{fig:routing-events}. We describe these events subsequently.
+This Section subsequently describes routing events which occur based on vehicle positioning at the start or the end of segments, and which are visualized in Figure \ref{fig:routing-events}. 
 
-\vspace{4mm}
 \begin{figure}
 	\centering
 	\begin{subfigure}{.45\textwidth}
@@ -433,8 +430,7 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a l
 \subsection{Driving and Overtaking Events}
 \label{sec:overtaking-events}
 
-This Section describes driving and overtaking events which occur based on the positioning between multiple vehicles, and where the latter are visualized in Figure \ref{fig:overtaking-events}, and which we describe subsquently.
-\vspace{4mm}
+This Section subsequently describes driving and overtaking events which occur between multiple vehicles, where former are visualized in Figure \ref{fig:overtaking-events}.
 
 \begin{figure}
 	\centering
@@ -461,21 +457,26 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ with cu
 
 \noindent
 \textbf{Faster vehicle front at slower vehicle back} (see Figure \ref{fig:faster-vehicle-front-at-slower-vehicle-back})
-occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$ 
-(TODO)
-%TODO
+occurs at time $t \in T$ if and only if there exists a faster vehicle $v_{f} \in V$ as well as a slower vehicle $v_{s} \in V$, such that 
+\begin{enumerate}
+\item the current drive speed of the faster vehicle $v_{f}$ at time $t$ is greater than the current drive speed of the slower vehicle $v_{s}$, i.e. $ S_{V.CDS}(v_{f},t) > S_{V.CDS}(v_{s},t)$, and
+\item the locations of the vehicles at time $t$, i.e. $S_{V.CL}(v_{f},t) = (s_{vf}, d_{vf})$ and  $S_{V.CL}(v_{s},t) = (s_{vs}, d_{vs})$ are such that the segments $s_{vf}, s_{vs}$ of both faster and slower vehicle match, and the travelled distance of the faster vehicle plus the faster vehicles half-length equals the travelled distance of the slower vehicle minus the slower vehicles half-length, i.e. $d_{vf} + \frac{P_{V.L}(v_{vf})}{2} = d_{vs} - \frac{P_{V.L}(v_{vs})}{2}$.
+\end{enumerate}
 \vspace{4mm}
 
 \noindent
 \textbf{Slower vehicle front at faster vehicle back} (see Figure \ref{fig:slower-vehicle-front-at-faster-vehicle-back})
-occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$ (TODO)
-%TODO
+occurs at time $t \in T$ if and only if there exists a faster vehicle $v_{f} \in V$ as well as a slower vehicle $v_{s} \in V$, such that 
+\begin{enumerate}
+	\item the current drive speed of the faster vehicle $v_{f}$ at time $t$ is greater than the current drive speed of the slower vehicle $v_{s}$, i.e. $ S_{V.CDS}(v_{f},t) > S_{V.CDS}(v_{s},t)$, and
+	\item the locations of the vehicles at time $t$, i.e. $S_{V.CL}(v_{f},t) = (s_{vf}, d_{vf})$ and  $S_{V.CL}(v_{s},t) = (s_{vs}, d_{vs})$ are such that the segments $s_{vf}, s_{vs}$ of both faster and slower vehicle match, and the travelled distance of the faster vehicle minus the faster vehicles half-length equals the travelled distance of the slower vehicle plus the slower vehicles half-length, i.e. $d_{vf} - \frac{P_{V.L}(v_{vf})}{2} = d_{vs} + \frac{P_{V.L}(v_{vs})}{2}$.
+\end{enumerate}
 \vspace{-2mm}
 
 \subsection{Demand Events}
 \label{sec:demand-events}
 This Section describes demand events which occur based on demand appearance or vehicle positioning at demand pick-up or demand drop-off locations, which are visualized in Figure \ref{fig:demand-events}, and which we describe subsequently.
-\vspace{4mm}
+
 \begin{figure}
 	\begin{subfigure}{.32\textwidth}
 		\centering
@@ -502,7 +503,6 @@ This Section describes demand events which occur based on demand appearance or v
 	\label{fig:demand-events}	
 \end{figure}
 
-
 \noindent
 \textbf{Demand appears} (see Figure \ref{fig:demand-appears}) 
 occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$, such that the demand $d$ at time $t$ doesn't have an assigned current vehicle $v$, i.e. $S_{D.CV}(d, t) = \{\perp\}$, and such that the demands appear time $P_{D.AT}$ equals the current time $t$, i.e. $P_{D.AT} = t$.
@@ -513,21 +513,16 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a d
 \textbf{Vehicle arrives at demand pick-up location} (see Figure \ref{fig:vehicle-at-demand-pick-up}) 
 occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand pick-up location $l_d^{PULT}$, such that the vehicle $v$ at time $t$ is at demand pick-up location, i.e. $S_{V.CL}(v, t) = l_d^{PULT}$, and for all previous times $t' \in T$ with $t' < t$ where vehicle $v$ was at location $l_d^{PULT}$, i.e. $S_{V.CL}(v, t') = l_d^{PULT}$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l_d^{PULT}$, i.e. $S_{V.CL}(v, t'') \neq l_d^{PULT}$.
 
-%For the event of a vehicle being located at a demand pick-up location, we consider a vehicle $\exists v \in V$ at time $t \in T$, such that 
-%$E_{V.DPU}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D, \exists t \in T: P_{D.PULT}(d) = (l_d^{PULT},t_d^{PULT}) \wedge l_d^{PULT} = S_{V.CL}(v,t)$
-
 \vspace{4mm}
 
 \noindent
 \textbf{Vehicle arrives at demand drop-off location} (see Figure \ref{fig:vehicle-at-demand-drop-off})
 occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand drop-off location $l_d^{DOLT}$, such that the vehicle $v$ at time $t$ is at demand drop-off location, i.e. $S_{V.CL}(v, t) = l_d^{DOLT}$, and for all previous times $t' \in T$ with $t' < t$ where vehicle $v$ was at location $l_d^{DOLT}$, i.e. $S_{V.CL}(v, t') = l_d^{DOLT}$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l_d^{DOLT}$, i.e. $S_{V.CL}(v, t'') \neq l_d^{DOLT}$.
 
-%For the event of a vehicle being located at a demand drop-off location, we consider a vehicle $\exists v \in V$ at time $t \in T$, such that 
-%$E_{V.DDO}: V \times \mathbb{T} \rightarrow \mathbb{B}$ only defined if vehicle is at demand pick-up location $\forall (v,t) \in V \times \mathbb{T}: \exists d \in D, \exists t \in T: P_{D.DOLT}(d) = (l_d^{DOLT},t_d^{DOLT}) \wedge l_d^{DOLT} = S_{V.CL}(v,t)$
 \vspace{-2mm}
 
 \subsection{Charging Events}
-This Section describes charging events which occur based on vehicle positioning at charging stations or based on their charge speed. We describe these events subsequently.
+This Section subsequently describes charging events which occur based on vehicle positioning at charging stations or based on their charge speed. 
 
 \vspace{4mm}
 
@@ -575,10 +570,10 @@ occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such th
 \section{Conclusion and Outlook}
 \label{sec:con}
 %we proposed a simulation environment for transportation system design, which is based on a formal system theory. For this, 
-In this work, we presented a formalization of essential static properties, dynamic state functions, as well as events concisely describing transportation system design space in the scope of emerging transportation paradigms such as autonomous vehicles, demand-responsive transport and the transportation electrification. Our proposed formalization allows for reduction of simulation complexity by focusing on relevant events impacting the design problem at hand only, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling as well as simulation effort. In addition, the provided formalization of system theory and discrete events serves as an interface for deriving well-defined system structure as well as efficient control strategies. Future work includes demonstration as well as approach application for deriving control strategies based on our proposed formalization.
+In this work, we presented a formalization of essential static properties, dynamic state functions, as well as events concisely describing transportation system design space in the scope of emerging transportation paradigms such as autonomous vehicles, demand-responsive transport and the transportation electrification. Our proposed formalization allows for reduction of simulation complexity by focusing on relevant events impacting the design problem at hand only, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling as well as simulation effort. In addition, the provided formalization of system theory and discrete events serves as an interface for deriving well-defined system structure and efficient control strategies. Future work includes demonstration as well as approach application for deriving control strategies based on our proposed formalization.
 
 %Future work
-\newpage
+\vspace{-2mm}
 
 \bibliographystyle{plain}
 \bibliography{main}
