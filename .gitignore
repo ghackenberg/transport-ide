@@ -21,7 +21,11 @@ manuscripts/*/*.bbl
 manuscripts/*/*.blg
 manuscripts/*/*.fdb_latexmk
 manuscripts/*/*.fls
+manuscripts/*/*.idx
+manuscripts/*/*.ilg
+manuscripts/*/*.ind
 manuscripts/*/*.log
 manuscripts/*/*.out
 manuscripts/*/*.pdf
 manuscripts/*/*.synctex.gz
+manuscripts/*/*.thm

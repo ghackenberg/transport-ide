@@ -1,0 +1,49 @@
+classDiagram
+    direction LR
+
+    class Intersection {
+        +Latitude: Double
+        +Longitude: Double
+        +Elevation: Double
+    }
+    class Segment {
+        +Width: Double
+        +MaximumDriveSpeed: Double
+        +Length() Double
+    }
+    class Location {
+        +Distance: Double
+    }
+    class ChargingStation {
+        +MaximumChargeSpeed: Double
+        -CurrentChargeSpeed: Double
+    }
+    class Vehicle {
+        +Width: Double
+        +Length: Double
+        +MaximumDemandLevel: Double
+        +MaximumBatteryLevel: Double
+        +MaximumDriveSpeed: Double
+        +MaximumChargeSpeed: Double
+        +InitialBatteryLevel: Double
+        -CurrentBatteryLevel: Double
+        -CurrentDriveSpeed: Double
+    }
+    class Demand {
+        +Size: Double
+        +AppearTime: Double
+        +EarliestPickupTime: Double
+        +LatestDropoffTime: Double
+    }
+    
+    ChargingStation --> "1" Location:+Location
+    ChargingStation --> "0..1" Vehicle:-CurrentVehicle
+    Vehicle --> "1" Location:+InitialLocation
+    Vehicle --> "1" Location:-CurrentLocation
+    Demand --> "1" Location:+PickupLocation
+    Demand --> "1" Location:+DropoffLocation
+    Demand --> "1" Location:-CurrentLocation
+    Demand --> "0..1" Vehicle:-CurrentVehicle
+    Segment <-- "1" Location:+Segment
+    Intersection <-- "1" Segment:+SourceIntersection
+    Intersection <-- "1" Segment:+TargetIntersection
