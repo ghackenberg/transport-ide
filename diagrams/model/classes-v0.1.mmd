@@ -2,29 +2,21 @@ classDiagram
     direction LR
 
     class Intersection {
-        +Latitude: Double
-        +Longitude: Double
-        +Elevation: Double
+        +Coordinate: Vector
     }
     class Segment {
-        +Width: Double
-        +MaximumDriveSpeed: Double
         +Length() Double
     }
     class Location {
         +Distance: Double
     }
     class ChargingStation {
-        +MaximumChargeSpeed: Double
         -CurrentChargeSpeed: Double
     }
     class Vehicle {
         +Width: Double
         +Length: Double
-        +MaximumDemandLevel: Double
         +MaximumBatteryLevel: Double
-        +MaximumDriveSpeed: Double
-        +MaximumChargeSpeed: Double
         +InitialBatteryLevel: Double
         -CurrentBatteryLevel: Double
         -CurrentDriveSpeed: Double

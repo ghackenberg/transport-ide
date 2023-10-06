@@ -19,7 +19,7 @@
 
 \begin{document}
 
-\title*{A discrete event formalism for fast and accurate transportation system simulation}
+\title*{A discrete event formalism for fast simulation of on-demand transportation systems}
 
 \author{Dominik Ascher and Georg Hackenberg}
 
@@ -83,9 +83,9 @@ Finally, in Section~\ref{sec:con}, we conclude with a short discussion of our ap
 \section{System theory}
 \label{sec:theory}
 
-In the following, we explain the underlying system theory, which is based on our approach for integrated transportation system design, for which we refer to previous work~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}.
+In the following, we explain the underlying system theory, which is based on our approach for integrated transportation system design (see~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}).
 We extend and improve upon this approach in this work, where the system theory presented in this work is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states for establishing sound models and control strategies for transportation systems.
-These static properties, static calculations, and dynamic states serve as a foundation for further abstraction and reduction of system simulation complexity using discrete events, for which we refer to Section \ref{sec:events}.
+These static properties, static calculations, and dynamic states serve as a foundation for further abstraction and reduction of system simulation complexity using discrete events, for which we refer to Section~\ref{sec:events}.
 
 \begin{figure}[htbp]
 	\centering
@@ -94,12 +94,12 @@ These static properties, static calculations, and dynamic states serve as a foun
 	\label{fig:concepts}
 \end{figure}
 
-Figure~\ref{fig:concepts} provides an overview of the model concepts, their properties, their calculations, and their states.
-Here, we use intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
-Then, based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the provided charging infrastructure.
+Figure~\ref{fig:concepts} provides an overview of the proposed discrete event formalism.
+We use intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
+Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure.
 In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. 
 Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
-In the following, we describe each concept in more detail including their static (i.e.\ time-independent) properties as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations.
+In the following, we describe each concept in more detail including their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations.
 We describe intersections, segments and locations in Section \ref{sec:intersections-segments}, and charging stations, demands as well as vehicles in Section \ref{sec:chargingstations-demands-vehicles}.
 
 \subsection{Intersections, segments and locations}
@@ -108,27 +108,25 @@ We describe intersections, segments and locations in Section \ref{sec:intersecti
 In this Section, we describe intersections and segments of the transportation infrastructure as well as locations. These concepts are visualized in Figure \ref{fig:intersections-segments}.
 
 \begin{figure}[htbp]
-	\begin{subfigure}{.3\textwidth}
+	\centering
+	\begin{subfigure}{.2\textwidth}
 		\centering
 		\includegraphics[scale=0.4]{../../concepts/intersection.png}
 		\caption{Intersection}
 		\label{fig:intersection}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}{.3\textwidth}
+	\begin{subfigure}{.35\textwidth}
 		\centering
 		\includegraphics[scale=0.4]{../../concepts/segment.png}
 		\caption{Segment}
 		\label{fig:segment}
 	\end{subfigure}
-	\hfill
-		\begin{subfigure}{.3\textwidth}
+	\begin{subfigure}{.35\textwidth}
 		\centering
 		\includegraphics[scale=0.4]{../../concepts/location.png}
 		\caption{Location}
 		\label{fig:location}
 	\end{subfigure}
-    \hfill
 	\caption{Intersections, segments and locations.}
 	\label{fig:intersections-segments}	
 \end{figure}
@@ -146,12 +144,7 @@ Each segment must define a source and a target intersection, which represent the
 The length of the segment can be computed from the coordinates of the source and the target intersection.
 Additionally, each segment must define a width and a maximum drive speed.
 Mathematically, \textit{segments} can be described as elements $s = (i_s, i_t) \in I \times I = S$ with source intersection $i_s \in I$ and target intersection $i_t \in I$, such that the source intersection $i_s$ is not equal to the target intersection $i_t$, i.e.\ $i_s \neq i_t$.
-Then, we define the following static property functions $P_{S}$:
-\begin{itemize}
-	\item $P_{S.W}: S \rightarrow \mathbb{R}^+$ represents the width $w = P_{S.W}(s)$ of segment $s$ in coordinate system units, and
-	\item $P_{S.MDS}: S \rightarrow \mathbb{R}^+$ represents the maximum drive speed $mds = P_{S.MDS}(s)$ of segment $s$ in coordinate system units per time unit.
-\end{itemize}
-Based on the static property functions $P_S$ we define the following static calculation functions $C_{S}$:
+Then, we define the following static calculation functions $C_{S}$:
 \begin{itemize}
 	\item $C_{S.L}: S \rightarrow \mathbb{R}_0^+$ represents the length $l = P_{S.L}(s)$ of segment $s$ in coordinate system units, such that the length $l$ equals to the Euclidean distance between the coordinate $c_s = P_{I.C}(i_s)$ of source intersection $i_s = P_{S.SI}(s)$ and coordinate $c_t = P_{I.C}(i_t)$ of target intersection $i_t = P_{S.TI}(s)$, i.e.\ $l = |c_t - c_s|$.
 \end{itemize}
@@ -166,28 +159,25 @@ Mathematically, \textit{locations} can be described as elements $l = (s, d) \in 
 In this Section, we describe charging stations, demands as well as vehicles. These concepts are visualized in Figure \ref{fig:chargingstations-demands-vehicles}.
 
 \begin{figure}[htbp]
-	\hfill
-	\begin{subfigure}{.3\textwidth}
+	\centering
+	\begin{subfigure}{.35\textwidth}
 		\centering
-		\includegraphics[scale=0.25]{../../concepts/charge-station.png}
+		\includegraphics[scale=0.3]{../../concepts/charge-station.png}
 		\caption{Charging station}
 		\label{fig:charging-station}	
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}{.3\textwidth}
+	\begin{subfigure}{.35\textwidth}
 		\centering
-		\includegraphics[scale=0.4]{../../concepts/demand.png}
+		\includegraphics[scale=0.5]{../../concepts/demand.png}
 		\caption{Demand}
 		\label{fig:demand}
 	\end{subfigure}
-	\hfill
-	\begin{subfigure}{.3\textwidth}
+	\begin{subfigure}{.2\textwidth}
 		\centering
-		\includegraphics[scale=0.6]{../../concepts/vehicle.png}
+		\includegraphics[scale=0.5]{../../concepts/vehicle.png}
 		\caption{Vehicle}
 		\label{fig:vehicle}	
 	\end{subfigure}
-
 	\caption{Charging stations, demands and vehicles.}
 	\label{fig:chargingstations-demands-vehicles}	
 \end{figure}
@@ -196,8 +186,7 @@ In this Section, we describe charging stations, demands as well as vehicles. The
 \noindent \textbf{Charging stations} (see Figure \ref{fig:charging-station}) define locations on the transportation infrastructure, where vehicles can refill their batteries.
 Mathematically, \textit{charging stations} can be described as elements $cs \in CS$ with the following static property functions $P_{CS}$:
 \begin{itemize}
-	\item $P_{CS.L}: CS \rightarrow L$ represents the location $l = P_{CS.L}(cs)$ of charging station $cs$, and
-	\item $P_{CS.MCS}: CS \rightarrow \mathbb{R}^+$ represents the maximum charge speed $mcs = P_{CS.MCS}(cs)$ of charging station $cs$ in battery size units per time unit.
+	\item $P_{CS.L}: CS \rightarrow L$ represents the location $l = P_{CS.L}(cs)$ of charging station $cs$.
 \end{itemize}
 For charging stations, computer simulations typically sample the following dynamic state functions $S_{CS}$:
 \begin{itemize}
@@ -225,36 +214,32 @@ For demands, computer simulations typically sample the following dynamic state f
 Mathematically, \textit{vehicles} can be described as elements $v \in V$ with the following static property functions $P_{V}$:
 \begin{itemize}
 	\item $P_{V.L}: V \rightarrow \mathbb{R}_0^+$ represents the length $l = P_{V.L}(v)$ of vehicle $v$ in coordinate system units,
-	\item $P_{V.W}: V \rightarrow \mathbb{R}_0^+$ represents the width $w = P_{V.W}(v)$ of vehicle $v$ in coordinate system units,
-	\item $P_{V.MDL}: V \rightarrow \mathbb{R}^+$ represents the maximum demand level $mdl = P_{V.MDL}(v)$ of vehicle $v$ in demand size units,
 	\item $P_{V.MBL}: V \rightarrow \mathbb{R}^+$ represents the maximum battery level $mbl = P_{V.MBL}(v)$ of vehicle $v$ in battery size units,
-	\item $P_{V.MDS}: V \rightarrow \mathbb{R}^+$ represents the maximum drive speed $mds = P_{V.MDS}(v)$ of vehicle $v$ in coordinate system units per time units,
-	\item $P_{V.MCS}: V \rightarrow \mathbb{R}^+$ represents the maximum charge speed $mcs = P_{V.MCS}(v)$ of vehicle $v$ in battery size units per time units,
-	\item $P_{V.IL}: V \rightarrow L$ represents the initial location $il = P_{V.IL}(v)$ of vehicle $v$, and
-	\item $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$ represents the initial battery level $ibl = P_{V.IBL}(v)$ of vehicle $v$ in battery size units, such that the initial battery level $ibl$ is smaller than or equal to the maximum battery level $mbl$, i.e.\ $ibl \leq mbl$.
+	\item $P_{V.IBL}: V \rightarrow \mathbb{R}_0^+$ represents the initial battery level $ibl = P_{V.IBL}(v)$ of vehicle $v$ in battery size units, such that the initial battery level $ibl$ is smaller than or equal to the maximum battery level $mbl$, i.e.\ $ibl \leq mbl$, and
+	\item $P_{V.IL}: V \rightarrow L$ represents the initial location $il = P_{V.IL}(v)$ of vehicle $v$.
 \end{itemize}
 For vehicles, computer simulations typically sample the following dynamic state functions $S_{V}$:
 \begin{itemize}
-	\item $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ represents the current location $cl = S_{V.CL}(v, t)$ of vehicle $v$ at time $t$,
-	\item $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current battery level $cbl = S_{V.CBL}(v, t)$ of vehicle $v$ at time $t$ in battery size units, such that the current battery level $cbl$ is smaller than or equal to the maximum batter level $mbl$, i.e.\ $cbl \leq mbl$, and
+	\item $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current battery level $cbl = S_{V.CBL}(v, t)$ of vehicle $v$ at time $t$ in battery size units, such that the current battery level $cbl$ is smaller than or equal to the maximum batter level $mbl$, i.e.\ $cbl \leq mbl$,
+	\item $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ represents the current location $cl = S_{V.CL}(v, t)$ of vehicle $v$ at time $t$, and
 	\item $S_{V.CDS}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current drive speed $cds = S_{V.CDS}(v, t)$ of vehicle $v$ at time $t$ in coordinate system units per time unit, such that the current drive speed $cds$ is smaller than or equal to the maximum drive speed $mds$, i.e.\ $cds \leq mds$.
 \end{itemize}
 
 \section{Discrete events}
 \label{sec:events}
 
-Based on the system theory from Section~\ref{sec:theory} we introduce our discerete event formalism.
-In our formalism, we distinguish between location events (see Section~\ref{sec:location-events}), demand events (see Section~\ref{sec:demand-events}), speed events (see Section~\ref{sec:speed-events}) and battery events (see Section~\ref{sec:battery-events}).
+Based on the system theory from Section~\ref{sec:theory} we introduce our discrete event formalism including location events (see Section~\ref{sec:location-events}), demand events (see Section~\ref{sec:demand-events}), speed events (see Section~\ref{sec:speed-events}) and battery events (see Section~\ref{sec:battery-events}).
 
 \subsection{Location events}
 \label{sec:location-events}
 
-TODO
+Location events trigger when the current vehicle locations satisfy certain conditions and comprise vehicle-intersection location events (see Section~\ref{sec:intersection-location-event}), vehicle-charging station location events (see Section~\ref{sec:charging-station-location-events}), vehicle-demand location events (see Section~\ref{sec:demand-location-events}), as well as vehicle-vehicle location events (see Section~\ref{sec:vehicle-location-events}).
 
 \subsubsection{Vehicle-intersection location events}
 \label{sec:intersection-location-event}
 
-This section describes routing events, which occur based on vehicle positioning at the start or the end of segments, and which are visualized in Figure \ref{fig:routing-events}. 
+Vehicle-intersection location events occur, when vehicles arrive or depart at intersections (see Figure \ref{fig:routing-events}).
+These events have been included in the formalism, because vehicles need to make routing decisions when arriving at intersections.
 
 \begin{figure}[htbp]
 	\centering
@@ -275,10 +260,10 @@ This section describes routing events, which occur based on vehicle positioning 
 \end{figure}
 
 %\vspace{2mm}
-\noindent \textbf{Vehicle arrives at intersection} (see Figure \ref{fig:vehicle-at-intersection-before}) occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$, and the traveled distance $d$ on segment $s$ equals the length of the segment $s$, i.e. $P_{S.L}(s) = d$.
+\noindent \textbf{Vehicle arrives at intersection} (see Figure \ref{fig:vehicle-at-intersection-before}) occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$, and the traveled distance $d$ on segment $s$ equals the length of the segment $s$, i.e. $P_{S.L}(s) = d$.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle departs at intersection} (see Figure \ref{fig:vehicle-at-intersection-after}) occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$, and the traveled distance $d$ on segment $s$ is zero, i.e. $d = 0$.
+\noindent \textbf{Vehicle departs at intersection} (see Figure \ref{fig:vehicle-at-intersection-after}) occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a location $(s,d) \in L$ with segment $s \in S$ and traveled distance $d \in \mathbb{R}_0^+$ such that the vehicle $v$ at time $t$ is at location $(s,d)$, i.e. $S_{V.CL}(v,t) = (s,d)$, and the traveled distance $d$ on segment $s$ is zero, i.e. $d = 0$.
 
 \vspace{2mm}
 \noindent \textit{Note that each vehicle arrives at intersection event occurs concurrently with a follow-up vehicle departs at intersection event.}
@@ -286,15 +271,17 @@ This section describes routing events, which occur based on vehicle positioning 
 \subsection{Vehicle-charging station location events}
 \label{sec:charging-station-location-events}
 
-TODO
+Vehicle-charging station events occur, when vehicles arrive at charging stations.
+These events have been included in the formalism, because vehicles need to make charging decisions when arriving at charging stations. 
 
 \vspace{2mm}
-\noindent \textbf{Vehicle arrives at charging station} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a charging station $cs \in CS$ with location $l = P_{CS.L}(cs)$, such that the vehicle $v$ at time $t$ is at location $l$, i.e. $S_{V.CL}(v, t) = l$, and for all previous times $t' \in T$ with $t' < t$ where vehicle $v$ was at location $l$, i.e. $S_{V.CL}(v, t') = l$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l$, i.e. $S_{V.CL}(v, t'') \neq l$.
+\noindent \textbf{Vehicle arrives at charging station} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a charging station $cs \in CS$ with location $l = P_{CS.L}(cs)$, such that the vehicle $v$ at time $t$ is at location $l$, i.e. $S_{V.CL}(v, t) = l$, and for all previous times $t' \in \mathbb{T}$ with $t' < t$ where vehicle $v$ was at location $l$, i.e. $S_{V.CL}(v, t') = l$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l$, i.e. $S_{V.CL}(v, t'') \neq l$.
 
 \subsubsection{Vehicle-demand location events}
 \label{sec:demand-location-events}
 
-TODO
+Vehicle-demand location events occur, when vehicles arrive at demand pick-up and drop-off locations (see Figure~\ref{fig:demand-events}).
+These events have been included in the formalism, because vehicles need to make demand pick-up decisions and perform drop-offs.
 
 \begin{figure}[htbp]
     \centering
@@ -315,15 +302,16 @@ TODO
 \end{figure}
 
 %\vspace{2mm}
-\noindent \textbf{Vehicle arrives at demand pick-up location} (see Figure \ref{fig:vehicle-at-demand-pick-up}) occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand pick-up location $l_d^{PULT}$, such that the vehicle $v$ at time $t$ is at demand pick-up location, i.e. $S_{V.CL}(v, t) = l_d^{PULT}$, and for all previous times $t' \in T$ with $t' < t$ where vehicle $v$ was at location $l_d^{PULT}$, i.e. $S_{V.CL}(v, t') = l_d^{PULT}$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l_d^{PULT}$, i.e. $S_{V.CL}(v, t'') \neq l_d^{PULT}$.
+\noindent \textbf{Vehicle arrives at demand pick-up location} (see Figure \ref{fig:vehicle-at-demand-pick-up}) occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand pick-up location $pl = P_{D.PL}(d)$, such that the vehicle $v$ at time $t$ is at demand pick-up location $pl$, i.e. $S_{V.CL}(v, t) = pl$, and for all previous times $t' \in \mathbb{T}$ with $t' < t$ where vehicle $v$ was at demand pickup location $pl$, i.e. $S_{V.CL}(v, t') = pl$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that vehicle $v$ was not at demand pick-up location $pl$, i.e. $S_{V.CL}(v, t'') \neq pl$.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle arrives at demand drop-off location} (see Figure \ref{fig:vehicle-at-demand-drop-off}) occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand drop-off location $l_d^{DOLT}$, such that the vehicle $v$ at time $t$ is at demand drop-off location, i.e. $S_{V.CL}(v, t) = l_d^{DOLT}$, and for all previous times $t' \in T$ with $t' < t$ where vehicle $v$ was at location $l_d^{DOLT}$, i.e. $S_{V.CL}(v, t') = l_d^{DOLT}$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that vehicle $v$ was not at location $l_d^{DOLT}$, i.e. $S_{V.CL}(v, t'') \neq l_d^{DOLT}$.
+\noindent \textbf{Vehicle arrives at demand drop-off location} (see Figure \ref{fig:vehicle-at-demand-drop-off}) occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$ with demand drop-off location $dl = P_{D.DL}(d)$, such that the vehicle $v$ at time $t$ is at demand drop-off location $dl$, i.e. $S_{V.CL}(v, t) = dl$, and for all previous times $t' \in \mathbb{T}$ with $t' < t$ where vehicle $v$ was at demand drop-off location $dl$, i.e. $S_{V.CL}(v, t') = dl$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that vehicle $v$ was not at demand drop-off location $dl$, i.e. $S_{V.CL}(v, t'') \neq dl$.
 
 \subsubsection{Vehicle-vehicle location events}
 \label{sec:vehicle-location-events}
 
-This section subsequently describes driving and overtaking events which occur between multiple vehicles, where former are visualized in Figure \ref{fig:overtaking-events}.
+Vehicle-vehicle location events occur, when a vehicle starts and finishes overtaking another vehicle (see Figure~\ref{fig:overtaking-events}).
+These events have been included in the formalism, because there needs to be enough space for vehicles overtaking each other. 
 
 \begin{figure}[htbp]
 	\centering
@@ -344,56 +332,52 @@ This section subsequently describes driving and overtaking events which occur be
 \end{figure}
 
 %\vspace{2mm}
-\noindent \textbf{Faster vehicle arrives at slower vehicle} (see Figure \ref{fig:faster-vehicle-front-at-slower-vehicle-back}) occurs at time $t \in T$ if and only if there exists a faster vehicle $v_{f} \in V$ as well as a slower vehicle $v_{s} \in V$, such that 
-\begin{enumerate}
-    \item the current drive speed of the faster vehicle $v_{f}$ at time $t$ is greater than the current drive speed of the slower vehicle $v_{s}$, i.e. $ S_{V.CDS}(v_{f},t) > S_{V.CDS}(v_{s},t)$, and
-    \item the locations of the vehicles at time $t$, i.e. $S_{V.CL}(v_{f},t) = (s_{vf}, d_{vf})$ and  $S_{V.CL}(v_{s},t) = (s_{vs}, d_{vs})$ are such that the segments $s_{vf}, s_{vs}$ of both faster and slower vehicle match, and the travelled distance of the faster vehicle plus the faster vehicles half-length equals the travelled distance of the slower vehicle minus the slower vehicles half-length, i.e. $d_{vf} + \frac{P_{V.L}(v_{vf})}{2} = d_{vs} - \frac{P_{V.L}(v_{vs})}{2}$.
-\end{enumerate}
+\noindent \textbf{Faster vehicle arrives at slower vehicle} (see Figure \ref{fig:faster-vehicle-front-at-slower-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ plus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals to the distance $d_s$ minus have the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f + l_f / 2 = d_s - l_s / 2$.
 
-\noindent \textbf{Faster vehicle departs at slower vehicle} (see Figure \ref{fig:slower-vehicle-front-at-faster-vehicle-back}) occurs at time $t \in T$ if and only if there exists a faster vehicle $v_{f} \in V$ as well as a slower vehicle $v_{s} \in V$, such that 
-\begin{enumerate}
-	\item the current drive speed of the faster vehicle $v_{f}$ at time $t$ is greater than the current drive speed of the slower vehicle $v_{s}$, i.e. $ S_{V.CDS}(v_{f},t) > S_{V.CDS}(v_{s},t)$, and
-	\item the locations of the vehicles at time $t$, i.e. $S_{V.CL}(v_{f},t) = (s_{vf}, d_{vf})$ and  $S_{V.CL}(v_{s},t) = (s_{vs}, d_{vs})$ are such that the segments $s_{vf}, s_{vs}$ of both faster and slower vehicle match, and the travelled distance of the faster vehicle minus the faster vehicles half-length equals the travelled distance of the slower vehicle plus the slower vehicles half-length, i.e. $d_{vf} - \frac{P_{V.L}(v_{vf})}{2} = d_{vs} + \frac{P_{V.L}(v_{vs})}{2}$.
-\end{enumerate}
+\vspace{2mm}
+\noindent \textbf{Faster vehicle departs at slower vehicle} (see Figure \ref{fig:slower-vehicle-front-at-faster-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ minus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals to the distance $d_s$ plus have the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f - l_f / 2 = d_s + l_s / 2$.
 
 \subsection{Demand events}
 \label{sec:demand-events}
 
-This section describes demand events which occur based on demand appearance or vehicle positioning at demand pick-up or demand drop-off locations, which are visualized in Figure \ref{fig:demand-events}, and which we describe subsequently.
+Demand events occur, when the information about demands appear in the computer simulation.
+This event has been included in the formalism, because when information about demands appear the vehicles can change their behavior.
 
 \vspace{2mm}
-\noindent \textbf{Demand appears} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$, such that the demand $d$ at time $t$ doesn't have an assigned current vehicle $v$, i.e. $S_{D.CV}(d, t) = \{\perp\}$, and such that the demands appear time $P_{D.AT}$ equals the current time $t$, i.e. $P_{D.AT} = t$.
+\noindent \textbf{Demand appears} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$, such that the demand $d$ at time $t$ doesn't have an assigned current vehicle $v$, i.e. $S_{D.CV}(d, t) = \{\perp\}$, and such that the demands appear time $P_{D.AT}$ equals the current time $t$, i.e. $P_{D.AT} = t$.
 
 \subsection{Speed events}
 \label{sec:speed-events}
 
-TODO
+Speed events occur, when vehicles change their driving and charging speeds.
+These events have been included in the formalism, because drive speeds influence overtaking behaviors and charging speeds influence electric loads.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle drive speed changes} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ with current drive speed $S_{V.CDS}(v, t)$, such that for all previous times $t' \in T$ with $t' < t$, where the current drive speed $S_{V.CDS}(v,t')$ of vehicle $v$ at time $t'$ was identical, i.e. $S_{V.CDS}(v,t') = S_{V.CDS}(v,t)$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that the current drive speed $S_{V.CDS}(v,t'')$ of vehicle $v$ at time $t''$ is different, i.e. $S_{V.CDS}(v,t'') \neq S_{V.CDS}(v,t)$.
+\noindent \textbf{Vehicle drive speed changes} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ with current drive speed $S_{V.CDS}(v, t)$, such that for all previous times $t' \in \mathbb{T}$ with $t' < t$, where the current drive speed $S_{V.CDS}(v,t')$ of vehicle $v$ at time $t'$ was identical, i.e. $S_{V.CDS}(v,t') = S_{V.CDS}(v,t)$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that the current drive speed $S_{V.CDS}(v,t'')$ of vehicle $v$ at time $t''$ is different, i.e. $S_{V.CDS}(v,t'') \neq S_{V.CDS}(v,t)$.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle charge speed changes} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ with current charge speed $S_{V.CCS}(v, t)$, such that for all previous times $t' \in T$ with $t' < t$, where the current charge speed $S_{V.CCS}(v,t')$ of vehicle $v$ at time $t'$ was identical, i.e. $S_{V.CCS}(v,t') = S_{V.CCS}(v,t)$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that the current charge speed $S_{V.CCS}(v,t'')$ of vehicle $v$ at time $t''$ is different, i.e. $S_{V.CCS}(v,t'') \neq S_{V.CCS}(v,t)$.
+\noindent \textbf{Vehicle charge speed changes} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ with current charge speed $S_{V.CCS}(v, t)$, such that for all previous times $t' \in \mathbb{T}$ with $t' < t$, where the current charge speed $S_{V.CCS}(v,t')$ of vehicle $v$ at time $t'$ was identical, i.e. $S_{V.CCS}(v,t') = S_{V.CCS}(v,t)$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that the current charge speed $S_{V.CCS}(v,t'')$ of vehicle $v$ at time $t''$ is different, i.e. $S_{V.CCS}(v,t'') \neq S_{V.CCS}(v,t)$.
 
 
 \subsection{Battery events}
 \label{sec:battery-events}
 
-This section describes battery events which occur based on vehicle battery level. We describe these events subsequently.
+Battery events occur, when the vehicle batteries are either empty or full.
+These events have been included in the formalism, because when empty vehicles stop driving and when full vehicles stop charging.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle battery becomes empty} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ is zero, i.e. $S_{V.CBL}(v,t) = 0$ and for all previous times $t' \in T$ with $t' < t$, where the current battery level of vehicle $v$ was zero, i.e. $S_{V.CBL}(v,t') = 0$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ was not zero, i.e. $S_{V.CBL}(v,t'') \neq 0$.
+\noindent \textbf{Vehicle battery becomes empty} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ is zero, i.e. $S_{V.CBL}(v,t) = 0$ and for all previous times $t' \in \mathbb{T}$ with $t' < t$, where the current battery level of vehicle $v$ was zero, i.e. $S_{V.CBL}(v,t') = 0$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ was not zero, i.e. $S_{V.CBL}(v,t'') \neq 0$.
 
 \vspace{2mm}
-\noindent \textbf{Vehicle battery becomes full} occurs at time $t \in T$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t) = P_{V.MBL}(v)$, and for all previous times $t' \in T$ with $t' < t$, where the current battery level of vehicle $v$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t') = P_{V.MBL}(v)$, there exists an intermediate time $t'' \in T$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ does not equal the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t'') \neq P_{V.MBL}(v)$.
+\noindent \textbf{Vehicle battery becomes full} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t) = P_{V.MBL}(v)$, and for all previous times $t' \in \mathbb{T}$ with $t' < t$, where the current battery level of vehicle $v$ equals the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t') = P_{V.MBL}(v)$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ does not equal the maximum battery level of vehicle $v$, i.e. $S_{V.CBL}(v,t'') \neq P_{V.MBL}(v)$.
 
-\section{Conclusion and outlook}
+\section{Conclusion}
 \label{sec:con}
 
-In this work, we presented a formalization of essential static properties, dynamic state functions, as well as events concisely describing transportation system design space in the scope of emerging transportation paradigms such as autonomous vehicles, demand-responsive transport and the transportation electrification.
-Our proposed formalization allows for reduction of simulation complexity by focusing on relevant events impacting the design problem at hand only, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling and simulation effort.
-In addition, the provided formalization of system theory and discrete events serves as an interface for deriving well-defined system structure and efficient control strategies.
-Future work includes demonstration as well as approach application for deriving control strategies based on our proposed formalization.
+In this work, we presented a discrete event formalism for fast simulation of on-demand transportation systems.
+The approach works well, when cars are assumed to drive with constant speed most of the time because states can be omitted.
+This assumption obviously limits the validity of the model, because in reality car speeds are never constant.
+However, we believe that this simplification provides sufficient validity for use cases such as transportation system and control strategy design.
 
 \bibliographystyle{plain}
 \bibliography{main}
