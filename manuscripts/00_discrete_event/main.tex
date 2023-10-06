@@ -74,7 +74,7 @@ Therefore, we consider it important to assess the following research question: W
 \subsection{Contribution}
 
 To address this situation, in this work, we provide a description and formalization of a concise and essential set of static system properties, dynamic state functions as well as discrete events, which help reduce simulation complexity significantly. 
-This is achieved by focusing on relevant events impacting the design problem at hand only, thereby reducing modeling effort and omitting unimportant details negatively impacting simulation performance, while providing a well-defined notation and interface for deriving sound system design structure and efficient control strategies. In summary, we provide the following contributions:
+This is achieved by focusing on relevant events impacting the design problem at hand only, while reducing modeling effort and omitting unimportant details negatively impacting simulation performance, providing a well-defined notation and interface for deriving sound system design structure and efficient control strategies. In summary, we provide the following contributions:
 
 In Section~\ref{sec:theory} we provide a formalization of the underlying system theory of our approach, which focuses on definition of a concise and essential set of static properties and dynamic states for establishing models of transportation systems in the context of autonomous vehicles, demand responsive transport and the transportation electrification.
 Then, in Section~\ref{sec:events}, based on introduced system theory, we provide a formalization of discrete events for determining decisions that must be considered for high-performance state computation, where event-based formalization supports abstraction and complexity reduction of system simulation, and can be utilized for deriving well-defined and efficient control strategies. 
@@ -150,7 +150,7 @@ Then, we define the following static calculation functions $C_{S}$:
 \end{itemize}
 
 \noindent \textbf{Locations} (see Figure~\ref{fig:location}) define charging station, demand, and vehicle positions on the transportation infrastructure.
-Each location must define a segment and a travelled distance on that segment.
+Each location must define a segment and a traveled distance on that segment.
 Mathematically, \textit{locations} can be described as elements $l = (s, d) \in S \times \mathbb{R}_0^+ = L$ with segment $s$ and distance $d$ in coordinate system units, such that the distance $d$ is less than or equal to the length $l = C_{S.L}(s)$ of segment $s$, i.e.\ $d \leq l$.
 
 \subsection{Charging stations, demands and vehicles}
@@ -220,7 +220,7 @@ Mathematically, \textit{vehicles} can be described as elements $v \in V$ with th
 \end{itemize}
 For vehicles, computer simulations typically sample the following dynamic state functions $S_{V}$:
 \begin{itemize}
-	\item $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current battery level $cbl = S_{V.CBL}(v, t)$ of vehicle $v$ at time $t$ in battery size units, such that the current battery level $cbl$ is smaller than or equal to the maximum batter level $mbl$, i.e.\ $cbl \leq mbl$,
+	\item $S_{V.CBL}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current battery level $cbl = S_{V.CBL}(v, t)$ of vehicle $v$ at time $t$ in battery size units, such that the current battery level $cbl$ is smaller than or equal to the maximum battery level $mbl$, i.e.\ $cbl \leq mbl$,
 	\item $S_{V.CL}: V \times \mathbb{T} \rightarrow L$ represents the current location $cl = S_{V.CL}(v, t)$ of vehicle $v$ at time $t$, and
 	\item $S_{V.CDS}: V \times \mathbb{T} \rightarrow \mathbb{R}_0^+$ represents the current drive speed $cds = S_{V.CDS}(v, t)$ of vehicle $v$ at time $t$ in coordinate system units per time unit, such that the current drive speed $cds$ is smaller than or equal to the maximum drive speed $mds$, i.e.\ $cds \leq mds$.
 \end{itemize}
@@ -332,16 +332,16 @@ These events have been included in the formalism, because there needs to be enou
 \end{figure}
 
 %\vspace{2mm}
-\noindent \textbf{Faster vehicle arrives at slower vehicle} (see Figure \ref{fig:faster-vehicle-front-at-slower-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ plus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals to the distance $d_s$ minus have the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f + l_f / 2 = d_s - l_s / 2$.
+\noindent \textbf{Faster vehicle arrives at slower vehicle} (see Figure \ref{fig:faster-vehicle-front-at-slower-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ plus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals the distance $d_s$ minus half the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f + l_f / 2 = d_s - l_s / 2$.
 
 \vspace{2mm}
-\noindent \textbf{Faster vehicle departs at slower vehicle} (see Figure \ref{fig:slower-vehicle-front-at-faster-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ minus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals to the distance $d_s$ plus have the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f - l_f / 2 = d_s + l_s / 2$.
+\noindent \textbf{Faster vehicle departs at slower vehicle} (see Figure \ref{fig:slower-vehicle-front-at-faster-vehicle-back}) occurs at time $t \in \mathbb{T}$ if and only if there exists a faster vehicle $v_{f} \in V$ and a slower vehicle $v_{s} \in V$ with current locations $(s_f, d_f) = S_{V.CL}(v_f, t)$ and $(s_s, d_s) = S_{V.CL}(v_s, t)$, such that the current driving speed of the faster vehicle $v_f$ is greater than the current driving speed of the slower vehicle $v_s$, i.e.\ $S_{V.CDS}(v_f, t) > S_{V.CDS}(v_s, t)$, the segment $s_f$ of the faster vehicle $v_f$ is equal to the segment $s_s$ of the slower vehicle $v_s$, i.e.\ $s_f = s_s$, and the distance $d_f$ minus half the vehicle length $l_f$ of the faster vehicle $v_f$ equals the distance $d_s$ plus half the vehicle length $l_s$ of the slower vehicle $v_s$, i.e.\ $d_f - l_f / 2 = d_s + l_s / 2$.
 
 \subsection{Demand events}
 \label{sec:demand-events}
 
-Demand events occur, when the information about demands appear in the computer simulation.
-This event has been included in the formalism, because when information about demands appear the vehicles can change their behavior.
+Demand events occur, when the information about demands appears in the computer simulation.
+This event has been included in the formalism, because when information about demands appears the vehicles can change their behavior.
 
 \vspace{2mm}
 \noindent \textbf{Demand appears} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ and a demand $d \in D$, such that the demand $d$ at time $t$ doesn't have an assigned current vehicle $v$, i.e. $S_{D.CV}(d, t) = \{\perp\}$, and such that the demands appear time $P_{D.AT}$ equals the current time $t$, i.e. $P_{D.AT} = t$.
@@ -363,7 +363,7 @@ These events have been included in the formalism, because drive speeds influence
 \label{sec:battery-events}
 
 Battery events occur, when the vehicle batteries are either empty or full.
-These events have been included in the formalism, because when empty vehicles stop driving and when full vehicles stop charging.
+These events have been included in the formalism, because vehicles with empty batteries stop driving and vehicles with full batteries stop charging.
 
 \vspace{2mm}
 \noindent \textbf{Vehicle battery becomes empty} occurs at time $t \in \mathbb{T}$ if and only if there exists a vehicle $v \in V$ such that the current battery level of vehicle $v$ at time $t$ is zero, i.e. $S_{V.CBL}(v,t) = 0$ and for all previous times $t' \in \mathbb{T}$ with $t' < t$, where the current battery level of vehicle $v$ was zero, i.e. $S_{V.CBL}(v,t') = 0$, there exists an intermediate time $t'' \in \mathbb{T}$ with $t' < t'' < t$, such that the current battery level of vehicle $v$ was not zero, i.e. $S_{V.CBL}(v,t'') \neq 0$.
