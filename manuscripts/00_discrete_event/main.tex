@@ -21,70 +21,66 @@
 
 \title*{A discrete event formalism for fast simulation of on-demand transportation systems}
 
+%\author{Anonymous Author and Anonymous Author}
 \author{Dominik Ascher and Georg Hackenberg}
 
-\institute{
-    Dominik Ascher
-    \at
-    Distributed Artificial Intelligence Laboratory, Faculty of Electrical Engineering and Computer Science, Technical University of Berlin, 10587 Berlin, Germany, \email{ascher@tu-berlin.de}
-    \and
-    Georg Hackenberg
-    \at
-    School of Engineering, University of Applied Sciences Upper Austria, 4600 Wels, Austria, \email{georg.hackenberg@fh-wels.at}
-}
+%\institute{
+%	Anonymous Author
+%	\at
+%	Reserved for author affiliation
+%	\and
+%	Anonymous Author
+%	\at
+%	Reserved for author affiliation
+%}
+
+%\institute{
+%    Dominik Ascher
+%    \at
+%    Distributed Artificial Intelligence Laboratory, Faculty of Electrical Engineering and Computer Science, Technical University of Berlin, 10587 Berlin, Germany, \email{ascher@tu-berlin.de}
+%    \and
+%    Georg Hackenberg
+%    \at
+%    School of Engineering, University of Applied Sciences Upper Austria, 4600 Wels, Austria, \email{georg.hackenberg@fh-wels.at}
+%}
 
 \maketitle
 
 \abstract{
-	The interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges with respect to establishing most efficient structures, infrastructures, as well as intelligent and integrated control strategies addressing new transportation paradigms such as autonomous vehicles, demand-responsive transport as well as the transportation electrification. Systematic methods for efficiently modeling, simulating and evaluating these systems are required, which are able to address aforementioned challenges.
+	The interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges with respect to establishing most efficient structures, infrastructures, as well as intelligent and integrated control strategies addressing new transportation paradigms such as autonomous vehicles, mobility-on-demand as well as the transportation electrification. Systematic methods for efficiently modeling, simulating and evaluating these systems are required, which are able to address aforementioned challenges.
 	For this, we present a formalization of essential static properties, dynamic state functions, as well as events concisely describing transportation system design space in the scope of emerging transportation paradigms. Our proposed formalization allows for reduction of simulation complexity by focusing on relevant events impacting the design problem at hand only, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling as well as simulation effort. In addition, the provided formalization of system theory and discrete events serves as an interface for deriving well-defined system structure as well as efficient control strategies. 
 }
 
 \section{Introduction}
 \label{sec:intro}
 
-Meeting sustainability goals and reducing carbon emissions \cite{sachs2019six} is a driving factor of the transformation of transportation systems towards their more efficient operation.
-In this, new and connected transportation paradigms such as autonomous vehicles, demand-responsive transport \cite{brake_demand_2004} as well as the transportation electrification \cite{pereirinha2018main} provide fundamental and, more significantly, conjoined drivers towards intelligent transportation systems (ITS) and services.
-However, the interconnection between intelligent transportation systems (ITS) and services poses fundamental challenges, in particular with respect to establishing most efficient structures, infrastructures, as well as intelligent and integrated control strategies.
-Quality assurance of these systems and services is a critical challenge as constituting systems and services form integrated system-of-systems with heterogeneous system requirements, goals, constraints and stakeholders, which need to be systematically addressed by integrated system design and control strategies.
-Therefore, systematic development methods for these challenges as well as these emerging domain paradigms are required.
+Emerging transportation paradigms such as autonomous vehicles \cite{hancock2019future}, mobility-on-demand \cite{atasoy2015concept} and the transportation electrification \cite{pereirinha2018main} are fundamental drivers for the increasing transformation of current transportation systems. As these paradigms are crucial for addressing 21st century challenges such as meeting sustainability goals and reducing carbon emissions \cite{sachs2019six}, their efficient integration, such as in the context of shared and autonomous vehicles \cite{narayanan2020shared}, represents a key challenge for establishing intelligent transportation systems (ITS) \cite{figueiredo2001towards}. To derive most efficient transportation system designs and control strategies for the latter, as well as to project relevant scenarios of utilizing them, wholistic and integrated systems engineering techniques for modeling and evaluating according system design options are required.
+Here, modeling and simulation based systems engineering \cite{gianni2014modeling} is widely used for tasks such as analysis, design and decision making with respect to systems engineering processes, where simulation aids projecting and obtaining information about system under design and environment behavior.
+However, as simulation complexity increases with the number and dimensionality of considered parameters, states and actions of modeled systems, simulation accuracy decreases with simplifying model assumptions as well as discretization of states and time, thereby limiting system model expresiveness or approximation accuracy, i.e. validity, to a defined level of abstraction.
+Here, Discrete-Event Simulation (DES) \cite{fishman2001discrete} represents a generic formalism, applicable to the considered integrated system problem incorporating aforementioned emerging transportation paradigms, which significantly reduces simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions through the use of events. For this, events are defined as functions over a systems trajectory of states, which precisely indicate when actions needs to be taken. 
 
 \subsection{Related work}
+In recent years, DES has seen increased research attention in the transportation domain, especially with respect to applications for autonomous vehicles, electric vehicles and their charging behavior, as well as shared mobility, and, finally, in contexts combining the former.
 
-To describe, evaluate and compare integrated transportation system design options systematically, we previously introduced an approach for modeling integrated intelligent transportation system properties which addresses scenarios such as vehicle-to-grid (V2G) interactions on both transportation and power systems \cite{Ascher2015}, \cite{Ascher2016} and electrified autonomous mobility-on-demand systems \cite{Ascher2017}.
-As simulation complexity increases with the number and dimensionality of states and actions of the modeled systems as well as decreasing sizes of fixed time discretization steps, our approach was limited to microscopic design problems with impeded simulation accuracy, where for instance detection of collision events between traffic participants was dependent on sufficiently small-time discretization and sampling steps.
-
-Discrete-event simulation (DES) represents an approach which significantly reduces simulation complexity by limiting number and dimensionality of actions, while abstracting from discrete-time resolutions.
-In recent years, DES has seen increased research attention in both transportation \cite{clemente2013discrete, fanti2017fleet} and power \cite{lebeau2013implementing, ferro2019predictive, lopez2021modeling} domains.
-For instance, Clemente et al.~\cite{clemente2013discrete} propose a discrete event simulation approach in the context of car sharing, where a fleet of vehicles is shared and utilized, i.e. driven and parked, by customers.
-However, compared to our scope, they do not model the interactions arising from autonomous electric vehicles in the scope of mobility-on-demand systems, such as demand responsive transport and interactions with a charging infrastructure.
-Lopez et al.~\cite{lopez2021modeling} model electric vehicle charging and derived hourly and weekly electricity demands using a DES-based model.
-They focus on modeling at home charging behavior of electric vehicles of private users, compared to our scope, which instead focuses on modeling both transportation and charging demands of fleets of shared autonomous electric vehicles.
-Finally, Li et al.~\cite{li2021simulation} model electric car sharing systems using a discrete-event simulation based approach. For this, they consider infrastructures such as charging stations and links, as well as electric vehicles and transport demands in their proposed model.
+For the transportation domain context in general (e.g. \cite{burghout2006discrete}), DES can be used to formalize the the behavior of vehicles in terms of their movements within any given infrastructure described by a transport network. Then, based on this, in applications of DES in a shared mobility context (e.g. \cite{clemente2013discrete}) a fleet of vehicles is shared and utilized among a set of passengers driving from origin, i.e. pick-up, to destination, i.e. drop-off, positions. Futhermore, in this context, autonomous vehicles may be incorporated, where a supply of autonomous vehicles covers the demands of passengers instead, thereby typically assuming the form of autonomous mobility-on-demand systems (e.g. \cite{jager2018multi, gurumurthy2021system}).
+Then, with respect to DES applied in the context of modeling electric vehicles and their charging behavior, existing approaches focus on describing behavior between electric vehicles and charging stations (e.g. \cite{lebeau2013implementing}), or on investigating home charging behavior of electric vehicles of private users (e.g.~\cite{lopez2021modeling}), or to assess interactions arising from electric vehicle charging on the power grid (e.g.  \cite{darabi2013event, ferro2019predictive}).
+Finally, in approaches where DES is applied in contexts combining the former concepts, i.e. where electric vehicles enable shared mobility services, electric vehicles are utilized by drivers through carsharing services (e.g. \cite{fanti2017fleet, hamroun2020modelling, li2021simulation}), where models aim to assess the combined interactions resulting from aforementioned concepts.
 
 \subsection{Problem statement}
 
-Current approaches for modeling, simulating and evaluating transportation system designs are not able to holistically address integrated system challenges.
-On the one hand side, transportation infrastructures and control algorithms need to be holistically evaluated, based on the heterogeneous systems they are composed of and the heterogeneous requirements they have to adhere to.
-On the other hand side, simulation complexity of integrated systems rises according to model complexity, such as employed discretization of time resolution, as well as number and dimensionality of system states and actions.
-While the approach of discrete event simulation is able to address latter problems, current modeling approaches for system design do not offer appropriate domain abstractions in terms of their provided structural and behavioral modeling capabilities to describe these systems on a required level of detail.
-In addition, the approaches do not offer support for evaluating heterogeneous application scenarios in terms of their configuration space for new transportation paradigms.
-Therefore, we consider it important to assess the following research question: Which set of essential system properties, dynamic state functions as well as events are necessary and relevant for describing integrated system problems in the context of emerging transportation paradigms such as autonomous vehicles, demand-responsive transport and the transportation electrification?
+Simulation complexity of integrated systems rises according to model complexity, such as number, dimensionality and discretization of system states and actions. While DES helps decreasing simulation complexity, current approaches for modeling, simulating and evaluating transportation system designs are not able to address integrated system problems holistically incorporating new transportation paradigms.
+Therefore, to establish concise models and efficient simulations of these integrated systems, we consider it crucial to determine a required set of essential system properties, dynamic state functions as well as events, which are necessary and relevant for describing integrated system problems in the context of emerging transportation paradigms such as autonomous vehicles, mobility-on-demand and the transportation electrification.
 
 \subsection{Contribution}
-
-To address this situation, in this work, we provide a description and formalization of a concise and essential set of static system properties, dynamic state functions as well as discrete events, which help reduce simulation complexity significantly. 
-This is achieved by focusing on relevant events impacting the design problem at hand only, while reducing modeling effort and omitting unimportant details negatively impacting simulation performance, providing a well-defined notation and interface for deriving sound system design structure and efficient control strategies. In summary, we provide the following contributions:
-
-In Section~\ref{sec:theory} we provide a formalization of the underlying system theory of our approach, which focuses on definition of a concise and essential set of static properties and dynamic states for establishing models of transportation systems in the context of autonomous vehicles, demand responsive transport and the transportation electrification.
-Then, in Section~\ref{sec:events}, based on introduced system theory, we provide a formalization of discrete events for determining decisions that must be considered for high-performance state computation, where event-based formalization supports abstraction and complexity reduction of system simulation, and can be utilized for deriving well-defined and efficient control strategies. 
-Finally, in Section~\ref{sec:con}, we conclude with a short discussion of our approach as well as its application for deriving system designs and control strategies, and provide an outlook on future work.
+To address this situation, in this work, we provide a discrete-event formalism for fast simulation of on-demand transportation systems.
+For this, in Section~\ref{sec:theory} we provide a formalization of the underlying system theory of our approach, which focuses on definition of a concise and essential set of static properties and dynamic states for establishing models of transportation systems in the context of autonomous vehicles, mobility-on-demand and the transportation electrification.
+Then, in Section~\ref{sec:events}, based on introduced system theory, we provide a formalization of discrete events for determining decisions that must be considered for high-performance state computation, where event-based formalization supports abstraction and complexity reduction of both system modeling and simulation, and can be utilized for deriving well-defined and efficient control strategies. 
+Finally, in Section~\ref{sec:con}, we conclude with a short discussion of our approach as well as its application for deriving system designs and control strategies, and provide an outlook.
 
 \section{System theory}
 \label{sec:theory}
 
-In the following, we explain the underlying system theory, which is based on our approach for integrated transportation system design (see~\cite{Ascher2014,Ascher2015,Ascher2016,Ascher2017}).
-We extend and improve upon this approach in this work, where the system theory presented in this work is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states for establishing sound models and control strategies for transportation systems.
+The system theory presented in this work is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states for establishing sound models and control strategies for on-demand transportation systems.
 These static properties, static calculations, and dynamic states serve as a foundation for further abstraction and reduction of system simulation complexity using discrete events, for which we refer to Section~\ref{sec:events}.
 
 \begin{figure}[htbp]
@@ -131,7 +127,8 @@ In this Section, we describe intersections and segments of the transportation in
 	\label{fig:intersections-segments}	
 \end{figure}
 
-%\vspace{2mm}
+\vspace{2mm}
+
 \noindent \textbf{Intersections} (see Figure \ref{fig:intersection}) define the routing points of the transportation infrastructure.
 Each intersection must have a coordinate in the corresponding reference coordinate system such as the three-dimensional Euclidean space.
 Mathematically, \textit{intersections} can be described as elements $i \in I$ with the following static property functions $P_{I}$:
@@ -374,11 +371,12 @@ These events have been included in the formalism, because vehicles with empty ba
 \section{Conclusion}
 \label{sec:con}
 
-In this work, we presented a discrete event formalism for fast simulation of on-demand transportation systems.
-The approach works well, when cars are assumed to drive with constant speed most of the time because states can be omitted.
-This assumption obviously limits the validity of the model, because in reality car speeds are never constant.
+In this work, we presented a discrete event formalism for fast simulation of on-demand transportation systems. Our proposed formalization allows for reduction of simulation complexity by defining domain relevant events impacting the design problem at hand, while omitting unimportant details negatively impacting simulation performance, thereby reducing both modeling as well as simulation effort. In addition, the provided formalization of system theory and discrete events serves as an interface for deriving well-defined system structure as well as efficient control strategies. 
+In terms of applicability and feasibility of the proposed approach, initial results show that it works well in scenarios, where cars are assumed to drive with constant speed most of the time as states can be omitted.
+This assumption currently limits the validity of the model, because in real world conditions, car speeds may not always be constant.
 However, we believe that this simplification provides sufficient validity for use cases such as transportation system and control strategy design.
 
+\newpage
 \bibliographystyle{plain}
 \bibliography{main}
 
