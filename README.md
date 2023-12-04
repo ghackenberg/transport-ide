@@ -1,13 +1,91 @@
 # TransportIDE
 
-The goal of **TransportIDE** is to make the life of *transportation infrastructure* and *control algorithm engineers* easier.
+The goal of **TransportIDE** is to make the life of *transportation infrastructure* and *control strategy engineers* easier.
 We believe that this engineering domain needs new tools and methodologies to develop better systems with higher performance in shorter time and at lower lifetime cost.
 In particular, we think that transportation system engineers must be supported better in
 
 1. analyzing requirements for specific application scenarios (e.g. travel time and energy consumption) as well as
 2. deriving, verifying, and validating principle solution variants (including transportation, charge, and maintenance infrastructure as well as control strategy).
 
-**TransportIDE** is an *open source software project* initiated by Dr. Georg Hackenberg, Professor for Industrial Informatics, School of Engineering, [University of Applied Sciences Upper Austria](https://fh-ooe.at/).
+**TransportIDE** is an *open source software project* initiated by Dr. Georg Hackenberg, Professor for Industrial Informatics, School of Engineering, [University of Applied Sciences Upper Austria](https://fh-ooe.at/) and Dominik Ascher, Research Associate, Distributed Artificial Intelligence Laboratory, [Technical University of Berlin](https://www.tu.berlin/).
+
+## Publications
+
+You can read more about our approach in the proceedings of the following conferences:
+
+- *ISDA 2023 (coming soon)*
+- *ITSC 2023 (coming soon)*
+- MT-ITS 2017
+- ITSC 2016
+- ICCVE 2015
+- ICCVE 2014
+
+### The passenger extension of the TRANSP-0 system design framework `@ MT-ITS 2017`
+
+Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8005676) or cite with our **BibTex entry**:
+
+```bibtex
+@inproceedings{ascher_hackenberg_2017,
+  author    = {Ascher, Dominik and Hackenberg, Georg},
+  booktitle = {2017 5th IEEE International Conference on Models and Technologies for Intelligent Transportation Systems (MT-ITS)},
+  title     = {The passenger extension of the TRANSP-0 system design framework},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {256-261},
+  doi       = {10.1109/MTITS.2017.8005676}
+}
+```
+
+###  The TRANSP-0 framework for integrated transportation and power system design `@ ITSC 2016`
+
+Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7795669) or cite with our **BibTex entry**:
+
+```bibtex
+@inproceedings{ascher_hackenberg_2016,
+  author    = {Ascher, Dominik and Hackenberg, Georg},
+  booktitle = {2016 IEEE 19th International Conference on Intelligent Transportation Systems (ITSC)},
+  title     = {The TRANSP-0 framework for integrated transportation and power system design},
+  year      = {2016},
+  volume    = {},
+  number    = {},
+  pages     = {945-952},
+  doi       = {10.1109/ITSC.2016.7795669}
+}
+```
+### Integrated transportation and power system modeling `@ ICCVE 2015`
+
+Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7447633) or cite with our **BibTex entry**:
+
+```bibtex
+@inproceedings{ascher_hackenberg_2015,
+  author    = {Ascher, Dominik and Hackenberg, Georg},
+  booktitle = {2015 International Conference on Connected Vehicles and Expo (ICCVE)},
+  title     = {Integrated transportation and power system modeling},
+  year      = {2015},
+  volume    = {},
+  number    = {},
+  pages     = {379-384},
+  doi       = {10.1109/ICCVE.2015.23}
+}
+```
+
+### Early estimation of multi-objective traffic flow `@ ICCVE 2014`
+
+Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7297511) or cite with our **BibTex entry**:
+
+```bibtex
+@inproceedings{ascher_hackenberg_2014,
+  author    = {Ascher, Dominik and Hackenberg, Georg},
+  booktitle = {2014 International Conference on Connected Vehicles and Expo (ICCVE)},
+  title     = {Early estimation of multi-objective traffic flow},
+  year      = {2014},
+  volume    = {},
+  number    = {},
+  pages     = {1056-1057},
+  doi       = {10.1109/ICCVE.2014.7297511}
+}
+```
 
 ## Screenshots
 
@@ -35,7 +113,7 @@ Infrastructure comparison allows one to evaluate system performance for a given 
 ## Requirements
 
 To build and run the project you need to following software packages:
-![Alt text](https://file%2B.vscode-resource.vscode-cdn.net/c%3A/Users/P28500/Desktop/Repositories/Forschung/transport-ide/diagrams/architecture.svg)
+
 - [OpenJDK](https://openjdk.org/) provides the Java compiler and runtime environment
 - [Apache Maven](https://maven.apache.org/) provides dependency and build management
 

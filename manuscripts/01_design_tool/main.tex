@@ -1,10 +1,11 @@
-\documentclass[11pt,twocolumn]{article}
+\documentclass[10pt,twocolumn]{article}
 
 \usepackage{graphicx}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
 
 \begin{document}
 
-\title{A next-generation design tool for intelligent transportation systems}
+\title{Next-generation design tools for intelligent transportation systems}
 \author{Dominik Ascher and Georg Hackenberg}
 \maketitle
 
@@ -15,35 +16,48 @@
 \section{Introduction}
 \label{sec:introduction}
 
-TODO~\cite{Ascher2014,Ascher2015,Ascher2016}
+TODO~\cite{ascher_hackenberg_2014,ascher_hackenberg_2015,ascher_hackenberg_2016,ascher_hackenberg_2017}
 
 \subsection{Research objective}
 
-TODO
+With our research, we want to help improve the efficiency and effectiveness of today's transportation systems.
+To achieve this goal, we work on methodologies for designing such systems and verifying their properties.
+Fundamentally, we promote a formal approach capturing the relevant design decisions and their relations.
+Furthermore, we integrate scenario-based simulation of system dynamics and evaluation of emergent properties.
+Finally, we exploit optimization algorithms for optimizing system dynamics as well as static design decisions.
 
 \subsection{Research question}
 
-TODO
+In this paper, we ask how the next generation of design tools for intelligent transportation systems should look like.
+Therefore, first we want to understand which system properties and design decisions should be represented in these tools.
+Then, we want to learn how the design decisions could be verified with respect to the desired system properties.
+Finally, we want to study how the relevant design information could be represented in a graphical user interface.
 
 \subsection{Research methodology}
 
-TODO
+In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:framework}.
+Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
+Thereafter, we propose two special applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
+Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 
-\section{Simulation framework}
-\label{sec:retrospection}
+\section{Underlying framework}
+\label{sec:framework}
 
-TODO
+In this section, we propose a modeling and simulation framework for the design of intelligent transportation systems.
+We first introduce a modeling technique for describing the design decisions and defining evaluation scenarios in Section~\ref{sec:modeling-technique}.
+Then, we propose an interface for implementing and integrating custom control strategies in Section~\ref{sec:controller-interface}.
+Finally, we define an interface for collecting statistics during simulation of system dynamics in Section~\ref{sec:statistics-interface}.
 
 \subsection{Modeling technique}
 \label{sec:modeling-technique}
 
 TODO
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../diagrams/model/classes-v0.1.png}
+\begin{figure*}[tbp]
+    \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.1.png}
     \caption{Modeling technique}
     \label{fig:modeling-technique}
-\end{figure}
+\end{figure*}
 
 TODO
 
@@ -52,11 +66,11 @@ TODO
 
 TODO
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../diagrams/controller/classes.png}
+\begin{figure*}[tbp]
+    \includegraphics[width=\textwidth]{../../diagrams/controller/classes.png}
     \caption{Controller interface}
     \label{fig:controller-interface}
-\end{figure}
+\end{figure*}
 
 TODO
 
@@ -69,6 +83,14 @@ TODO
 TODO
 
 \subsubsection{Greedy controller}
+
+TODO
+
+\subsubsection{Smart controller}
+
+TODO
+
+\subsubsection{Switchable controller}
 
 TODO
 
@@ -90,11 +112,11 @@ TODO
 
 TODO
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../screenshots/basic-simulation.png}
+\begin{figure*}[tbp]
+    \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
     \caption{Graphical user interface}
     \label{fig:gui}
-\end{figure}
+\end{figure*}
 
 TODO
 
@@ -152,11 +174,11 @@ TODO
 
 TODO
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../screenshots/controller-comparison.png}
+\begin{figure*}[tbp]
+    \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
     \caption{Controller comparison}
     \label{fig:controller-comparison}
-\end{figure}
+\end{figure*}
 
 TODO
 
@@ -165,11 +187,11 @@ TODO
 
 TODO
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../screenshots/infrastructure-comparison.png}
+\begin{figure*}[tbp]
+    \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
     \caption{Infrastructure comparison}
     \label{fig:infratructure-comparison}
-\end{figure}
+\end{figure*}
 
 TODO
 
