@@ -1,3 +1,122 @@
+// Math classes
+
+class Vector {
+    constructor(x, y) {
+        // Check paramters
+        if (typeof x != 'number')
+            throw new Error('X is not a number')
+        if (typeof y != 'number')
+            throw new Error('Y is not a number')
+
+        this.x = x
+        this.y = y
+    }
+
+    // Vector-scalar operations
+
+    addScalar(scalar) {
+        // Check parameters
+        if (typeof scalar != 'number')
+            throw new Error('Scalar is not a number')
+
+        return new Vector(this.x + scalar, this.y + scalar)
+    }
+    substractScalar(scalar) {
+        // Check parameters
+        if (typeof scalar != 'number')
+            throw new Error('Scalar is not a number')
+
+        return new Vector(this.x - scalar, this.y - scalar)
+    }
+    multiplyScalar(scalar) {
+        // Check parameters
+        if (typeof scalar != 'number')
+            throw new Error('Scalar is not a number')
+
+        return new Vector(this.x * scalar, this.y * scalar)
+    }
+    divideScalar(scalar) {
+        // Check parameters
+        if (typeof scalar != 'number')
+            throw new Error('Scalar is not a number')
+
+        return new Vector(this.x / scalar, this.y / scalar)
+    }
+
+    // Vector-vector operations
+
+    addVector(other) {
+        if (!(other instanceof Vector))
+            throw new Error('Other is not a vector')
+
+        return new Vector(this.x + other.x, this.y + other.y)
+    }
+    substractVector(other) {
+        if (!(other instanceof Vector))
+            throw new Error('Other is not a vector')
+
+        return new Vector(this.x - other.x, this.y - other.y)
+    }
+    multiplyVector(other) {
+        if (!(other instanceof Vector))
+            throw new Error('Other is not a vector')
+
+        return this.x * other.x + this.y * other.y
+    }
+
+    // Vector operations
+
+    length() {
+        return Math.sqrt(this.multiplyVectorDot(this))
+    }
+    normalize() {
+        return this.divideScalar(this.length())
+    }
+}
+
+class Line {
+    constructor(source, target) {
+        if (!(source instanceof Vector))
+            throw new Error('Source is not a vector')
+        if (!(target instanceof Vector))
+            throw new Error('Target is not a vector')
+
+        this.source = source
+        this.target = target
+
+        this.direction = this.target.substractVector(this.source)
+    }
+
+    point(scalar) {
+        if (typeof scalar != 'number')
+            throw new Error('Scalar is not a number')
+
+        return this.source.addVector(this.direction.multiplyScalar(scalar))
+    }
+
+    intersect(other) {
+        if (!(other instanceof Line))
+            throw new Error('Other is not a line')
+        
+        const x1 = this.source.x
+        const y1 = this.source.y
+
+        const x2 = this.target.x
+        const y2 = this.target.y
+
+        const x3 = other.source.x
+        const y3 = other.source.y
+
+        const x4 = other.target.x
+        const y4 = other.target.y
+
+        const a = (x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)
+        const b = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+
+        return this.point(a / b)
+    }
+}
+
 // Model classes
 
 class Intersection {
