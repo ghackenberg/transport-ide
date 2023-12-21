@@ -97,6 +97,8 @@ class Line {
     intersect(other) {
         if (!(other instanceof Line))
             throw new Error('Other is not a line')
+
+        // See https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
         
         const x1 = this.source.x
         const y1 = this.source.y
