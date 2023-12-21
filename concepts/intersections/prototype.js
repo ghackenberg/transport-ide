@@ -2,7 +2,6 @@
 
 class Vector {
     constructor(x, y) {
-        // Check paramters
         if (typeof x != 'number')
             throw new Error('X is not a number')
         if (typeof y != 'number')
@@ -15,28 +14,24 @@ class Vector {
     // Vector-scalar operations
 
     addScalar(scalar) {
-        // Check parameters
         if (typeof scalar != 'number')
             throw new Error('Scalar is not a number')
 
         return new Vector(this.x + scalar, this.y + scalar)
     }
     substractScalar(scalar) {
-        // Check parameters
         if (typeof scalar != 'number')
             throw new Error('Scalar is not a number')
 
         return new Vector(this.x - scalar, this.y - scalar)
     }
     multiplyScalar(scalar) {
-        // Check parameters
         if (typeof scalar != 'number')
             throw new Error('Scalar is not a number')
 
         return new Vector(this.x * scalar, this.y * scalar)
     }
     divideScalar(scalar) {
-        // Check parameters
         if (typeof scalar != 'number')
             throw new Error('Scalar is not a number')
 
@@ -126,7 +121,6 @@ class Line {
 
 class Intersection {
     constructor(key, x, y) {
-        // Check parameters
         if (typeof x != 'number')
             throw new Error('X is not a number')
         if (typeof y != 'number')
@@ -144,7 +138,6 @@ class Intersection {
 
 class Segment {
     constructor(source, target, lanes) {
-        // Check parameters
         if (!(source instanceof Intersection))
             throw new Error('Source is not an intersection')
         if (!(target instanceof Intersection))
