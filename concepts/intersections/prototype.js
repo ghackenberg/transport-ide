@@ -94,7 +94,7 @@ class Line {
         return this.source.addVector(this.direction.multiplyScalar(scalar))
     }
 
-    intersect(other) {
+    intersectScalar(other) {
         if (!(other instanceof Line))
             throw new Error('Other is not a line')
 
@@ -115,7 +115,10 @@ class Line {
         const a = (x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)
         const b = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
 
-        return this.point(a / b)
+        return a / b
+    }
+    intersectVector(other) {
+        return this.point(this.intersectScalar(other))
     }
 }
 
