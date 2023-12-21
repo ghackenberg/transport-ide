@@ -244,6 +244,36 @@ function draw() {
     context.restore()
 }
 
+function drawInfrastructure(context, infrastructure) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(infrastructure instanceof Infrastructure))
+        throw new Error('Infrastructure is not an infrastructure')
+
+    for (const segment in infrastructure.segments)
+        drawSegment(context, segment)
+    for (const intersection in infrastructure.intersections)
+        drawIntersection(context, intersection)
+}
+
+function drawSegment(context, segment) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(segment instanceof Segment))
+        throw new Error('Segment is not a segment')
+
+    // TODO
+}
+
+function drawIntersection(context, intersection) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(intersection instanceof Intersection))
+        throw new Error('Intersection is not an intersection')
+
+    // TODO
+}
+
 window.addEventListener('load', draw)
 window.addEventListener('resize', draw)
 window.addEventListener('keypress', next)
