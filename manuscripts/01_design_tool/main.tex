@@ -16,16 +16,19 @@
 \section{Introduction}
 \label{sec:introduction}
 
-The transformative patterns of future mobility are fundamentally enabled through interconnected and integrated systems.
-As such, Intelligent Transportation Systems (ITS) integrate new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, as well as electric vehicles and the transportation electrification. For this, complex scenarios and requirements need to be holistically addressed, from which integrated system designs have to be derived, which allow transport infrastructures and their heterogenous actors to be more efficient and sustainable.
+The transformative patterns of future mobility are enabled by interconnected and integrated systems and services.
+As such, Intelligent Transportation Systems (ITS) establish new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, and facilitate the transportation electrification by efficient operation of electric vehicles. For this, complex scenarios and their encoded requirements need to be holistically addressed, from which integrated system designs have to be derived, which allow transport infrastructures and their heterogenous actors to be more efficient and sustainable.
 
-Therefore, constituent systems need to be designed with respect to most efficient structures and control strategies within themselves, while accounting for and exploiting the emergent properties they achieve in conjunction and interdependence with other systems, as a composed, integrated system-of-systems (SoS). To systematically support the aforementioned systems engineering task, model- and simulation-based systems engineering~\cite{gianni2014modeling} can be employed for abstraction of design problems through the use of system models and their evaluation, i.e. their numerical approximation in terms of concrete behavior at run time. For this, well-defined system models are formulated, for which then simulation aids projecting and obtaining information and performance metrics about the system under design and its environment. Therefore, both structural as well as behavioral system design tasks can be supported using a overarching system design methodology at design time as well as run time.
+Therefore, constituent systems need to be designed with respect to most efficient structures and control strategies within themselves, while accounting for and exploiting the emergent properties they achieve in conjunction and interdependence with other systems, as composed, integrated system-of-systems (SoS). To systematically support the aforementioned systems engineering task, model- and simulation-based systems engineering~\cite{gianni2014modeling} can be employed for abstraction of design problems through the use of system models and their evaluation, i.e. their numerical approximation in terms of concrete behavior at run time. For this, well-defined system models are formulated at design time, for which then simulation aids projecting run-time information and performance metrics about the system under design and its environment. 
+However, as systems and their underlying requirements are typically imperfectly understood at the beginning of the design task, methods and tools are needed to explore the possible design space, which support evaluation of system design alternatives and verification of intended system properties. 
 
-In terms of benefits, on the one hand side, system models faciliate gaining improved system understanding through specification, while allowing rapid system modification through defined variation points for designing a system. On the other hand side, simulation aids approximating information about the system dynamics and performance of a system under design.
+%As an effect of underspecified requirements, system models are often not completely understood, and modeling uncertainties need be adressed. 
 
-For this, in previous work, we established an integrated systems modeling technique for integrated transportation and power systems. Here, our systems modeling technique allows one to model both transportation and power system scenarios, as well as mobility-on-demand scenarios to assess system design options systemtically and improve system understanding holistically, based on a formal foundation~\cite{ascher_hackenberg_2014,ascher_hackenberg_2015,ascher_hackenberg_2016,ascher_hackenberg_2017}
+%
+%Both structural as well as behavioral system design tasks can be supported using an overarching system design methodology at design time as well as at run time. 
+%In terms of benefits, on the one hand side, system models faciliate gaining improved system understanding through specification, while allowing rapid system modification through defined variation points for designing a system. On the other hand side, simulation aids approximating information about the system dynamics and performance of a system under design.
 
-
+For this, in previous work, we established an integrated systems modeling technique for integrated transportation and power systems. Here, our systems modeling technique allows one to model both transportation and power system scenarios, as well as mobility-on-demand scenarios to assess system design options systematically and improving system understanding holistically, based on a formal foundation~\cite{ascher_hackenberg_2014,ascher_hackenberg_2015,ascher_hackenberg_2016,ascher_hackenberg_2017}. The formal foundation was extended by a discrete event formalism \cite{ascher2023discrete} as well as integration with state-of-the-art simulators and predictive models for control strategy optimization \cite{ascher_hackenberg_albayrak_2023}.
 
 
 \subsection{Research objective}
@@ -54,30 +57,52 @@ Finally, we draw our conclusions and describe future direction of research and d
 \label{sec:framework}
 
 In this section, we propose a modeling and simulation framework for the design of intelligent transportation systems.
-We first introduce a modeling technique for describing the design decisions and defining evaluation scenarios in Section~\ref{sec:modeling-technique}.
+We first introduce the scope and intended usage of the framework in Section ~\ref{sec:scope}.
+Secondly, we present the modeling technique for describing the design decisions and defining evaluation scenarios in Section~\ref{sec:modeling-technique}.
 Then, we propose an interface for implementing and integrating custom control strategies in Section~\ref{sec:controller-interface}.
 Finally, we define an interface for collecting statistics during simulation of system dynamics in Section~\ref{sec:statistics-interface}.
 
+\subsection{Scope and Intended Usage}
+\label{sec:scope}
+Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
+
+Here, our modeling technique supports deriving well-defined designs of transportation systems as well as designing control strategies in the context of on-demand transportation problems. In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
+
+For this, our approach supports different design tasks. 
+
+\begin{itemize}
+\item Static Property Optimization concerns static design decisions such as optimization of transportation infrastructure properties.
+\item Dynamic Property Optimization concerns dynamic design decisions, i.e. optimization of control strategies such as efficient transportation entity behavior.
+\item Mixed Property Optimization concerns the integrated design task for optimization of both static and dynamic design decisions.
+\end{itemize}
+
 \subsection{Modeling technique}
 \label{sec:modeling-technique}
-The scope of our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent  integrated system properties. The approach allows one to model integrated transportation system problems on a mesoscopic to microscopic level, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017}. In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
+On a system modeling level, the approach allows decomposition of composite and atomary system components to an arbitrary level of abstraction, based on a formal foundation, defining system states, actions, transitions as well as events (See Section \ref{sec:system-theory}).
 
-\subsubsection{Scope}
-For this, our modeling technique supports different design tasks. Here, our modeling technique supports deriving well-defined designs of transportation systems as well as designing control strategies in the context of on-demand transportation problems.
+%In addition, relationships between components can be incorporated by specifying well-defined component interfaces and their connection.
 
-Static Property Optimization concerns optimization of infrastructure properties.
-Dynamic Property Optimization concerns optimization of control strategies.
-Mixed Property Optimization concerns both optimization of infrastructures and control strategies. 
+On domain modeling level, the approach allows one to model integrated transportation system problems on mesoscopic to 
+microscopic levels, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by the formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017} (See Section  \ref{sec:domain-specific-modeling}). 
 
-\subsubsection{Formalism}
-Currently, our modeling technique is based on a formalism for Discrete-Event Simulation (DES) ~\cite{fishman2001discrete}, where Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where t formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems.
+\subsubsection{System Theory}
+\label{sec:system-theory}
+
+Currently, our modeling technique is based on a formalism for Discrete-Event Simulation (DES) ~\cite{fishman2001discrete}.
 
 Each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations. In addition, we define events as functions over a system's trajectory of states, which precisely indicate when actions need to be taken in the system simulation. Thus, events significantly reduce simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions. 
 
+
+
+\subsubsection{Domain-Specific Modeling}
+\label{sec:domain-specific-modeling}
+
+Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
+
 In terms of considered domain concepts for the formalism, we use intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
+
 Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. 
 Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
-
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.1.png}
@@ -90,7 +115,7 @@ TODO
 \subsection{Controller interface}
 \label{sec:controller-interface}
 
-TODO
+For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../diagrams/controller/classes.png}
