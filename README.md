@@ -1,5 +1,7 @@
 # TransportIDE
 
+![](./images/social_preview.png)
+
 The goal of **TransportIDE** is to make the life of *transportation infrastructure* and *control strategy engineers* easier.
 We believe that this engineering domain needs new tools and methodologies to develop better systems with higher performance in shorter time and at lower lifetime cost.
 In particular, we think that transportation system engineers must be supported better in
@@ -13,16 +15,36 @@ In particular, we think that transportation system engineers must be supported b
 
 You can read more about our approach in the proceedings of the following conferences:
 
-- *ISDA 2023 (coming soon)*
-- *ITSC 2023 (coming soon)*
-- MT-ITS 2017
-- ITSC 2016
-- ICCVE 2015
-- ICCVE 2014
+- **IEEE International Conference on Intelligent Transportation Systems (ITSC)**
+  - [IEEE ITSC 2023 Proceedings](https://ieeexplore.ieee.org/xpl/conhome/10420842/proceeding)
+  - [IEEE ITSC 2016 Proceedings](https://ieeexplore.ieee.org/xpl/conhome/7784515/proceeding)
+- **IEEE International Conference on Connected Vehicles and Expo (ICCVE)**
+  - [IEEE ICCVE 2015 Proceedings](https://ieeexplore.ieee.org/xpl/conhome/7443867/proceeding)
+  - [IEEE ICCVE 2014 Proceedings](https://ieeexplore.ieee.org/xpl/conhome/7284675/proceeding)
+- **IEEE International Conference on Models and Technologies for Intelligent Transportation Systems (MT-ITS)**
+  - [IEEE MT-ITS 2017 Proceedings](https://ieeexplore.ieee.org/xpl/conhome/7999202/proceeding)
+- **MIR Labs International Conference on Intelligent Systems Design and Applications (ISDA)**
+  - [MIR Labs ISDA 2023](https://www.mirlabs.org/isda23/)
+
+In the following, you find more information about our published articles:
+
+### Model-Based Design of Integrated Transportation Systems Using Approximate Dynamic Programming `@ ITSC 2023`
+
+Read our article on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/10422359) or cite us with our **BibTex entry**:
+
+```bibtex
+@INPROCEEDINGS{ascher_hackenberg_albayrak_2023,
+  author    = {Ascher, Dominik and Hackenberg, Georg and Albayrak, Sahin},
+  booktitle = {2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC)}, 
+  title     = {Model-Based Design of Integrated Transportation Systems Using Approximate Dynamic Programming}, 
+  year      = {2023},
+  pages     = {4443-4450},
+  doi       = {10.1109/ITSC57777.2023.10422359}}
+```
 
 ### The passenger extension of the TRANSP-0 system design framework `@ MT-ITS 2017`
 
-Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8005676) or cite with our **BibTex entry**:
+Read our article on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8005676) or cite us with our **BibTex entry**:
 
 ```bibtex
 @inproceedings{ascher_hackenberg_2017,
@@ -30,8 +52,6 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8005676) or 
   booktitle = {2017 5th IEEE International Conference on Models and Technologies for Intelligent Transportation Systems (MT-ITS)},
   title     = {The passenger extension of the TRANSP-0 system design framework},
   year      = {2017},
-  volume    = {},
-  number    = {},
   pages     = {256-261},
   doi       = {10.1109/MTITS.2017.8005676}
 }
@@ -39,7 +59,7 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/8005676) or 
 
 ###  The TRANSP-0 framework for integrated transportation and power system design `@ ITSC 2016`
 
-Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7795669) or cite with our **BibTex entry**:
+Read our article on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7795669) or cite us with our **BibTex entry**:
 
 ```bibtex
 @inproceedings{ascher_hackenberg_2016,
@@ -47,15 +67,13 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7795669) or 
   booktitle = {2016 IEEE 19th International Conference on Intelligent Transportation Systems (ITSC)},
   title     = {The TRANSP-0 framework for integrated transportation and power system design},
   year      = {2016},
-  volume    = {},
-  number    = {},
   pages     = {945-952},
   doi       = {10.1109/ITSC.2016.7795669}
 }
 ```
 ### Integrated transportation and power system modeling `@ ICCVE 2015`
 
-Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7447633) or cite with our **BibTex entry**:
+Read our article on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7447633) or cite us with our **BibTex entry**:
 
 ```bibtex
 @inproceedings{ascher_hackenberg_2015,
@@ -63,8 +81,6 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7447633) or 
   booktitle = {2015 International Conference on Connected Vehicles and Expo (ICCVE)},
   title     = {Integrated transportation and power system modeling},
   year      = {2015},
-  volume    = {},
-  number    = {},
   pages     = {379-384},
   doi       = {10.1109/ICCVE.2015.23}
 }
@@ -72,7 +88,7 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7447633) or 
 
 ### Early estimation of multi-objective traffic flow `@ ICCVE 2014`
 
-Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7297511) or cite with our **BibTex entry**:
+Read our article on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7297511) or cite us with our **BibTex entry**:
 
 ```bibtex
 @inproceedings{ascher_hackenberg_2014,
@@ -80,8 +96,6 @@ Read on [IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/7297511) or 
   booktitle = {2014 International Conference on Connected Vehicles and Expo (ICCVE)},
   title     = {Early estimation of multi-objective traffic flow},
   year      = {2014},
-  volume    = {},
-  number    = {},
   pages     = {1056-1057},
   doi       = {10.1109/ICCVE.2014.7297511}
 }

@@ -1,4 +1,4 @@
-# TransportIDE License
+MIT License
 
 Copyright (c) 2023 Georg Hackenberg
 
