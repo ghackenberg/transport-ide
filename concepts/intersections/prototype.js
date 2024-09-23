@@ -117,6 +117,68 @@ class Line {
     }
 }
 
+class Bezier {
+
+    calculateBezierPoint(t) {
+        throw new Error("calculateBezierPoint() must be implemented by subclass");
+    }
+
+}
+
+class CubicBezier extends Bezier {
+    constructor(P0, P1, P2, P3) {
+        super()
+        // if (!(P0 instanceof Vector))
+        //     throw new Error('P0 is not a vector')
+        // if (!(P1 instanceof Vector))
+        //     throw new Error('P1 is not a vector')
+        // if (!(P2 instanceof Vector))
+        //     throw new Error('P2 is not a vector')
+        // if (!(P3 instanceof Vector))
+        //     throw new Error('P3 is not a vector')
+
+        this.P0 = P0
+        this.P1 = P1
+        this.P2 = P2
+        this.P3 = P3
+    }
+
+    calculateBezierPoint(t) {
+        if (typeof t != 'number')
+            throw new Error('t is not a number')
+
+        let x = Math.pow((1 - t), 3) * this.P0.x + 3 * Math.pow((1 - t), 2) * t * this.P1.x + 3 * (1 - t) * Math.pow(t, 2) * this.P2.x + Math.pow(t, 3) * this.P3.x;
+        let y = Math.pow((1 - t), 3) * this.P0.y + 3 * Math.pow((1 - t), 2) * t * this.P1.y + 3 * (1 - t) * Math.pow(t, 2) * this.P2.y + Math.pow(t, 3) * this.P3.y;
+        return { x, y };
+    }
+}
+
+class QuadraticBezier extends Bezier {
+
+    constructor(P0, P1, P2) {
+        super()
+        if (!(P0 instanceof Vector))
+            throw new Error('P0 is not a vector')
+        if (!(P1 instanceof Vector))
+            throw new Error('P1 is not a vector')
+        if (!(P2 instanceof Vector))
+            throw new Error('P2 is not a vector')
+
+        this.P0 = P0
+        this.P1 = P1
+        this.P2 = P2
+    }
+
+    calculateBezierPoint(t) {
+        if (typeof t != 'number')
+            throw new Error('t is not a number')
+
+        let x = Math.pow((1 - t), 2) * this.P0.x + 2 * (1 - t) * t * this.P1.x + Math.pow(t, 2) * this.P2.x;
+        let y = Math.pow((1 - t), 2) * this.P0.y + 2 * (1 - t) * t * this.P1.y + Math.pow(t, 2) * this.P2.y;
+        return { x, y };
+    }
+}
+
 // Model classes
 
 class Intersection {
@@ -155,6 +217,30 @@ class Segment {
     }
 }
 
+// Allow for connected bezier paths
+class BezierSpline {
+    constructor() {
+        this.beziers = []
+    }
+
+    addBezier(bezier) {
+        if (!(bezier instanceof Bezier))
+            throw new Error('Bezier is not an bezier')
+
+        this.beziers.push(bezier)
+    }
+
+    checkIntegrity() {
+        if (Object.keys(this.beziers).length === 0) 
+            throw new Error('Beziers are empty')
+
+        for (bezier in this.beziers) {
+            // Consider C0 positional continuity for now
+            // TODO check if one beziers start/end point are start/end points of another
+        }
+    }
+}
+
 class Infrastructure {
     constructor() {
         this.intersections = {}
@@ -178,45 +264,109 @@ class Infrastructure {
     }
 }
 
-// Test cases
-
-// Test case 0
-
-const tc0 = new Infrastructure()
-tc0.addIntersection('A', 0, 0)
-tc0.addIntersection('B', 100, 100)
-tc0.addSegment('A', 'B', 1)
-
-// Test case 1
-
-const tc1 = new Infrastructure()
-tc1.addIntersection('A', 0, 0)
-tc1.addIntersection('B', 100, 100)
-tc1.addIntersection('C', 500, 220)
-tc1.addIntersection('D', 100, 700)
-tc1.addSegment('A', 'B', 1)
-tc1.addSegment('A', 'C', 1)
-tc1.addSegment('A', 'D', 1)
-
 // Drawing functionality
 
-const canvas = document.getElementById("canvas")
-const context = canvas.getContext("2d")
+// Basic Drawing Shapes
 
-let state = 0
-
-function next() {
-    state++
-    draw()
+function drawCircle(context, posX, posY, radius, startAngle, endAngle, color, borderColor, filled) {
+    context.save()
+    context.beginPath()
+    context.arc(posX, posY, radius, startAngle, endAngle)
+    context.fillStyle = color
+    context.lineWidth = 5;
+    context.strokeStyle = borderColor
+    if (filled) {
+        context.fill();
+    }
+    context.restore()
 }
 
-function draw() {
-    // Resize canvas
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
+function drawLine(context, startX, startY, endX, endY, lineWidth, strokeColor) {
+    context.save()
+    context.beginPath()
+    context.moveTo(startX, startY)
+    context.lineTo(endX, endY)
+    context.lineWidth = lineWidth
+    context.strokeStyle = strokeColor
+    context.stroke()
+    context.restore()
+}
 
-    // Clear canvas
-    context.clearRect(0, 0, canvas.width, canvas.height)
+function drawBezier(context, bezier) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(bezier instanceof Bezier))
+        throw new Error('Bezier is not an bezier')
+    
+    context.save()
+    context.lineWidth = 5
+    context.strokeStyle = 'grey'
+    context.beginPath();
+    context.moveTo(bezier.P0.x, bezier.P0.y);
+
+    for (let t = 0; t <= 1; t += 0.01) {
+        let point = bezier.calculateBezierPoint(t);
+        context.lineTo(point.x, point.y);
+    }
+
+    context.stroke();
+    context.restore()
+}
+
+// Advanced (Model) Drawing
+
+function drawBezierSegment(context, segment, segment2) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(segment instanceof Segment))
+        throw new Error('Segment is not a segment')
+    if (!(segment2 instanceof Segment))
+        throw new Error('Segment2 is not a segment')
+
+    const bezier = new CubicBezier(segment.source, segment.target, segment.target, segment2.target)
+    drawBezier(context, bezier)
+}
+
+function drawSegment(context, segment) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(segment instanceof Segment))
+        throw new Error('Segment is not a segment')
+
+    drawLine(context, segment.source.x, segment.source.y, segment.target.x, segment.target.y, 5, 'black')
+}
+
+function drawIntersection(context, intersection) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(intersection instanceof Intersection))
+        throw new Error('Intersection is not an intersection')
+
+    drawCircle(context, intersection.x, intersection.y, 20, 0, 2*Math.PI, 'blue', '', true)
+}
+
+function drawInfrastructure(context, infrastructure) {
+    if (!(context instanceof CanvasRenderingContext2D))
+        throw new Error('Context is not a canvas rendering context 2D')
+    if (!(infrastructure instanceof Infrastructure))
+        throw new Error('Infrastructure is not an infrastructure')
+
+    for (const segment of infrastructure.segments)
+        // Check if multiple segments regarding one intersection to calculate offset between them
+        for (const segment2 of infrastructure.segments)
+        {
+            if (segment.target.key == segment2.source.key)
+                drawBezierSegment(context, segment, segment2)
+            else 
+                drawSegment(context, segment)
+        }
+
+    for (const intersection of Object.values(infrastructure.intersections))
+        drawIntersection(context, intersection)
+}
+
+// Deprecated
+function drawExample() {
 
     // Draw rectangle
     context.save()
@@ -242,37 +392,69 @@ function draw() {
     context.strokeStyle = 'black'
     context.stroke()
     context.restore()
+
+
+    // Define Test Bezier
+    let P0 = new Vector(10, 10);
+    let P1 = new Vector(100, 100);
+    let P2 = new Vector(200, 100);
+    let P3 = new Vector(300, 10);
+
+    const bezier0 = new CubicBezier(P0, P1, P2, P3)
+
+    context.save()
+    context.lineWidth = 5
+    context.strokeStyle = 'grey'
+    drawBezier(context, bezier0)
+    context.restore()
 }
 
-function drawInfrastructure(context, infrastructure) {
-    if (!(context instanceof CanvasRenderingContext2D))
-        throw new Error('Context is not a canvas rendering context 2D')
-    if (!(infrastructure instanceof Infrastructure))
-        throw new Error('Infrastructure is not an infrastructure')
 
-    for (const segment in infrastructure.segments)
-        drawSegment(context, segment)
-    for (const intersection in infrastructure.intersections)
-        drawIntersection(context, intersection)
+// Test cases
+
+// Test case 0
+
+const tc0 = new Infrastructure()
+tc0.addIntersection('A', 0, 0)
+tc0.addIntersection('B', 100, 100)
+tc0.addSegment('A', 'B', 1)
+
+// Test case 1
+
+const tc1 = new Infrastructure()
+tc1.addIntersection('A', 30, 30)
+tc1.addIntersection('B', 100, 100)
+tc1.addIntersection('C', 500, 220)
+tc1.addIntersection('D', 100, 700)
+tc1.addSegment('A', 'B', 1)
+tc1.addSegment('A', 'C', 1)
+tc1.addSegment('A', 'D', 1)
+
+
+
+const canvas = document.getElementById("canvas")
+const context = canvas.getContext("2d")
+
+// Resize canvas
+canvas.width = canvas.offsetWidth
+canvas.height = canvas.offsetHeight
+
+// Clear canvas
+context.clearRect(0, 0, canvas.width, canvas.height)
+
+
+let state = 0
+
+function next() {
+    state++
+    draw()
 }
 
-function drawSegment(context, segment) {
-    if (!(context instanceof CanvasRenderingContext2D))
-        throw new Error('Context is not a canvas rendering context 2D')
-    if (!(segment instanceof Segment))
-        throw new Error('Segment is not a segment')
-
-    // TODO
+function draw() {
+    //drawExample(context)
+    drawInfrastructure(context, tc1)
 }
 
-function drawIntersection(context, intersection) {
-    if (!(context instanceof CanvasRenderingContext2D))
-        throw new Error('Context is not a canvas rendering context 2D')
-    if (!(intersection instanceof Intersection))
-        throw new Error('Intersection is not an intersection')
-
-    // TODO
-}
 
 window.addEventListener('load', draw)
 window.addEventListener('resize', draw)

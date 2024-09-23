@@ -67,15 +67,17 @@ function drawNode(ctx, posX, posY) {
     drawCircle(ctx, posX, posY, 20, 0, 2*Math.PI, 'blue', '', true)
 }
 
+// Use Inbuilt JS Functions
 function drawQuadraticBezier(ctx, startX, startY, controlX, controlY, endX, endY) {
     ctx.beginPath();
     ctx.lineWidth = 5
-    ctx.strokeStyle = 'black'
+    ctx.strokeStyle = 'grey'
     ctx.moveTo(startX, startY);
     ctx.quadraticCurveTo(controlX, controlY, endX, endY);
     ctx.stroke();
 }
 
+// Use Inbuilt JS Functions
 function drawCubicBezier(ctx, startX, startY, control1X, control1Y, control2X, control2Y, endX, endY) {
     ctx.beginPath();
     ctx.moveTo(startX, startY);
@@ -94,46 +96,104 @@ function drawVehicle(ctx, posX, posY, length, width, rotation) {
     ctx.restore()
 }
 
-
-
 function draw() {
+
     // Resize canvas
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
 
-    // Clear canvas
-    context.clearRect(0, 0, canvas.width, canvas.height)
+    function drawSketch1(){
 
-    // drawExample(context)
+        // Clear canvas
+        context.clearRect(0, 0, canvas.width, canvas.height)
 
-    var node1X = 270
-    var node1Y = 20
+        var node1X = 270
+        var node1Y = 20
 
-    var node2X = 520
-    var node2Y = 270
+        var node2X = 520
+        var node2Y = 270
 
-    var node3X = 270
-    var node3Y = 520
+        var node3X = 270
+        var node3Y = 520
 
-    // Draw Background
-    drawRectangle(context, 20, 20, 500, 500, 'blue', 'blue', false)
 
-    // Draw Nodes
-    drawNode(context, 270, 20)
-    drawNode(context, 270, 520)
-    drawNode(context, 520, 270)
+        // Draw Quadratic Bezier
+        // ctx, startX, startY, controlX, controlY, endX, endY) 
+        drawQuadraticBezier(context, node1X, node1Y, 270, 270, node2X, node2Y)
+        drawQuadraticBezier(context, node3X, node3Y, 270, 270, node2X, node2Y)
 
-    // Draw Quadratic Bezier
-    // ctx, startX, startY, controlX, controlY, endX, endY) 
-    drawQuadraticBezier(context, node1X, node1Y, 300, 300, node2X, node2Y)
-    drawQuadraticBezier(context, node3X, node3Y, 300, 300, node2X, node2Y)
+        // Draw Cubic Bezier
+        // ctx, startX, startY, control1X, control1Y, control2X, control2Y, endX, endY) 
+        //drawCubicBezier(context, node1X, node1Y, 270, 270, 270, 270, node2X, node2Y)
 
-    // Draw Cubic Bezier
-    // ctx, startX, startY, control1X, control1Y, control2X, control2Y, endX, endY) 
-    //drawCubicBezier(context, node1X, node1Y, 300, 300, 100, 100, 100, 100)
+        // Draw Vehicle
+        drawVehicle(context, 330, 170, 60, 40, 45)
 
-    // Draw Vehicle
-    drawVehicle(context, 330, 170, 60, 40, 45)
+        // Draw Nodes
+        drawNode(context, node1X, node1Y)
+        drawNode(context, node2X, node2Y)
+        drawNode(context, node3X, node3Y)
+    }
+
+    function drawSketchX(){
+
+        // Draw Background
+        drawRectangle(context, 20, 20, 500, 500, 'blue', 'blue', false)
+
+        var node1X = 270
+        var node1Y = 20
+
+        var node2X = 520
+        var node2Y = 270
+
+        var node3X = 270
+        var node3Y = 520
+
+        var node4X = 20
+        var node4Y = 270
+
+        drawQuadraticBezier(context, node1X, node1Y, 270, 270, node2X, node2Y)
+        drawQuadraticBezier(context, node3X, node3Y, node1X, node1Y, node1X, node1Y)
+        drawQuadraticBezier(context, node4X, node4Y, node2X, node2Y, node2X, node2Y)
+        drawQuadraticBezier(context, node3X, node3Y, 270, 270, node2X, node2Y)
+        drawQuadraticBezier(context, node4X, node4Y, 270, 270, node3X, node3Y)
+        drawQuadraticBezier(context, node1X, node1Y, 270, 270, node4X, node4Y)
+
+        // Draw Nodes
+        drawNode(context, node1X, node1Y)
+        drawNode(context, node2X, node2Y)
+        drawNode(context, node3X, node3Y)
+        drawNode(context, node4X, node4Y)
+
+    }
+
+    function drawSketchX2(){
+        var node1X = 270
+        var node1Y = 20
+
+        var node2X = 520
+        var node2Y = 270
+
+        var node3X = 270
+        var node3Y = 520
+
+        var node4X = 20
+        var node4Y = 270
+
+        // Draw Nodes
+        drawNode(context, node1X, node1Y)
+        drawNode(context, node3X, node3Y)
+        drawNode(context, node4X, node4Y)
+
+        drawCubicBezier(context, node1X, node1Y, node4X-85, node4Y, node4X-85, node4Y, node3X, node3Y)
+
+    }
+
+    //drawExample(context)
+    drawSketch1()
+    drawSketchX()
+    //drawSketchX2()
+
 }
 
 window.addEventListener('load', draw)
