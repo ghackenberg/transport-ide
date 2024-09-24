@@ -1,0 +1,41 @@
+classDiagram
+    direction TB
+
+    class Intersection {
+        +Coordinate: Vector
+    }
+    class Segment {
+        +Length() Double
+    }
+    class Location {
+        +Distance: Double
+    }
+    class ChargingStation {
+        -CurrentChargeSpeed: Double
+    }
+    class Vehicle {
+        +Width: Double
+        +Length: Double
+        +MaximumBatteryLevel: Double
+        +InitialBatteryLevel: Double
+        -CurrentBatteryLevel: Double
+        -CurrentDriveSpeed: Double
+    }
+    class Demand {
+        +Size: Double
+        +AppearTime: Double
+        +EarliestPickupTime: Double
+        +LatestDropoffTime: Double
+    }
+    
+    Vehicle --> "1" Location:+Initial
+    Vehicle --> "1" Location:-Current
+    Demand --> "1" Location:+Pickup
+    Demand --> "1" Location:+Dropoff
+    Demand --> "1" Location:-Current
+    Demand --> "0..1" Vehicle:-Current
+    Location --> "1" Segment:+Segment
+    Segment --> "1" Intersection:+Source
+    Segment --> "1" Intersection:+Target
+    Location <-- "1" ChargingStation:+Location
+    Vehicle <-- "0..1" ChargingStation:-Current

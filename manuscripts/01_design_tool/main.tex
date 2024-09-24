@@ -10,7 +10,7 @@
 \maketitle
 
 \begin{abstract}
-    TODO
+    \textcolor{red}{TODO}
 \end{abstract}
 
 \section{Introduction}
@@ -24,14 +24,12 @@ However, as systems and their underlying requirements are typically imperfectly 
 
 %As an effect of underspecified requirements, system models are often not completely understood, and modeling uncertainties need be adressed. 
 
-%
 %Both structural as well as behavioral system design tasks can be supported using an overarching system design methodology at design time as well as at run time. 
 %In terms of benefits, on the one hand side, system models faciliate gaining improved system understanding through specification, while allowing rapid system modification through defined variation points for designing a system. On the other hand side, simulation aids approximating information about the system dynamics and performance of a system under design.
 
 For this, in previous work, we established an integrated systems modeling technique for integrated transportation and power systems. Here, our systems modeling technique allows one to model both transportation and power system scenarios, as well as mobility-on-demand scenarios to assess system design options systematically and improving system understanding holistically, based on a formal foundation~\cite{ascher_hackenberg_2014,ascher_hackenberg_2015,ascher_hackenberg_2016,ascher_hackenberg_2017}. The formal foundation was extended by a discrete event formalism \cite{ascher2023discrete} as well as integration with state-of-the-art simulators and predictive models for control strategy optimization \cite{ascher_hackenberg_albayrak_2023}.
 
-
-\subsection{Research objective}
+\paragraph{Research objective}
 
 With our research, we want to help improve the efficiency and effectiveness of today's transportation systems.
 To achieve this goal, we work on methodologies for designing such systems and verifying their properties.
@@ -39,14 +37,14 @@ Fundamentally, we promote a formal approach capturing the relevant design decisi
 Furthermore, we integrate scenario-based simulation of system dynamics and evaluation of emergent properties.
 Finally, we exploit optimization algorithms for optimizing system dynamics as well as static design decisions.
 
-\subsection{Research question}
+\paragraph{Research question}
 
 In this paper, we ask how the next generation of design tools for intelligent transportation systems should look like.
 Therefore, first we want to understand which system properties and design decisions should be represented in these tools.
 Then, we want to learn how the design decisions could be verified with respect to the desired system properties.
 Finally, we want to study how the relevant design information could be represented in a graphical user interface.
 
-\subsection{Research methodology}
+\paragraph{Research methodology}
 
 In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:framework}.
 Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
@@ -97,133 +95,225 @@ Each concept is described in terms of their static (i.e.\ time-independent) prop
 \subsubsection{Domain-Specific Modeling}
 \label{sec:domain-specific-modeling}
 
-Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
+%Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
 
 In terms of considered domain concepts for the formalism, we use intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
 
 Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. 
 Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
 
-\begin{figure*}[tbp]
-    \includegraphics[width=\textwidth]{../../diagrams/model/classes-v0.1.png}
-    \caption{Modeling technique}
-    \label{fig:modeling-technique}
-\end{figure*}
+\textcolor{red}{TODO}
 
-TODO
+\section{Tool prototype}
+\label{sec:tool-prototype}
 
-\subsection{Controller interface}
+Figure~\ref{fig:software-architecture} shows the module architecture of the tool prototype.
+The architecture consists of eight modules and their interdependencies.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
+    \caption{Software architecture}
+    \label{fig:software-architecture}
+\end{figure}
+
+In the following, we discuss each module in more detail including their responsibilities and interactions.
+
+\subsection{Module \texttt{model}}
+\label{sec:data-model}
+
+The \texttt{model} module provides the core data structures for modeling static system configurations and representing dynamic system states.
+Figure~\ref{fig:data-model} shows the respective classes, their attributes, and their relationships.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../diagrams/model/classes-v0.2.png}
+    \caption{Data model}
+    \label{fig:data-model}
+\end{figure}
+
+The \texttt{Intersection} class represents intersections of the driving infrastructure.
+Each intersection stores its coordinate in three-dimensional space.
+Note that we use Cartesian coordinates for simplicity.
+
+The \texttt{Segment} class represents road segments of the driving infrastructure.
+Each segment points to its source and its target intersection.
+Furthermore, each segment provides a method for computing its length.
+Note that we use the Euclidean distance between source and target intersection here.
+
+The \texttt{Location} class represents specific points on the segments of the driving infrastructure.
+Each location points to the corresponding segment of the driving infrastructure.
+Furthermore, each location stores a distance on this segment.
+The distance is measured in Eclidean units of the Cartesian space.
+
+The \texttt{ChargingStation} class represents the charging infrastructure.
+Each charging station stores its location on the driving infrastructure.
+Futhermore, each charging station provides its current charging speed.
+Note that the simulator computes the current charging speed dynamically.
+
+The \texttt{Vehicle} class \textcolor{red}{TODO}
+
+The \texttt{Demand} class \textcolor{red}{TODO}
+
+\subsection{Module \texttt{controller}}
 \label{sec:controller-interface}
 
-For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
+%For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
 
-\begin{figure*}[tbp]
-    \includegraphics[width=\textwidth]{../../diagrams/controller/classes.png}
+\textcolor{red}{TODO}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../diagrams/controller/classes-minimal.png}
     \caption{Controller interface}
     \label{fig:controller-interface}
-\end{figure*}
+\end{figure}
 
-TODO
+For evaluation pruposes, we currently provide five different implementations of the controller interface:
+A manual controller (see Section~\ref{sec:controller-manual}), a random controller (see Section~\ref{sec:controller-random}), a greedy controller (see Section~\ref{sec:controller-greedy}), a smart controller (see Section~\ref{sec:controller-smart}), and a switchable controller (see Section~\ref{sec:controller-switch}).
 
 \subsubsection{Manual controller}
+\label{sec:controller-manual}
 
-TODO
+\textcolor{red}{TODO}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../screenshots/manual-controller-route.png}
+    \caption{Route choice}
+    \label{fig:manual-controller-route}
+\end{figure}
+
+\textcolor{red}{TODO}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../screenshots/manual-controller-demand.png}
+    \caption{Pickup choice}
+    \label{fig:manual-controller-demand}
+\end{figure}
+
+\textcolor{red}{TODO}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../screenshots/manual-controller-charge.png}
+    \caption{Charge choice}
+    \label{fig:manual-controller-charge}
+\end{figure}
+
+\textcolor{red}{TODO}
 
 \subsubsection{Random controller}
+\label{sec:controller-random}
 
-TODO
+\textcolor{red}{TODO}
 
 \subsubsection{Greedy controller}
+\label{sec:controller-greedy}
 
-TODO
+\textcolor{red}{TODO}
 
 \subsubsection{Smart controller}
+\label{sec:controller-smart}
 
-TODO
+\textcolor{red}{TODO}
 
 \subsubsection{Switchable controller}
+\label{sec:controller-switch}
 
-TODO
+\textcolor{red}{TODO}
 
-\subsection{Statistics interface}
+\subsection{Module \texttt{statistics}}
 \label{sec:statistics-interface}
 
-TODO
+\textcolor{red}{TODO}
 
-\begin{figure}[htbp]
-    \includegraphics[width=\columnwidth]{../../diagrams/statistics/classes.png}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{../../diagrams/statistics/classes.png}
     \caption{Statistics interface}
     \label{fig:statistics-interface}
 \end{figure}
 
-TODO
+\textcolor{red}{TODO}
 
-\section{Graphical user interface}
+\subsection{Module \texttt{parser}}
+
+\textcolor{red}{TODO}
+
+\subsection{Module \texttt{simulator}}
+
+\textcolor{red}{TODO}
+
+\subsection{Module \texttt{exporter}}
+
+\textcolor{red}{TODO}
+
+\subsection{Module \texttt{viewer}}
 \label{sec:gui}
 
-TODO
+\textcolor{red}{TODO}
 
-\begin{figure*}[tbp]
-    \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
-    \caption{Graphical user interface}
-    \label{fig:gui}
-\end{figure*}
+%\begin{figure*}[tbp]
+%    \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
+%    \caption{Graphical user interface}
+%    \label{fig:gui}
+%\end{figure*}
 
-TODO
+\subsubsection{Map}
 
-\subsection{Map}
+\textcolor{red}{TODO}
 
-TODO
+\subsubsection{Vehicle charts}
 
-\subsection{Vehicle charts}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Vehicle battery chart}
 
-\subsubsection{Vehicle battery chart}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Vehicle distance chart}
 
-\subsubsection{Vehicle distance chart}
+\textcolor{red}{TODO}
 
-TODO
+\subsubsection{Demand charts}
 
-\subsection{Demand charts}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Demand time chart}
 
-\subsubsection{Demand time chart}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Demand distance chart}
 
-\subsubsection{Demand distance chart}
+\textcolor{red}{TODO}
 
-TODO
+\subsubsection{Infrastructure charts}
 
-\subsection{Infrastructure charts}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Intersection chart}
 
-\subsubsection{Intersection chart}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Segment chart}
 
-\subsubsection{Segment chart}
+\textcolor{red}{TODO}
 
-TODO
+\paragraph{Station chart}
 
-\subsubsection{Station chart}
+\textcolor{red}{TODO}
 
-TODO
-
-\section{Specific applications}
+\subsection{Module \texttt{program}}
 \label{sec:application}
 
-TODO
+\textcolor{red}{TODO}
 
-\subsection{Controller comparison}
+\subsubsection{Controller comparison}
 \label{sec:controller-comparison}
 
-TODO
+\textcolor{red}{TODO}
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
@@ -231,12 +321,12 @@ TODO
     \label{fig:controller-comparison}
 \end{figure*}
 
-TODO
+\textcolor{red}{TODO}
 
-\subsection{Infrastructure comparison}
+\subsubsection{Infrastructure comparison}
 \label{sec:infrastructure-comparison}
 
-TODO
+\textcolor{red}{TODO}
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
@@ -244,12 +334,12 @@ TODO
     \label{fig:infratructure-comparison}
 \end{figure*}
 
-TODO
+\textcolor{red}{TODO}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-TODO
+\textcolor{red}{TODO}
 
 \bibliographystyle{plain}
 \bibliography{main}
