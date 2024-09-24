@@ -113,22 +113,22 @@ The architecture consists of eight modules and their interdependencies.
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
-    \caption{Software architecture}
+    \caption{Modular software architecture}
     \label{fig:software-architecture}
 \end{figure}
 
-In the following, we discuss each module in more detail including their responsibilities and interactions.
+In the following, we discuss each module in more detail including their resposibilities.
 
 \subsection{Module \texttt{model}}
 \label{sec:data-model}
 
 The \texttt{model} module provides the core data structures for modeling static system configurations and representing dynamic system states.
-Figure~\ref{fig:data-model} shows the respective classes, their attributes, and their relationships.
+Figure~\ref{fig:data-model} shows the classes, their attributes, and their relationships.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/model/classes-v0.2.png}
-    \caption{Data model}
+    \caption{Configuration and simulation data model}
     \label{fig:data-model}
 \end{figure}
 
@@ -148,19 +148,38 @@ The distance is measured in Eclidean units of the Cartesian space.
 
 The \texttt{ChargingStation} class represents the charging infrastructure.
 Each charging station stores its location on the driving infrastructure.
-Futhermore, each charging station provides its current charging speed.
+Furthermore, each charging station optionally points to a current vehicle.
+Then, each charging station provides the current charging speed.
 Note that the simulator computes the current charging speed dynamically.
 
-The \texttt{Vehicle} class \textcolor{red}{TODO}
+The \texttt{Vehicle} class represents the driving resources.
+Each vehicle provides an initial and a current location on the driving infrastructure.
+The initial location defines the position of the vehicle in the initial state of the simulation.
+Then, the simulator continuously updates the current location of the vehicle.
+Furthermore, each vehicle stores a length and a capacity, a maximum, an initial, and a current battery level, and a current drive speed.
+The length determines how much space the vehicle occupies on the driving infrastructure.
+The capacity defines how much demand the vehicle can carry.
+The maximum battery level specifies the size of the energy storage.
+And the initial battery level stores the load state of the enery storage at simulation start.
+Finally, the simulator continuously updates the current battery level as well as the current drive speed.
 
-The \texttt{Demand} class \textcolor{red}{TODO}
+The \texttt{Demand} class represents the transportation loads to be served.
+Each demand points to a pickup and a dropoff location as well as a current location and vehicle.
+Furthermore, each demand stores a size as well as an appear, and earliest pickup, and a latest dropoff time.
+The simulator continously updates the current location and vehicle.
 
 \subsection{Module \texttt{controller}}
 \label{sec:controller-interface}
 
 %For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
 
-\textcolor{red}{TODO}
+During simulation, a number of decisions have to be taken.
+For example, when arriving at an itersection each vehicle has to select the next outgoing segment.
+Similarly, when arriving at a demand pickup location each vehicle as to decide whether to take the demand or not.
+The system performance heavily depends on the optimality of the individual choices made during a simulation run.
+Therefore, one key engineering task for this class of systems is to develop an appropriate control strategy.
+Since the desired control strategy cannot be hardcoded upfront, the simulator supports plugging in and testing different strategies.
+Each control strategy simply must implement the controller interface depicted in Figure~\ref{fig:controller-interface}.
 
 \begin{figure}[h!]
     \centering
@@ -169,8 +188,8 @@ The \texttt{Demand} class \textcolor{red}{TODO}
     \label{fig:controller-interface}
 \end{figure}
 
-For evaluation pruposes, we currently provide five different implementations of the controller interface:
-A manual controller (see Section~\ref{sec:controller-manual}), a random controller (see Section~\ref{sec:controller-random}), a greedy controller (see Section~\ref{sec:controller-greedy}), a smart controller (see Section~\ref{sec:controller-smart}), and a switchable controller (see Section~\ref{sec:controller-switch}).
+For tool evaluation purposes, we currently provide five different basic implementations of this controller interface:
+A manual controller (see Section~\ref{sec:controller-manual}), a random controller (see Section~\ref{sec:controller-random}), a greedy controller (see Section~\ref{sec:controller-greedy}), a smart controller (see Section~\ref{sec:controller-smart}), and a switchable controller (see Section~\ref{sec:controller-switch}) strategy.
 
 \subsubsection{Manual controller}
 \label{sec:controller-manual}
