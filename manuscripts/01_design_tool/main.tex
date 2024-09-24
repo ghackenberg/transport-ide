@@ -46,27 +46,41 @@ Finally, we want to study how the relevant design information could be represent
 
 \paragraph{Research methodology}
 
-In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:framework}.
+In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:approach}.
 Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
-Thereafter, we propose two special applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
+Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
 Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 
-\section{Underlying framework}
-\label{sec:framework}
+\section{General Approach}
+\label{sec:approach}
 
 In this section, we propose a modeling and simulation framework for the design of intelligent transportation systems.
 We first introduce the scope and intended usage of the framework in Section ~\ref{sec:scope}.
-Secondly, we present the modeling technique for describing the design decisions and defining evaluation scenarios in Section~\ref{sec:modeling-technique}.
-Then, we propose an interface for implementing and integrating custom control strategies in Section~\ref{sec:controller-interface}.
-Finally, we define an interface for collecting statistics during simulation of system dynamics in Section~\ref{sec:statistics-interface}.
+Secondly, we present the methodology for describing design decisions in Section~\ref{sec:methodology}.
+Thirdly, we describe the domain-specific concepts our modeling and simulation framework employs for designs in Section~\ref{sec:domain-specific-modeling}.
+%Then, we propose an interface for implementing and integrating custom control strategies in Section~\ref{sec:controller-interface}.
+%Finally, we define an interface for collecting statistics during simulation of system dynamics in Section~\ref{sec:statistics-interface}.
 
 \subsection{Scope and Intended Usage}
 \label{sec:scope}
-Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
+Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties. In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated. In terms of use-cases, our modeling technique supports both transportation system and control strategy design. For instance, transportation engineers may be supported by investigation of transportation infrastructure properties. On the other hand side, mobility and vehicle fleet operators may be supported by deriving control strategies in the context of on-demand transportation problems.
 
-Here, our modeling technique supports deriving well-defined designs of transportation systems as well as designing control strategies in the context of on-demand transportation problems. In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
+% \begin{itemize}
+% 	\item Transportation System Engineer
+ %	\item Mobility Provider
+% \end{itemize}
 
-For this, our approach supports different design tasks. 
+
+\subsection{Methodology}
+\label{sec:methodology}
+
+Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain. Models are described based on the problem domain, where simulation aids obtaining information about and shaping designs of the solution domain.
+
+For system models, each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) properties concerning state evolution during simulation including states and actions. As simulation complexity increases with the number and dimensionality of considered parameters, states, and actions of modeled systems, Discrete-Event Simulation (DES)~\cite{fishman2001discrete} is employed, where events are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation. Thus, simulation complexity is reduced by limiting action space dimensionality and by abstracting from discrete-time resolutions~\cite{ascher2023discrete}.
+
+%Each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations. In addition, we define events as functions over a system's trajectory of states, which precisely indicate when actions need to be taken in the system simulation. Thus, events significantly reduce simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions. 
+
+Based on the concepts, our approach supports different design tasks, where evaluation of designs is performed using approximate and heuristic optimization techniques. We utilize optimization to evaluate solutions for the following design problems:
 
 \begin{itemize}
 \item Static Property Optimization concerns static design decisions such as optimization of transportation infrastructure properties.
@@ -74,33 +88,36 @@ For this, our approach supports different design tasks.
 \item Mixed Property Optimization concerns the integrated design task for optimization of both static and dynamic design decisions.
 \end{itemize}
 
-\subsection{Modeling technique}
-\label{sec:modeling-technique}
-On a system modeling level, the approach allows decomposition of composite and atomary system components to an arbitrary level of abstraction, based on a formal foundation, defining system states, actions, transitions as well as events (See Section \ref{sec:system-theory}).
+% TODO Figure
+\begin{figure}[tbp]
+	\centering
+	%includegraphics[width=0.8\columnwidth]{../../}
+	\caption{Static/dynamic/mixed property optimization}
+	\label{fig:concept}
+\end{figure}
+
 
 %In addition, relationships between components can be incorporated by specifying well-defined component interfaces and their connection.
 
-On domain modeling level, the approach allows one to model integrated transportation system problems on mesoscopic to 
-microscopic levels, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by the formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017} (See Section  \ref{sec:domain-specific-modeling}). 
-
-\subsubsection{System Theory}
-\label{sec:system-theory}
-
-Currently, our modeling technique is based on a formalism for Discrete-Event Simulation (DES) ~\cite{fishman2001discrete}.
-
-Each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations. In addition, we define events as functions over a system's trajectory of states, which precisely indicate when actions need to be taken in the system simulation. Thus, events significantly reduce simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions. 
+%\subsubsection{System Theory}
+%\label{sec:system-theory}
 
 
-
-\subsubsection{Domain-Specific Modeling}
+\subsection{Domain-Specific Modeling}
 \label{sec:domain-specific-modeling}
 
 %Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
 
-In terms of considered domain concepts for the formalism, we use intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
+On a domain-specific modeling level, the approach allows modeling integrated transportation system problems on mesoscopic to 
+microscopic levels, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017} (See Section  \ref{sec:scope}. Figure \ref{fig:domain-specific-modeling} shows an overview of the domain-specific modeling concepts. Considered domain concepts for the formalism include intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure. Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
 
-Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. 
-Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
+% TODO Figure
+\begin{figure}[tbp]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{../../events/demand.png}
+	\caption{Domain-specific modeling concepts.}
+	\label{fig:domain-specific-modeling}
+\end{figure}
 
 \textcolor{red}{TODO}
 
@@ -113,7 +130,7 @@ The architecture consists of eight modules and their interdependencies.
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
-    \caption{Modular software architecture}
+    \caption{Modular software architecture.}
     \label{fig:software-architecture}
 \end{figure}
 
@@ -128,7 +145,7 @@ Figure~\ref{fig:data-model} shows the classes, their attributes, and their relat
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/model/classes-v0.2.png}
-    \caption{Configuration and simulation data model}
+    \caption{Configuration and simulation data model.}
     \label{fig:data-model}
 \end{figure}
 
@@ -174,7 +191,7 @@ The simulator continously updates the current location and vehicle.
 %For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
 
 During simulation, a number of decisions have to be taken.
-For example, when arriving at an itersection each vehicle has to select the next outgoing segment.
+For example, when arriving at an intersection each vehicle has to select the next outgoing segment.
 Similarly, when arriving at a demand pickup location each vehicle as to decide whether to take the demand or not.
 The system performance heavily depends on the optimality of the individual choices made during a simulation run.
 Therefore, one key engineering task for this class of systems is to develop an appropriate control strategy.
@@ -184,7 +201,7 @@ Each control strategy simply must implement the controller interface depicted in
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/controller/classes-minimal.png}
-    \caption{Controller interface}
+    \caption{Controller interface.}
     \label{fig:controller-interface}
 \end{figure}
 
@@ -199,7 +216,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-route.png}
-    \caption{Route choice}
+    \caption{Route choice.}
     \label{fig:manual-controller-route}
 \end{figure}
 
@@ -208,7 +225,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-demand.png}
-    \caption{Pickup choice}
+    \caption{Pickup choice.}
     \label{fig:manual-controller-demand}
 \end{figure}
 
@@ -217,7 +234,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-charge.png}
-    \caption{Charge choice}
+    \caption{Charge choice.}
     \label{fig:manual-controller-charge}
 \end{figure}
 
@@ -251,7 +268,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/statistics/classes.png}
-    \caption{Statistics interface}
+    \caption{Statistics interface.}
     \label{fig:statistics-interface}
 \end{figure}
 
@@ -336,7 +353,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
-    \caption{Controller comparison}
+    \caption{Controller comparison.}
     \label{fig:controller-comparison}
 \end{figure*}
 
@@ -349,7 +366,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \begin{figure*}[tbp]
     \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
-    \caption{Infrastructure comparison}
+    \caption{Infrastructure comparison.}
     \label{fig:infratructure-comparison}
 \end{figure*}
 
