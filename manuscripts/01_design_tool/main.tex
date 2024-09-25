@@ -215,13 +215,13 @@ The simulator continously updates the current location and vehicle.
 
 %For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
 
-During simulation, a number of decisions have to be taken.
-For example, when arriving at an intersection each vehicle has to select the next outgoing segment.
-Similarly, when arriving at a demand pickup location each vehicle as to decide whether to take the demand or not.
-The system performance heavily depends on the optimality of the individual choices made during a simulation run.
+During a simulation run, a number of control decisions have to be taken.
+For example, when arriving at an intersection each vehicle has to select the next outgoing road segment.
+Similarly, when arriving at a demand pickup location each vehicle as to decide whether to serve the demand or not.
+The overall system performance heavily depends on the optimality of the individual choices made during a simulation run.
 Therefore, one key engineering task for this class of systems is to develop an appropriate control strategy.
 Since the desired control strategy cannot be hardcoded upfront, the simulator supports plugging in and testing different strategies.
-Each control strategy simply must implement the controller interface depicted in Figure~\ref{fig:controller-interface}.
+Each control strategy must implement the controller interface methods depicted in Figure~\ref{fig:controller-interface}.
 
 \begin{figure}[!ht]
     \centering
@@ -230,13 +230,13 @@ Each control strategy simply must implement the controller interface depicted in
     \label{fig:controller-interface}
 \end{figure}
 
-For tool evaluation purposes, we currently provide five different implementations of this controller interface:
-A \textbf{manual controller} (see Section~\ref{sec:controller-manual}), a \textbf{random controller} (see Section~\ref{sec:controller-random}), a \textbf{greedy controller} (see Section~\ref{sec:controller-greedy}), a \textbf{smart controller} (see Section~\ref{sec:controller-smart}), and a \textbf{switchable controller} (see Section~\ref{sec:controller-switch}) strategy.
+For tool demonstration and evaluation purposes, we currently provide five different implementations of this controller interface: A \textbf{manual}, a \textbf{random}, a \textbf{greedy}, a \textbf{smart}, and a \textbf{switchable} control strategy.
+In the following, we describe the logics behind each of these strategies in more detail.
 
-\subsubsection{Manual controller}
+\subsubsection*{Manual control strategy}
 \label{sec:controller-manual}
 
-The manual controller strategy delegates routing, demand pickup, and charge decisions to the user of the tool using input dialogs.
+The manual control strategy delegates routing, demand pickup, and charge decisions to the tool user using input dialogs.
 The remaining control decisions are derived automatically.
 
 Figure~\ref{fig:manual-controller-route} shows the input dialog for routing decisions, which pops up when a vehicle arrives a an intersection.
@@ -261,8 +261,8 @@ The dialog provides the name of the vehicle (\texttt{U} in the example), the dat
     \label{fig:manual-controller-demand}
 \end{figure}
 
-Figure~\ref{fig:manual-controller-charge} shows the input dialog for charge decisions, which pops up when a vehicle arrives at the location of a charging station.
-The dialog provides the name of the vehicle (\texttt{U} in the example), the location of the charging station (\texttt{A->B:50} in the example), and the two choice buttons (i.e.\ yes and no).
+Figure~\ref{fig:manual-controller-charge} shows the input dialog for vehicle charging decisions, which pops up when a vehicle arrives at the location of an unoccupied charging station.
+The dialog provides the name of the vehicle (\texttt{U} in the example), the location of the charging station (\texttt{A->B:50} in the example), and the buttons for the two available choices (i.e.\ yes and no).
 
 \begin{figure}[!ht]
     \centering
@@ -274,22 +274,27 @@ The dialog provides the name of the vehicle (\texttt{U} in the example), the loc
 Finally, the strategy always selects the maximum driving speed for each vehicle without considering possible collisions.
 And the strategy always chooses to fully charge the battery of each vehicle after the user decided to start the charging process.
 
-\subsubsection{Random controller}
+\subsubsection*{Random control strategy}
 \label{sec:controller-random}
 
-\textcolor{red}{TODO}
+The random control strategy uses a standard random number generator for making the routing, demand pickup, and charging decisions described previously.
+For each decision, the strategy assigns equal probabilities to the available choices (i.e.\ outgoing segments of an intersection or yes and no).
+Furthermore, driving speed and target battery charge level are handled equally to the manual controller described in the previous section.
 
-\subsubsection{Greedy controller}
+\subsubsection*{Greedy control strategy}
 \label{sec:controller-greedy}
 
-\textcolor{red}{TODO}
+The greedy control strategy again uses a standard random number generator for making most routing and charging decisions.
+However, in contrast to the random control strategy the greedy control strategy always decides to pick up demands if possible.
+Furthermore, during routing decisions the strategy prefers choosing outgoing road segments on which loaded demands can be dropped off.
+Finally, drive speed and target battery charge level are handled equally to the previous control strategies.
 
-\subsubsection{Smart controller}
+\subsubsection*{Smart control strategy}
 \label{sec:controller-smart}
 
 \textcolor{red}{TODO}
 
-\subsubsection{Switchable controller}
+\subsubsection*{Switchable control strategy}
 \label{sec:controller-switch}
 
 \textcolor{red}{TODO}
@@ -385,11 +390,11 @@ And the strategy always chooses to fully charge the battery of each vehicle afte
 
 \textcolor{red}{TODO}
 
-\begin{figure*}[tbp]
-    \includegraphics[width=\textwidth]{../../screenshots/controller-comparison.png}
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{../../screenshots/controller-comparison.png}
     \caption{Controller comparison.}
     \label{fig:controller-comparison}
-\end{figure*}
+\end{figure}
 
 \textcolor{red}{TODO}
 
@@ -398,11 +403,11 @@ And the strategy always chooses to fully charge the battery of each vehicle afte
 
 \textcolor{red}{TODO}
 
-\begin{figure*}[tbp]
-    \includegraphics[width=\textwidth]{../../screenshots/infrastructure-comparison.png}
+\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{../../screenshots/infrastructure-comparison.png}
     \caption{Infrastructure comparison.}
     \label{fig:infratructure-comparison}
-\end{figure*}
+\end{figure}
 
 \textcolor{red}{TODO}
 
