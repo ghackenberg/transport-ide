@@ -230,13 +230,19 @@ Each control strategy simply must implement the controller interface depicted in
     \label{fig:controller-interface}
 \end{figure}
 
-For tool evaluation purposes, we currently provide five different basic implementations of this controller interface:
-A manual controller (see Section~\ref{sec:controller-manual}), a random controller (see Section~\ref{sec:controller-random}), a greedy controller (see Section~\ref{sec:controller-greedy}), a smart controller (see Section~\ref{sec:controller-smart}), and a switchable controller (see Section~\ref{sec:controller-switch}) strategy.
+For tool evaluation purposes, we currently provide five different implementations of this controller interface:
+A \textbf{manual controller} (see Section~\ref{sec:controller-manual}), a \textbf{random controller} (see Section~\ref{sec:controller-random}), a \textbf{greedy controller} (see Section~\ref{sec:controller-greedy}), a \textbf{smart controller} (see Section~\ref{sec:controller-smart}), and a \textbf{switchable controller} (see Section~\ref{sec:controller-switch}) strategy.
 
 \subsubsection{Manual controller}
 \label{sec:controller-manual}
 
-\textcolor{red}{TODO}
+The manual controller strategy delegates routing, demand pickup, and charge decisions to the user of the tool using input dialogs.
+The remaining control decisions are derived automatically.
+
+Figure~\ref{fig:manual-controller-route} shows the input dialog for routing decisions, which pops up when a vehicle arrives a an intersection.
+The dialog provides the name of the vehicle (\texttt{V} in the example) as well as the possible follow-up road segments (\texttt{C->D} and \texttt{C->E} in the example).
+Note that \texttt{C}, \texttt{D}, and \texttt{E} represent the names of the intersections connected through the segments.
+The user can select the desired routing option by pressing the button for the respective follow-up segment.
 
 \begin{figure}[!ht]
     \centering
@@ -245,7 +251,8 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
     \label{fig:manual-controller-route}
 \end{figure}
 
-\textcolor{red}{TODO}
+Figure~\ref{fig:manual-controller-demand} shows the input dialog for demand pickup decisions, which pops up when a vehicle arrives at the pickup location of an appeared and unserved demand.
+The dialog provides the name of the vehicle (\texttt{U} in the example), the data of the demand (i.e.\ the pickup location and earliest pickup time as well as the dropoff location and latest dropoff time), and the two choice buttons (i.e.\ yes and no).
 
 \begin{figure}[!ht]
     \centering
@@ -254,7 +261,8 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
     \label{fig:manual-controller-demand}
 \end{figure}
 
-\textcolor{red}{TODO}
+Figure~\ref{fig:manual-controller-charge} shows the input dialog for charge decisions, which pops up when a vehicle arrives at the location of a charging station.
+The dialog provides the name of the vehicle (\texttt{U} in the example), the location of the charging station (\texttt{A->B:50} in the example), and the two choice buttons (i.e.\ yes and no).
 
 \begin{figure}[!ht]
     \centering
@@ -263,7 +271,8 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
     \label{fig:manual-controller-charge}
 \end{figure}
 
-\textcolor{red}{TODO}
+Finally, the strategy always selects the maximum driving speed for each vehicle without considering possible collisions.
+And the strategy always chooses to fully charge the battery of each vehicle after the user decided to start the charging process.
 
 \subsubsection{Random controller}
 \label{sec:controller-random}
