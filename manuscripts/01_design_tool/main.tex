@@ -226,7 +226,7 @@ Each control strategy must implement the controller interface methods depicted i
 \begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/controller/classes-minimal.png}
-    \caption{Controller interface.}
+    \caption{Methods of the controller interface.}
     \label{fig:controller-interface}
 \end{figure}
 
@@ -237,7 +237,7 @@ The columns of the matrix represent the individual control strategies, the rows 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\columnwidth]{control_strategy_overview.png}
-    \caption{Control strategy overview.}
+    \caption{Overview of the control strategies.}
     \label{fig:control-strategies}
 \end{figure}
 
@@ -294,10 +294,16 @@ Furthermore, driving speed and target battery charge level are handled equally t
 \subsubsection*{Greedy control strategy}
 \label{sec:controller-greedy}
 
-The greedy control strategy again uses a standard random number generator for making most routing and charging decisions.
-However, in contrast to the random control strategy the greedy control strategy always decides to pick up demands if possible.
-Furthermore, during routing decisions the strategy prefers choosing outgoing road segments on which loaded demands can be dropped off.
-Finally, drive speed and target battery charge level are handled equally to the previous control strategies.
+The greedy control strategy uses a more sophisticated logic for determining routing decisions upon arrivals of vehicles at intersections of the driving infrastructure.
+The logic comprises four rules, which are processed in sequential order until one rule applies and makes a decision:
+\begin{enumerate}
+    \item When the battery of the vehicle is only half full or less, the strategy randomly selects an outgoing road segment with charging station if possible.
+    \item Then, when the vehicle carries one or more demands, the strategy randomly selects the drop-off segment of one such demand if reachable directly via the intersection.
+    \item Next, when the vehicle carries no demand, the strategy randomly selects the pick-up segment of an unserved demand if reachable directly via the intersection.
+    \item Finaly, when none of the above rules applied, the strategy randomly selects any of the outgoing road segments of the current intersection.
+\end{enumerate}
+Moreover, the greedy control strategy always chooses to pick up demands or charge vehicle batteries if arriving at an unserved demand pick-up location or charging station.
+Also, the strategy always chooses to drive at maximum speed and to fully charge the batteries if a charging process has started.
 
 \subsubsection*{Smart control strategy}
 \label{sec:controller-smart}
