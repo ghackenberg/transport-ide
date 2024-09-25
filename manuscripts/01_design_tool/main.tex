@@ -50,8 +50,8 @@ Finally, we want to study how the relevant design information could be represent
 \paragraph{Research methodology}
 
 In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:approach}.
-Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
-Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
+%Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
+\textcolor{red}{Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.}
 Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 
 \section{General approach}
@@ -302,12 +302,21 @@ The logic comprises four rules, which are processed in sequential order until on
     \item Next, when the vehicle carries no demand, the strategy randomly selects the pick-up segment of an unserved demand if reachable directly via the intersection.
     \item Finaly, when none of the above rules applied, the strategy randomly selects any of the outgoing road segments of the current intersection.
 \end{enumerate}
-Moreover, the greedy control strategy always chooses to pick up demands or charge vehicle batteries if arriving at an unserved demand pick-up location or charging station.
+Note that the above rules of the routing logic only consider the next segment and do not perform a look-ahead across more segments.
+Finally, the greedy control strategy always chooses to pick up demands or charge vehicle batteries if arriving at an unserved demand pick-up location or charging station.
 Also, the strategy always chooses to drive at maximum speed and to fully charge the batteries if a charging process has started.
 
 \subsubsection*{Smart control strategy}
 \label{sec:controller-smart}
 
+The smart control strategy uses an even more sophisticated strategy for determining routing decisions upon intersection arrivals of vehicles.
+The logic again comprises four rules, which are processed in sequential order until one rule applies:
+\begin{enumerate}
+    \item \textcolor{red}{TODO}
+    \item \textcolor{red}{TODO}
+    \item \textcolor{red}{TODO}
+    \item \textcolor{red}{TODO}
+\end{enumerate}
 \textcolor{red}{TODO}
 
 \subsection{Data recorder}
@@ -324,22 +333,22 @@ Also, the strategy always chooses to drive at maximum speed and to fully charge 
 
 \textcolor{red}{TODO}
 
-\subsection{Model parser}
+%\subsection{Model parser}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsection{Simulation engine}
+%\subsection{Simulation engine}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsection{Data exporter}
+%\subsection{Data exporter}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsection{Data visualizations}
-\label{sec:gui}
+%\subsection{Data visualizations}
+%\label{sec:gui}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
 %\begin{figure*}[tbp]
 %    \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
@@ -347,47 +356,51 @@ Also, the strategy always chooses to drive at maximum speed and to fully charge 
 %    \label{fig:gui}
 %\end{figure*}
 
-\subsubsection{Map}
+%\subsubsection{Map}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsubsection{Vehicle charts}
+%\subsubsection{Vehicle charts}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Vehicle battery chart}
+%\paragraph{Vehicle battery chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Vehicle distance chart}
+%\paragraph{Vehicle distance chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsubsection{Demand charts}
+%\subsubsection{Demand charts}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Demand time chart}
+%\paragraph{Demand time chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Demand distance chart}
+%\paragraph{Demand distance chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\subsubsection{Infrastructure charts}
+%\subsubsection{Infrastructure charts}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Intersection chart}
+%\paragraph{Intersection chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Segment chart}
+%\paragraph{Segment chart}
 
-\textcolor{red}{TODO}
+%\textcolor{red}{TODO}
 
-\paragraph{Station chart}
+%\paragraph{Station chart}
+
+%\textcolor{red}{TODO}
+
+\subsection{Remaining modules}
 
 \textcolor{red}{TODO}
 
