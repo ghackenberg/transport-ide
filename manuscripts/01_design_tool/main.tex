@@ -1,7 +1,10 @@
 \documentclass[10pt,twocolumn]{article}
 
+\setlength{\marginparwidth}{2cm}
+
 \usepackage{graphicx}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{todonotes}
 
 \begin{document}
 
@@ -51,7 +54,7 @@ Then, we propose a graphical user interface for building system designs, startin
 Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
 Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 
-\section{General Approach}
+\section{General approach}
 \label{sec:approach}
 
 In this section, we propose a modeling and simulation framework for the design of intelligent transportation systems.
@@ -61,88 +64,110 @@ Thirdly, we describe the domain-specific concepts our modeling and simulation fr
 %Then, we propose an interface for implementing and integrating custom control strategies in Section~\ref{sec:controller-interface}.
 %Finally, we define an interface for collecting statistics during simulation of system dynamics in Section~\ref{sec:statistics-interface}.
 
-\subsection{Scope and Intended Usage}
+\subsection{Intended usage}
 \label{sec:scope}
-Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties. In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated. In terms of use-cases, our modeling technique supports both transportation system and control strategy design. For instance, transportation engineers may be supported by investigation of transportation infrastructure properties. On the other hand side, mobility and vehicle fleet operators may be supported by deriving control strategies in the context of on-demand transportation problems.
+
+Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
+In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
+In terms of use-cases, our modeling technique supports both transportation system and control strategy design.
+For instance, transportation engineers may be supported by investigation of transportation infrastructure properties.
+On the other hand side, mobility and vehicle fleet operators may be supported by deriving control strategies in the context of on-demand transportation problems.
 
 % \begin{itemize}
 % 	\item Transportation System Engineer
  %	\item Mobility Provider
 % \end{itemize}
 
-
-\subsection{Methodology}
+\subsection{Design methodology}
 \label{sec:methodology}
 
-Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain. Models are described based on the problem domain, where simulation aids obtaining information about and shaping designs of the solution domain.
+Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain.
+Models are described based on the problem domain, where simulation aids obtaining information about and shaping designs of the solution domain.
 
-For system models, each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) properties concerning state evolution during simulation including states and actions. As simulation complexity increases with the number and dimensionality of considered parameters, states, and actions of modeled systems, Discrete-Event Simulation (DES)~\cite{fishman2001discrete} is employed, where events are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation. Thus, simulation complexity is reduced by limiting action space dimensionality and by abstracting from discrete-time resolutions~\cite{ascher2023discrete}.
+% TODO Figure
+\begin{figure}[!ht]
+	\centering
+	\missingfigure[figwidth=\columnwidth, figheight=0.7\columnwidth]{Static/dynamic/mixed property optimization}
+	\caption{System design methodology}
+	\label{fig:concept}
+\end{figure}
+
+For system models, each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) properties concerning state evolution during simulation including states and actions.
+As simulation complexity increases with the number and dimensionality of considered parameters, states, and actions of modeled systems, Discrete-Event Simulation (DES)~\cite{fishman2001discrete} is employed, where events are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation.
+Thus, simulation complexity is reduced by limiting action space dimensionality and by abstracting from discrete-time resolutions~\cite{ascher2023discrete}.
 
 %Each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations. In addition, we define events as functions over a system's trajectory of states, which precisely indicate when actions need to be taken in the system simulation. Thus, events significantly reduce simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions. 
 
 Based on the concepts, our approach supports different design tasks, where evaluation of designs is performed using approximate and heuristic optimization techniques. We utilize optimization to evaluate solutions for the following design problems:
 
 \begin{itemize}
-\item Static Property Optimization concerns static design decisions such as optimization of transportation infrastructure properties.
-\item Dynamic Property Optimization concerns dynamic design decisions, i.e. optimization of control strategies such as efficient transportation entity behavior.
-\item Mixed Property Optimization concerns the integrated design task for optimization of both static and dynamic design decisions.
+    \item \textbf{Static property optimization} concerns static design decisions such as optimization of transportation infrastructure properties.
+    \item \textbf{Dynamic property optimization} concerns dynamic design decisions, i.e. optimization of control strategies such as efficient transportation entity behavior.
+    \item \textbf{Mixed property optimization} concerns the integrated design task for optimization of both static and dynamic design decisions.
 \end{itemize}
-
-% TODO Figure
-\begin{figure}[tbp]
-	\centering
-	%includegraphics[width=0.8\columnwidth]{../../}
-	\caption{Static/dynamic/mixed property optimization}
-	\label{fig:concept}
-\end{figure}
-
 
 %In addition, relationships between components can be incorporated by specifying well-defined component interfaces and their connection.
 
 %\subsubsection{System Theory}
 %\label{sec:system-theory}
 
-
-\subsection{Domain-Specific Modeling}
+\subsection{System theory}
 \label{sec:domain-specific-modeling}
 
 %Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
 
-On a domain-specific modeling level, the approach allows modeling integrated transportation system problems on mesoscopic to 
-microscopic levels, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017} (See Section  \ref{sec:scope}. Figure \ref{fig:domain-specific-modeling} shows an overview of the domain-specific modeling concepts. Considered domain concepts for the formalism include intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure. Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure. Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
+On a domain-specific modeling level, the approach allows modeling integrated transportation system problems on mesoscopic to microscopic levels, \cite{ascher_hackenberg_2014, ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016, ascher_hackenberg_2017} (See Section  \ref{sec:scope}).
+Figure \ref{fig:domain-specific-modeling} shows an overview of the domain-specific modeling concepts.
 
 % TODO Figure
-\begin{figure}[tbp]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.6\columnwidth]{../../events/demand.png}
 	\caption{Domain-specific modeling concepts.}
 	\label{fig:domain-specific-modeling}
 \end{figure}
 
+\paragraph{Concepts}
+
+Considered domain concepts for the formalism include intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
+Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure.
+Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
+
+\paragraph{States}
+
+\textcolor{red}{TODO}
+
+\paragraph{Events}
+
+\textcolor{red}{TODO}
+
+\paragraph{Constraints}
+
 \textcolor{red}{TODO}
 
 \section{Tool prototype}
 \label{sec:tool-prototype}
 
-Figure~\ref{fig:software-architecture} shows the module architecture of the tool prototype.
-The architecture consists of eight modules and their interdependencies.
+Based on the general approach explained in Section~\ref{sec:approach} we started developing a tool prototype.
+Figure~\ref{fig:software-architecture} illustrates the module architecture of the tool prototype.
+The architecture consists of the eight modules \texttt{model}, \texttt{controller}, \texttt{statistics}, and \texttt{simulator} as well as \texttt{parser}, \texttt{exporter}, \texttt{viewer}, and \texttt{program}.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
     \caption{Modular software architecture.}
     \label{fig:software-architecture}
 \end{figure}
 
-In the following, we discuss each module in more detail including their resposibilities.
+In the following, we discuss each module in more detail including their resposibilities and dependencies on the other modules.
 
-\subsection{Module \texttt{model}}
+\subsection{Data structures}
 \label{sec:data-model}
 
 The \texttt{model} module provides the core data structures for modeling static system configurations and representing dynamic system states.
 Figure~\ref{fig:data-model} shows the classes, their attributes, and their relationships.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/model/classes-v0.2.png}
     \caption{Configuration and simulation data model.}
@@ -185,7 +210,7 @@ Each demand points to a pickup and a dropoff location as well as a current locat
 Furthermore, each demand stores a size as well as an appear, and earliest pickup, and a latest dropoff time.
 The simulator continously updates the current location and vehicle.
 
-\subsection{Module \texttt{controller}}
+\subsection{Control strategies}
 \label{sec:controller-interface}
 
 %For evaluation of defined system designs, the approach offers an controller interface for defining control strategies. 
@@ -198,7 +223,7 @@ Therefore, one key engineering task for this class of systems is to develop an a
 Since the desired control strategy cannot be hardcoded upfront, the simulator supports plugging in and testing different strategies.
 Each control strategy simply must implement the controller interface depicted in Figure~\ref{fig:controller-interface}.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../diagrams/controller/classes-minimal.png}
     \caption{Controller interface.}
@@ -213,7 +238,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \textcolor{red}{TODO}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-route.png}
     \caption{Route choice.}
@@ -222,7 +247,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \textcolor{red}{TODO}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-demand.png}
     \caption{Pickup choice.}
@@ -231,7 +256,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \textcolor{red}{TODO}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics[scale=0.4]{../../screenshots/manual-controller-charge.png}
     \caption{Charge choice.}
@@ -260,33 +285,33 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{statistics}}
+\subsection{Data recorder}
 \label{sec:statistics-interface}
 
 \textcolor{red}{TODO}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
-    \includegraphics[scale=0.4]{../../diagrams/statistics/classes.png}
+    \includegraphics[scale=0.4]{../../diagrams/statistics/classes-v2.png}
     \caption{Statistics interface.}
     \label{fig:statistics-interface}
 \end{figure}
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{parser}}
+\subsection{Model parser}
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{simulator}}
+\subsection{Simulation engine}
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{exporter}}
+\subsection{Data exporter}
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{viewer}}
+\subsection{Data visualizations}
 \label{sec:gui}
 
 \textcolor{red}{TODO}
@@ -341,7 +366,7 @@ A manual controller (see Section~\ref{sec:controller-manual}), a random controll
 
 \textcolor{red}{TODO}
 
-\subsection{Module \texttt{program}}
+\subsection{Specific applications}
 \label{sec:application}
 
 \textcolor{red}{TODO}
