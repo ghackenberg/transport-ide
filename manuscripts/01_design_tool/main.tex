@@ -230,8 +230,18 @@ Each control strategy must implement the controller interface methods depicted i
     \label{fig:controller-interface}
 \end{figure}
 
-For tool demonstration and evaluation purposes, we currently provide five different implementations of this controller interface: A \textbf{manual}, a \textbf{random}, a \textbf{greedy}, a \textbf{smart}, and a \textbf{switchable} control strategy.
-In the following, we describe the logics behind each of these strategies in more detail.
+For tool demonstration and evaluation purposes, we currently provide four different implementations of the controller interface: A \textbf{manual}, a \textbf{random}, a \textbf{greedy}, and a \textbf{smart} control strategy.
+Figure~\ref{fig:control-strategies} provides an overview of the four control strategies and their decision logic.
+The columns of the matrix represent the individual control strategies, the rows represent the decisions to be taken, and the cells represent the corresponding logic.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{control_strategy_overview.png}
+    \caption{Control strategy overview.}
+    \label{fig:control-strategies}
+\end{figure}
+
+In the following, we describe the logics behind each of the control strategies in more detail.
 
 \subsubsection*{Manual control strategy}
 \label{sec:controller-manual}
@@ -291,11 +301,6 @@ Finally, drive speed and target battery charge level are handled equally to the 
 
 \subsubsection*{Smart control strategy}
 \label{sec:controller-smart}
-
-\textcolor{red}{TODO}
-
-\subsubsection*{Switchable control strategy}
-\label{sec:controller-switch}
 
 \textcolor{red}{TODO}
 
