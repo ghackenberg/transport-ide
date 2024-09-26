@@ -312,12 +312,12 @@ Also, the strategy always chooses to drive at maximum speed and to fully charge 
 The smart control strategy uses an even more sophisticated strategy for determining routing decisions upon intersection arrivals of vehicles.
 The logic again comprises four rules, which are processed in sequential order until one rule applies:
 \begin{enumerate}
-    \item \textcolor{red}{TODO}
-    \item \textcolor{red}{TODO}
+    \item When the vehicle carries one ore more demands and a charging station can be reached via their drop-off location with the current battery level, the closest such demand is selected.
+    \item When the vehicle does not carry any demands and a charging station can be reached via the pick-up location of an unserved demand, the closest such demand is selected for pick-up.
     \item \textcolor{red}{TODO}
     \item \textcolor{red}{TODO}
 \end{enumerate}
-\textcolor{red}{TODO}
+\textcolor{red}{TODO} 
 
 \subsection{Data recorder}
 \label{sec:statistics-interface}
