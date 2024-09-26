@@ -295,12 +295,12 @@ Furthermore, driving speed and target battery charge level are handled equally t
 \label{sec:controller-greedy}
 
 The greedy control strategy uses a more sophisticated logic for determining routing decisions upon arrivals of vehicles at intersections of the driving infrastructure.
-The logic comprises four rules, which are processed in sequential order until one rule applies and makes a decision:
+The logic comprises four rules, which are processed in sequential order until one rule applies:
 \begin{enumerate}
-    \item When the battery of the vehicle is only half full or less, the strategy randomly selects an outgoing road segment with charging station if possible.
+    \item When the battery of the vehicle is only half full or less, the strategy randomly selects an outgoing road segment with charging station if such segment is avaiable.
     \item Then, when the vehicle carries one or more demands, the strategy randomly selects the drop-off segment of one such demand if reachable directly via the intersection.
     \item Next, when the vehicle carries no demand, the strategy randomly selects the pick-up segment of an unserved demand if reachable directly via the intersection.
-    \item Finaly, when none of the above rules applied, the strategy randomly selects any of the outgoing road segments of the current intersection.
+    \item Finaly, when none of the above three rules apply, the strategy randomly selects any of the outgoing road segments of the current intersection with uniform probability distribution.
 \end{enumerate}
 Note that the above rules of the routing logic only consider the next segment and do not perform a look-ahead across more segments.
 Finally, the greedy control strategy always chooses to pick up demands or charge vehicle batteries if arriving at an unserved demand pick-up location or charging station.
@@ -314,10 +314,10 @@ The logic again comprises four rules, which are processed in sequential order un
 \begin{enumerate}
     \item When the vehicle carries one ore more demands and a charging station can be reached via their drop-off location with the current battery level, the closest such demand is selected.
     \item When the vehicle does not carry any demands and a charging station can be reached via the pick-up location of an unserved demand, the closest such demand is selected for pick-up.
-    \item \textcolor{red}{TODO}
-    \item \textcolor{red}{TODO}
+    \item When the vehicle carries no demands and does not plan to pick-up a new demand, the segment leading to the closest charging station is selected if reachable with the remaining battery level.
+    \item \textit{Finally, when none of the above three rules apply, the strategy randomly selects any of the outgoing road segments of the current intersection with uniform probability distribution.}
 \end{enumerate}
-\textcolor{red}{TODO} 
+\textcolor{red}{TODO}
 
 \subsection{Data recorder}
 \label{sec:statistics-interface}
