@@ -395,7 +395,7 @@ The second application can be used for comparing the performance of different dr
 \subsubsection{Control strategy comparison}
 \label{sec:controller-comparison}
 
-To compare control strategies, we apply the strategies to the same system configuration (including driving and charging infrastructure as well as vehicle fleets) and scenario (i.e.\ demands).
+To compare control strategies, we apply the strategies to the same system configuration (including driving and charging infrastructure as well as vehicle fleets) and scenario (i.e.\ demand profile).
 For performance evaluation, we currently measure the times between demand appearance at the pick up location and disappearance at the drop off location.
 Figure~\ref{fig:controller-comparison} shows an example system configuration, on which the random, the greedy, and the smart control strategy are applied.
 
@@ -413,7 +413,10 @@ Note that due to the random nature of the control strategies, the result might h
 \subsubsection{System configuration comparison}
 \label{sec:infrastructure-comparison}
 
-\textcolor{red}{TODO}
+To compare system configurations, we instead apply the same control strategy and scenario (i.e.\ demand profile) to different versions of the driving and charging infrastructure as well as the fleet configuration.
+Note that different versions of the driving infrastructure might include additional road segments not present in other versions.
+Hence, we require that demands only reference road segments, which are included in every version of the driving infrastructure.
+Figure~\ref{fig:infratructure-comparison} shows an example, where the smart control strategy is applied to different infrastructure stages.
 
 \begin{figure}[!ht]
     \includegraphics[width=\columnwidth]{infrastructure_comparison.png}
@@ -421,7 +424,10 @@ Note that due to the random nature of the control strategies, the result might h
     \label{fig:infratructure-comparison}
 \end{figure}
 
-\textcolor{red}{TODO}
+Again, the upper part of the window shows for each control strategy the current system state including vehicle locations and demands.
+Also, the lower part of the window shows for each system configuration the total times between demand appearance and disappearance.
+In this simulation run, the system configuration in the middle, which adds only one additional road segment, has the best performance.
+This example mainly shows, that the smart control strategy not always delivers optimal results, which is necessary for a fair comparison of infrastructures.
 
 \section{Conclusion}
 \label{sec:conclusion}
