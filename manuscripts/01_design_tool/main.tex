@@ -357,7 +357,33 @@ In the future, we plan to add more recording capabilities as well as exploring a
 \subsection{Simulation engine}
 \label{sec:simulation-engine}
 
-\textcolor{red}{TODO}
+As explained previously, the simulation engine is responsible for computing the events, delegating control decisions, updating the system state, and sending data to the recorder.
+\begin{enumerate}
+    \item Update vehicle segment (including routing decision)
+    \item Disconnect vehicle from charging station (if full or controller decision)
+    \item Connect vehicle to charging station (if not full and controller decision)
+    \item Pick up demand (if controller decision)
+    \item Drop off demand
+    \item Drop off demand (empty battery)
+    \item Update vehicle speed (including speed decision)
+\end{enumerate}
+Compute time of the next event
+\begin{itemize}
+    \item Speed selection timeout (controller decision)
+    \item Charge speed update or charging station disconnect timeout (controller decision)
+    \item Battery level exhaustion timeout
+    \item Segment end timeout / intersection arrival timeout
+    \item Demand appearance timeout (mainly for visualization)
+    \item Demand overdue timeout (mainly for visualization)
+    \item Charging station arrival timeout
+    \item Battery full timeout
+    \item Demand pick up arrival timeout
+    \item Demand drop off arrival timeout
+    \item Vehicle attach/detach timeout
+\end{itemize}
+Update battery level and location of vehicle.
+Record traveled distance and time step.
+Detect collision
 
 \subsection{Specific applications}
 \label{sec:application}
