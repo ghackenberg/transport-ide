@@ -357,33 +357,36 @@ In the future, we plan to add more recording capabilities as well as exploring a
 \subsection{Simulation engine}
 \label{sec:simulation-engine}
 
-As explained previously, the simulation engine is responsible for computing the events, delegating control decisions, updating the system state, and sending data to the recorder.
-\begin{enumerate}
-    \item Update vehicle segment (including routing decision)
-    \item Disconnect vehicle from charging station (if full or controller decision)
-    \item Connect vehicle to charging station (if not full and controller decision)
-    \item Pick up demand (if controller decision)
-    \item Drop off demand
-    \item Drop off demand (empty battery)
-    \item Update vehicle speed (including speed decision)
-\end{enumerate}
-Compute time of the next event
-\begin{itemize}
-    \item Speed selection timeout (controller decision)
-    \item Charge speed update or charging station disconnect timeout (controller decision)
-    \item Battery level exhaustion timeout
-    \item Segment end timeout / intersection arrival timeout
-    \item Demand appearance timeout (mainly for visualization)
-    \item Demand overdue timeout (mainly for visualization)
-    \item Charging station arrival timeout
-    \item Battery full timeout
-    \item Demand pick up arrival timeout
-    \item Demand drop off arrival timeout
-    \item Vehicle attach/detach timeout
-\end{itemize}
-Update battery level and location of vehicle.
-Record traveled distance and time step.
-Detect collision
+As explained previously, the simulation engine is responsible for computing event times, delegating control decisions to the control strategy, updating the model state, and dispatching relevant data to the recorder.
+The core of the simulation engine is the simulation loop, which advances the model time and updates the model state until no more events are to be processed.
+The simulation loop can be divided into three main steps:
+
+\paragraph{Step 1}
+
+Make routing decisions and update vehicle locations.
+Make charging decisions and update connections between vehicles and charging stations.
+Make pick up decisions, perform drop offs (also if vehicle battery empty), and update connections between vehicles and demands.
+Make speed decisions and update vehicle speeds.
+
+\paragraph{Step 2}
+
+Compute the time of the next event to be processed:
+Speed update timeout,
+charging speed update or charging station disconnect timeout,
+intersection arrival,
+charging station arrival,
+vehicle battery empty/full,
+demand appearance,
+demand overdue,
+demand pick up / drop off location arrival, and
+vehicle attach / detach.
+
+\paragraph{Step 3}
+
+Based on the current time and the time until the next event do the following:
+Update vehicle locations, vehicle battery levels, and record travelled distances of vehicles.
+Detect vehicle collisions based on their location, their width, and their overlaps along the segment line.
+Finally, set the model time to the time of the next event.
 
 \subsection{Specific applications}
 \label{sec:application}
@@ -395,32 +398,32 @@ The second application can be used for comparing the performance of different dr
 \subsubsection{Control strategy comparison}
 \label{sec:controller-comparison}
 
-To compare control strategies, we apply the strategies to the same system configuration (including driving and charging infrastructure as well as vehicle fleets) and scenario (i.e.\ demand profile).
-For performance evaluation, we currently measure the times between demand appearance at the pick up location and disappearance at the drop off location.
+To compare different control strategies, we apply these strategies to the same system configuration (including driving / charging infrastructure as well as fleet setup) and scenario (i.e.\ demand profile).
+For performance evaluation, we measure the times between demand appearances at the pick up location and subsequent disappearances at the drop off location.
 Figure~\ref{fig:controller-comparison} shows an example system configuration, on which the random, the greedy, and the smart control strategy are applied.
 
 \begin{figure}[!ht]
     \includegraphics[width=\columnwidth]{controller_comparison.png}
-    \caption{Controller comparison.}
+    \caption{Control strategy comparison.}
     \label{fig:controller-comparison}
 \end{figure}
 
 The upper part of the window shows for each control strategy the current system state including the vehicle locations and the active demands.
-The lower part of the window shows for each control strategy the total times between demand appearance and disappearance.
+The lower part of the window shows for each control strategy the total times that have passed between demand appearances and their respective disappearances.
 From the diagram we can deduct that in this simulation run the smart control strategy showed superior performance over the others.
-Note that due to the random nature of the control strategies, the result might have been very different.
+Note that due to the random nature of the strategies, the result might have been very different in second run.
 
 \subsubsection{System configuration comparison}
 \label{sec:infrastructure-comparison}
 
-To compare system configurations, we instead apply the same control strategy and scenario (i.e.\ demand profile) to different versions of the driving and charging infrastructure as well as the fleet configuration.
-Note that different versions of the driving infrastructure might include additional road segments not present in other versions.
+To compare system configurations, we instead apply the same control strategy and scenario (i.e.\ demand profile) to different versions of the driving / charging infrastructure as well as fleet setup.
+Note that different versions of the infrastructure might include additional road segments not present in others.
 Hence, we require that demands only reference road segments, which are included in every version of the driving infrastructure.
-Figure~\ref{fig:infratructure-comparison} shows an example, where the smart control strategy is applied to different infrastructure stages.
+Figure~\ref{fig:infratructure-comparison} shows an example of such system configuration comparison.
 
 \begin{figure}[!ht]
     \includegraphics[width=\columnwidth]{infrastructure_comparison.png}
-    \caption{Infrastructure comparison.}
+    \caption{System configuration comparison.}
     \label{fig:infratructure-comparison}
 \end{figure}
 
