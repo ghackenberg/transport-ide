@@ -388,12 +388,16 @@ Detect collision
 \subsection{Specific applications}
 \label{sec:application}
 
-\textcolor{red}{TODO}
+Based on the previous components we implemented two specific applications:
+The first application can be used for comparing the performance of different control strategies (see Section~\ref{sec:controller-comparison}).
+The second application can be used for comparing the performance of different driving and charging infrastructures as well as fleet configurations (see Section~\ref{sec:infrastructure-comparison}).
 
-\subsubsection{Controller comparison}
+\subsubsection{Control strategy comparison}
 \label{sec:controller-comparison}
 
-\textcolor{red}{TODO}
+To compare control strategies, we apply the strategies to the same system configuration (including driving and charging infrastructure as well as vehicle fleets) and scenario (i.e.\ demands).
+For performance evaluation, we currently measure the times between demand appearance at the pick up location and disappearance at the drop off location.
+Figure~\ref{fig:controller-comparison} shows an example system configuration, on which the random, the greedy, and the smart control strategy are applied.
 
 \begin{figure}[!ht]
     \includegraphics[width=\columnwidth]{controller_comparison.png}
@@ -401,9 +405,12 @@ Detect collision
     \label{fig:controller-comparison}
 \end{figure}
 
-\textcolor{red}{TODO}
+The upper part of the window shows for each control strategy the current system state including the vehicle locations and the active demands.
+The lower part of the window shows for each control strategy the total times between demand appearance and disappearance.
+From the diagram we can deduct that in this simulation run the smart control strategy showed superior performance over the others.
+Note that due to the random nature of the control strategies, the result might have been very different.
 
-\subsubsection{Infrastructure comparison}
+\subsubsection{System configuration comparison}
 \label{sec:infrastructure-comparison}
 
 \textcolor{red}{TODO}
