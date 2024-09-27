@@ -322,8 +322,8 @@ Also, the strategy always chooses to drive at maximum speed and to fully charge 
 The smart control strategy uses an even more sophisticated strategy for determining routing decisions upon intersection arrivals of vehicles.
 The logic again comprises four rules, which are processed in sequential order until one rule applies:
 \begin{enumerate}
-    \item When the vehicle carries one ore more demands and a charging station can be reached via their drop-off location with the current battery level, the closest such demand is selected.
-    \item When the vehicle does not carry any demands and a charging station can be reached via the pick-up location of an unserved demand, the closest such demand is selected for pick-up.
+    \item When the vehicle carries one ore more demands and a charging station can be reached via their drop-off location, the segment leading to the closest such demand is selected.
+    \item When the vehicle carries no demands and a charging station can be reached via the pick-up location of an unserved demand, the segment leading to the closest such demand is selected.
     \item When the vehicle carries no demands and does not plan to pick-up a new demand, the segment leading to the closest charging station is selected if reachable with the remaining battery level.
     \item Finally, when none of the above three rules apply, again the strategy randomly selects any of the outgoing road segments of the current intersection with uniform probability distribution.
 \end{enumerate}
