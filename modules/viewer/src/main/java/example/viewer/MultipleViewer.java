@@ -55,11 +55,11 @@ public class MultipleViewer {
 		// Create frame
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(600, 400);
+		frame.setSize(600, 600);
 		frame.setResizable(true);
 		frame.setTitle("Multiple Viewer");
 		frame.setContentPane(border);
-		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		//frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 		
 		// Process simulators

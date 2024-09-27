@@ -49,7 +49,8 @@ public class ModelViewer implements Viewer {
 	private static final Color VEHICLE_BATTERY_LEVEL_BACKGROUND_COLOR = Color.GRAY;
 	private static final Color VEHICLE_DEMAND_LEVEL_FOREGROUND_COLOR = Color.GREEN;
 	private static final Color VEHICLE_DEMAND_LEVEL_BACKGROUND_COLOR = Color.GRAY;
-	private static final Color DEMAND_COLOR = Color.DARK_GRAY;
+	private static final Color DEMAND_WAIT_COLOR = Color.LIGHT_GRAY;
+	private static final Color DEMAND_RIDE_COLOR = Color.DARK_GRAY;
 	private static final Color DEMAND_UNDERDUE_COLOR = Color.GREEN;
 	private static final Color DEMAND_OVERDUE_COLOR = Color.RED;
 	
@@ -248,7 +249,7 @@ public class ModelViewer implements Viewer {
 			double step = lane * LANE_WIDTH * ratioScreenModel;
 			
 			graphics.setColor(Color.WHITE);
-			graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 10 }, 0));
+			graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 5 }, 0));
 			graphics.drawLine((int) (startX - leftX + stepX * step), (int) (startY - leftY + stepY * step), (int) (endX - leftX + stepX * step), (int) (endY - leftY + stepY * step));
 		}
 		
@@ -554,8 +555,8 @@ public class ModelViewer implements Viewer {
 		double dropoffCenterX = calculateX(dropoff);
 		double dropoffCenterY = calculateY(dropoff);
 		
-		graphics.setColor(DEMAND_COLOR);
-		graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 10 }, 0));
+		graphics.setColor(demand.vehicle == null ? DEMAND_WAIT_COLOR : DEMAND_RIDE_COLOR);
+		graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, new float[] { 5 }, 0));
 		graphics.drawLine((int) pickupCenterX, (int) pickupCenterY, (int) dropoffCenterX, (int) dropoffCenterY);
 		
 		double radius = demand.size * ratioScreenModel;
