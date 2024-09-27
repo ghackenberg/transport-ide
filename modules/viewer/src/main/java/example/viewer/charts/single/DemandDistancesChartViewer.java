@@ -1,17 +1,17 @@
-package example.viewer.charts;
+package example.viewer.charts.single;
 
 import java.awt.Color;
 import java.util.List;
 
 import example.model.Demand;
-import example.model.Model;
+import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.ChartViewer;
+import example.viewer.charts.SingleChartViewer;
 
-public class DemandDistancesChartViewer extends ChartViewer {
+public class DemandDistancesChartViewer extends SingleChartViewer {
 
-	public DemandDistancesChartViewer(Model model, ExampleStatistics statistics, List<ExampleStatistics> baseline) {
-		super(model, statistics, baseline, "Demand distances", "Demands", "Distance");
+	public DemandDistancesChartViewer(List<Simulator<ExampleStatistics>> simulators, int index) {
+		super(simulators, index, "Demand distances", "Demands", "Distance");
 		
 		renderer.setSeriesPaint(0, Color.BLUE);
 	}
@@ -29,8 +29,8 @@ public class DemandDistancesChartViewer extends ChartViewer {
 		
 		double max = 0;
 		
-		for (ExampleStatistics statistics : baseline) {
-			for (double distance : statistics.demandDistances.values()) {
+		for (Simulator<ExampleStatistics> simulator : simulators) {
+			for (double distance : simulator.getStatistics().demandDistances.values()) {
 				max = Math.max(distance, max);
 			}
 		}

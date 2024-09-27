@@ -1,20 +1,18 @@
-package example.viewer.charts;
+package example.viewer.charts.single;
 
 import java.awt.Color;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import example.model.Demand;
 import example.model.Model;
-import example.model.Vehicle;
+import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.ChartViewer;
+import example.viewer.charts.SingleChartViewer;
 
-public class DemandTimesChartViewer extends ChartViewer {
+public class DemandTimesChartViewer extends SingleChartViewer {
 
-	public DemandTimesChartViewer(Model model, ExampleStatistics statistics, List<ExampleStatistics> baseline) {
-		super(model, statistics, baseline, "Demand times", "Demands", "Time (in s)");
+	public DemandTimesChartViewer(List<Simulator<ExampleStatistics>> simulators, int index) {
+		super(simulators, index, "Demand times", "Demands", "Time (in s)");
 		
 		renderer.setSeriesPaint(0, Color.GRAY);
 		renderer.setSeriesPaint(1, Color.ORANGE);
@@ -68,14 +66,14 @@ public class DemandTimesChartViewer extends ChartViewer {
 		
 		double max = 0;
 		
-		for (ExampleStatistics statistics : baseline) {
-			for (Entry<Demand, Map<Double, Vehicle>> entry : statistics.demandDropoffTimes.entrySet()) {
-				Demand demand = entry.getKey();
-				Map<Double, Vehicle> times = entry.getValue();
+		for (Simulator<ExampleStatistics> simulator : simulators) {
+			Model model = simulator.getModel();
+			ExampleStatistics statistics = simulator.getStatistics();
+			for (Demand demand : model.demands) {
 				if (demand.pickup.time < model.time) {
 					double dropoff = model.time;
-					if (times.size() == 1) {
-						dropoff = times.entrySet().iterator().next().getKey();
+					if (statistics.demandDropoffTimes.get(demand).size() == 1) {
+						dropoff = statistics.demandDropoffTimes.get(demand).entrySet().iterator().next().getKey();
 					}
 					max = Math.max((dropoff - demand.pickup.time) / 1000, max);
 				}

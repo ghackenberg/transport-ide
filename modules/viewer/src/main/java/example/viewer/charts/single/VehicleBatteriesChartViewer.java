@@ -1,17 +1,17 @@
-package example.viewer.charts;
+package example.viewer.charts.single;
 
 import java.awt.Color;
 import java.util.List;
 
-import example.model.Model;
 import example.model.Vehicle;
+import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.ChartViewer;
+import example.viewer.charts.SingleChartViewer;
 
-public class VehicleBatteriesChartViewer extends ChartViewer {
+public class VehicleBatteriesChartViewer extends SingleChartViewer {
 
-	public VehicleBatteriesChartViewer(Model model, ExampleStatistics statistics, List<ExampleStatistics> baseline) {
-		super(model, statistics, baseline, "Vehicle batteries", "Vehicles", "Energy");
+	public VehicleBatteriesChartViewer(List<Simulator<ExampleStatistics>> simulators, int index) {
+		super(simulators, index, "Vehicle batteries", "Vehicles", "Energy");
 		
 		renderer.setSeriesPaint(0, Color.BLUE);
 	}

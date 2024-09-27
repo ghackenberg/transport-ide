@@ -1,17 +1,17 @@
-package example.viewer.charts;
+package example.viewer.charts.single;
 
 import java.awt.Color;
 import java.util.List;
 
 import example.model.Intersection;
-import example.model.Model;
+import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.ChartViewer;
+import example.viewer.charts.SingleChartViewer;
 
-public class IntersectionCrossingsChartViewer extends ChartViewer {
+public class IntersectionCrossingsChartViewer extends SingleChartViewer {
 
-	public IntersectionCrossingsChartViewer(Model model, ExampleStatistics statistics, List<ExampleStatistics> baseline) {
-		super(model, statistics, baseline, "Intersection crossings", "Intersections", "Count");
+	public IntersectionCrossingsChartViewer(List<Simulator<ExampleStatistics>> simulators, int index) {
+		super(simulators, index, "Intersection crossings", "Intersections", "Count");
 		
 		renderer.setSeriesPaint(0, Color.GREEN);
 	}
@@ -29,8 +29,8 @@ public class IntersectionCrossingsChartViewer extends ChartViewer {
 		
 		double max = 1;
 		
-		for (ExampleStatistics statistics : baseline) {
-			for (int traversals : statistics.intersectionCrossings.values()) {
+		for (Simulator<ExampleStatistics> simulator : simulators) {
+			for (int traversals : simulator.getStatistics().intersectionCrossings.values()) {
 				max = Math.max(traversals, max);
 			}
 		}

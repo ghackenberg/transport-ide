@@ -191,9 +191,9 @@ public class ControllerComparisonProgram {
 			
 			// Create simulators
 			
-			Simulator<ExampleStatistics> simulator1 = new Simulator<>(model1, controller1, statistics1, maxModelTimeStep, ratioModelRealTime, randomRunsFolder, synchronizer);
-			Simulator<ExampleStatistics> simulator2 = new Simulator<>(model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, greedyRunsFolder, synchronizer);
-			Simulator<ExampleStatistics> simulator3 = new Simulator<>(model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, smartRunsFolder, synchronizer);
+			Simulator<ExampleStatistics> simulator1 = new Simulator<>("Random", model1, controller1, statistics1, maxModelTimeStep, ratioModelRealTime, randomRunsFolder, synchronizer);
+			Simulator<ExampleStatistics> simulator2 = new Simulator<>("Greedy", model2, controller2, statistics2, maxModelTimeStep, ratioModelRealTime, greedyRunsFolder, synchronizer);
+			Simulator<ExampleStatistics> simulator3 = new Simulator<>("Smart", model3, controller3, statistics3, maxModelTimeStep, ratioModelRealTime, smartRunsFolder, synchronizer);
 			
 			// List simulators
 			

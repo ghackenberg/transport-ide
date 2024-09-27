@@ -3,7 +3,6 @@ package example.viewer;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -20,14 +19,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import example.model.Model;
-import example.statistics.implementations.ExampleStatistics;
-
 public abstract class ChartViewer implements Viewer {
-
-	protected Model model;
-	protected ExampleStatistics statistics;
-	protected List<ExampleStatistics> baseline;
 	
 	private String title;
 	private String categoryAxisLabel;
@@ -42,21 +34,17 @@ public abstract class ChartViewer implements Viewer {
 	
 	private ChartPanel panel;
 	
-	public ChartViewer(Model model, ExampleStatistics statistics, List<ExampleStatistics> baseline, String title, String categoryAxisLabel, String valueAxisLabel) {
-		this.model = model;
-		this.statistics = statistics;
-		this.baseline = baseline;
+	public ChartViewer(String title, String categoryAxisLabel, String valueAxisLabel) {
 		this.title = title;
 		this.categoryAxisLabel = categoryAxisLabel;
 		this.valueAxisLabel = valueAxisLabel;
 		
 		initialize();
-		
-		update();
 	}
 	
 	private void initialize() {		
 		chart = ChartFactory.createStackedBarChart(title, categoryAxisLabel, valueAxisLabel, dataset);
+		chart.getRenderingHints().put(JFreeChart.KEY_SUPPRESS_SHADOW_GENERATION, Boolean.TRUE);
 		
 		plot = chart.getCategoryPlot();
 		

@@ -10,5 +10,7 @@ module example.viewer {
 	
 	exports example.viewer;
 	exports example.viewer.charts;
+	exports example.viewer.charts.multiple;
+	exports example.viewer.charts.single;
 	
 }

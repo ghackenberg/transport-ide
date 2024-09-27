@@ -63,6 +63,8 @@ public class ModelComparisonProgram {
 				
 				Model model = parser.parse(new File(modelFolder, "intersections.txt"), new File(modelFolder, "segments.txt"), new File(modelFolder, "stations.txt"), new File(modelFolder, "vehicles.txt"), new File(modelFolder, "demands.txt"));
 				
+				model.name = modelFolder.getName();
+				
 				model.demands.clear();
 				
 				folders.add(indexRunsFolder);
@@ -174,7 +176,7 @@ public class ModelComparisonProgram {
 				
 				// Simulator
 				
-				Simulator<ExampleStatistics> simulator = new Simulator<>(model, controller, statistic, maxModelTimeStep, ratioModelRealTime, runsFolder, synchronizer);
+				Simulator<ExampleStatistics> simulator = new Simulator<>(model.name, model, controller, statistic, maxModelTimeStep, ratioModelRealTime, runsFolder, synchronizer);
 				
 				simulators.add(simulator);
 			}

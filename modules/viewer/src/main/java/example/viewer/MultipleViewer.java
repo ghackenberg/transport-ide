@@ -14,8 +14,7 @@ import bibliothek.gui.dock.SplitDockStation;
 import bibliothek.gui.dock.station.split.SplitDockGrid;
 import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
-import example.viewer.charts.DemandTimesChartViewer;
-import example.viewer.charts.VehicleBatteriesChartViewer;
+import example.viewer.charts.multiple.DemandTimesChartViewer;
 
 public class MultipleViewer {
 	
@@ -63,13 +62,6 @@ public class MultipleViewer {
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 		
-		// Construct baseline data structure
-		List<ExampleStatistics> baseline = new ArrayList<>();
-		
-		for (Simulator<ExampleStatistics> simulator : simulators) {
-			baseline.add(simulator.getStatistics());
-		}
-		
 		// Process simulators
 		int index = 0;
 		
@@ -77,8 +69,6 @@ public class MultipleViewer {
 			final int number = index;
 			
 			addViewer(number, 0, 1, 1, new ModelViewer(simulator.getModel(), simulator.getStatistics()));
-			addViewer(number, 1, 1, 1, new DemandTimesChartViewer(simulator.getModel(), simulator.getStatistics(), baseline));
-			addViewer(number, 2, 1, 1, new VehicleBatteriesChartViewer(simulator.getModel(), simulator.getStatistics(), baseline));
 			
 			simulator.setHandleUpdated(() -> {
 				handleUpdated(number);
@@ -95,6 +85,8 @@ public class MultipleViewer {
 			
 			index++;
 		}
+		
+		addViewer(0, 1, simulators.size(), 1, new DemandTimesChartViewer(simulators));
 	}
 	
 	private void addViewer(double x, double y, double width, double height, Viewer viewer) {

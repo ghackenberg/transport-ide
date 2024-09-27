@@ -21,12 +21,12 @@ import example.simulator.Simulator;
 import example.statistics.implementations.ExampleStatistics;
 import example.viewer.ModelViewer;
 import example.viewer.SingleViewer;
-import example.viewer.charts.DemandDistancesChartViewer;
-import example.viewer.charts.DemandTimesChartViewer;
-import example.viewer.charts.IntersectionCrossingsChartViewer;
-import example.viewer.charts.SegmentTraversalsChartViewer;
-import example.viewer.charts.VehicleBatteriesChartViewer;
-import example.viewer.charts.VehicleDistancesChartViewer;
+import example.viewer.charts.single.DemandDistancesChartViewer;
+import example.viewer.charts.single.DemandTimesChartViewer;
+import example.viewer.charts.single.IntersectionCrossingsChartViewer;
+import example.viewer.charts.single.SegmentTraversalsChartViewer;
+import example.viewer.charts.single.VehicleBatteriesChartViewer;
+import example.viewer.charts.single.VehicleDistancesChartViewer;
 
 public class StaticProgram {
 
@@ -63,22 +63,22 @@ public class StaticProgram {
 			// Create statistics
 			ExampleStatistics statistics = new ExampleStatistics(model);
 			statistics.reset();
-			// Create baseline
-			List<ExampleStatistics> baseline = new ArrayList<>();
-			baseline.add(statistics);
 			// Create simulator
-			Simulator<ExampleStatistics> simulator = new Simulator<>(model, controller, statistics, 1000.0 / 30.0, 1.0, runsFolder);
+			Simulator<ExampleStatistics> simulator = new Simulator<>("Static", model, controller, statistics, 1000.0 / 30.0, 1.0, runsFolder);
+			// Create simulators
+			List<Simulator<ExampleStatistics>> simulators = new ArrayList<>();
+			simulators.add(simulator);
 			// Create exporter
 			Exporter<ExampleStatistics> exporter = new CSVExporter(".");
 			// Create viewer
 			SingleViewer<ExampleStatistics> viewer = new SingleViewer<>(simulator, controller);
 			viewer.addViewer(0, 0, 1, 2, new ModelViewer(model, statistics));
-			viewer.addViewer(1, 0, 1, 1, new VehicleBatteriesChartViewer(model, statistics, baseline));
-			viewer.addViewer(1, 1, 1, 1, new VehicleDistancesChartViewer(model, statistics, baseline));
-			viewer.addViewer(2, 0, 1, 1, new DemandTimesChartViewer(model, statistics, baseline));
-			viewer.addViewer(2, 1, 1, 1, new DemandDistancesChartViewer(model, statistics, baseline));
-			viewer.addViewer(3, 0, 1, 1, new SegmentTraversalsChartViewer(model, statistics, baseline));
-			viewer.addViewer(3, 1, 1, 1, new IntersectionCrossingsChartViewer(model, statistics, baseline));
+			viewer.addViewer(1, 0, 1, 1, new VehicleBatteriesChartViewer(simulators, 0));
+			viewer.addViewer(1, 1, 1, 1, new VehicleDistancesChartViewer(simulators, 0));
+			viewer.addViewer(2, 0, 1, 1, new DemandTimesChartViewer(simulators, 0));
+			viewer.addViewer(2, 1, 1, 1, new DemandDistancesChartViewer(simulators, 0));
+			viewer.addViewer(3, 0, 1, 1, new SegmentTraversalsChartViewer(simulators, 0));
+			viewer.addViewer(3, 1, 1, 1, new IntersectionCrossingsChartViewer(simulators, 0));
 			// Start simulator 
 			simulator.setHandleUpdated(() -> {
 				viewer.handleUpdated();

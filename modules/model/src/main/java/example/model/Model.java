@@ -9,6 +9,8 @@ public class Model {
 	public double time;
 	
 	// Statische Eigenschaften (geparst)
+	public String name = "Model";
+	
 	public List<Intersection> intersections = new ArrayList<>();
 	public List<Segment> segments = new ArrayList<>();
 	public List<Station> stations = new ArrayList<>();
