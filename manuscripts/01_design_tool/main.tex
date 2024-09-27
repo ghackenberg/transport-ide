@@ -148,18 +148,28 @@ Finally, we use vehicles $v \in V$ for describing transportation supply and capa
 \section{Tool prototype}
 \label{sec:tool-prototype}
 
-Based on the general approach explained in Section~\ref{sec:approach} we started developing a tool prototype.
-Figure~\ref{fig:software-architecture} illustrates the module architecture of the tool prototype.
-The architecture consists of the eight modules \texttt{model}, \texttt{controller}, \texttt{statistics}, and \texttt{simulator} as well as \texttt{parser}, \texttt{exporter}, \texttt{viewer}, and \texttt{program}.
+Based on the general approach explained in Section~\ref{sec:approach} we started developing an open source tool prototype hosted on GitHub\footnote{\url{https://github.com/ghackenberg/transport-ide}}.
+The tool prototype is written in Java\footnote{\url{https://docs.oracle.com/javase/tutorial/java/}} and uses the Swing library\footnote{\url{https://docs.oracle.com/javase/tutorial/uiswing/}} as well as the JFreeChart library\footnote{\url{https://www.jfree.org/jfreechart/}} for visualization.
+Furthermore, the prototype uses the JGraphT\footnote{\url{https://jgrapht.org/}} library for computing shortest paths in the road network.
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
-    \caption{Modular software architecture.}
-    \label{fig:software-architecture}
-\end{figure}
+In the following, we explain several interesting aspects of the tool prototype:
+In Section~\ref{sec:data-model} we dive into the core data structures for representing both static system configurations as well as dynamic system states.
+Then, in Section~\ref{sec:controller-interface} we explain how the users can implement and integrate different control strategies into the tool prototype.
+Next, in Section~\ref{sec:statistics-interface} we describe the data, which is collected during simulation runs and which can be used for visualizations and possibly training.
+Thereafter, in Section~\ref{sec:simulation-engine} we provide an overview of the engine, which computes the discrete events and updates the system states accordingly.
+Finally, in Section~\ref{sec:application} we highlight two different applications, which we have implemented already based on the previous framework elements.
 
-In the following, we discuss each module in more detail including their resposibilities and dependencies on the other modules.
+%Figure~\ref{fig:software-architecture} illustrates the module architecture of the tool prototype.
+%The architecture consists of the eight modules \texttt{model}, \texttt{controller}, \texttt{statistics}, and \texttt{simulator} as well as \texttt{parser}, \texttt{exporter}, \texttt{viewer}, and \texttt{program}.
+
+%\begin{figure}[!ht]
+%    \centering
+%    \includegraphics[scale=0.4]{../../diagrams/architecture-v2.png}
+%    \caption{Modular software architecture.}
+%    \label{fig:software-architecture}
+%\end{figure}
+
+%In the following, we discuss each module in more detail including their resposibilities and dependencies on the other modules.
 
 \subsection{Data structures}
 \label{sec:data-model}
@@ -333,74 +343,8 @@ The logic again comprises four rules, which are processed in sequential order un
 
 \textcolor{red}{TODO}
 
-%\subsection{Model parser}
-
-%\textcolor{red}{TODO}
-
-%\subsection{Simulation engine}
-
-%\textcolor{red}{TODO}
-
-%\subsection{Data exporter}
-
-%\textcolor{red}{TODO}
-
-%\subsection{Data visualizations}
-%\label{sec:gui}
-
-%\textcolor{red}{TODO}
-
-%\begin{figure*}[tbp]
-%    \includegraphics[width=\textwidth]{../../screenshots/basic-simulation.png}
-%    \caption{Graphical user interface}
-%    \label{fig:gui}
-%\end{figure*}
-
-%\subsubsection{Map}
-
-%\textcolor{red}{TODO}
-
-%\subsubsection{Vehicle charts}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Vehicle battery chart}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Vehicle distance chart}
-
-%\textcolor{red}{TODO}
-
-%\subsubsection{Demand charts}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Demand time chart}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Demand distance chart}
-
-%\textcolor{red}{TODO}
-
-%\subsubsection{Infrastructure charts}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Intersection chart}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Segment chart}
-
-%\textcolor{red}{TODO}
-
-%\paragraph{Station chart}
-
-%\textcolor{red}{TODO}
-
-\subsection{Remaining modules}
+\subsection{Simulation engine}
+\label{sec:simulation-engine}
 
 \textcolor{red}{TODO}
 
