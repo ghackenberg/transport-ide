@@ -334,7 +334,8 @@ Finally, with this strategy vehicles always pick up unassigned demands when pass
 \subsection{Data recorder}
 \label{sec:statistics-interface}
 
-\textcolor{red}{TODO}
+During simulation, a number of events are recorded for visualization of system (and control strategy) performance as well as further processing such as strategy training.
+Figure~\ref{fig:statistics-interface} shows the provided methods of the data recorder interface.
 
 \begin{figure}[!ht]
     \centering
@@ -343,7 +344,15 @@ Finally, with this strategy vehicles always pick up unassigned demands when pass
     \label{fig:statistics-interface}
 \end{figure}
 
-\textcolor{red}{TODO}
+The recorder tracks, when a vehicle crosses an intersection, and records the associated routing decision of the control strategy.
+Then, the recorder tracks, when a vehicle passes by an unassigned demand and the control strategy declines or accepts the pick up.
+Similarly, the recorder tracks, when a vehicle drops off a demand at its target location.
+Furthermore, the recorder continuously tracks the speed and the overall travel distance of the vehicles.
+Finally, the recorder also tracks the size of the time steps made during discrete event simulation.
+
+Currently, we use the data about intersection crossing for determining bottlenecks in the driving infrastructure.
+Also, we use the data about pick ups and drop offs for determining per demand waiting and driving as well as delays.
+In the future, we plan to add more recording capabilities as well as exploring additional use cases for the data.
 
 \subsection{Simulation engine}
 \label{sec:simulation-engine}
