@@ -455,8 +455,12 @@ public class Simulator<S extends Statistics> {
 		
 		// Update vehicle speed
 		for (Vehicle vehicle : model.vehicles) {
+			// Initialize speed
+			double speed = 0;
 			// Select speed
-			double speed = vehicle.batteryLevel > 0 && vehicle.station == null ? controller.selectSpeed(vehicle) : 0;
+			if (vehicle.batteryLevel > 0 && vehicle.station == null) {
+				speed = controller.selectSpeed(vehicle);
+			}
 			// Check speed
 			if (speed > vehicle.location.segment.speed) {
 				throw new InvalidSpeedException(vehicle, speed);
