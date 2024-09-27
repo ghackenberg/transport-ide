@@ -28,7 +28,6 @@ import bibliothek.gui.dock.station.split.SplitDockGrid;
 import example.controller.Controller;
 import example.controller.implementations.SwitchableController;
 import example.simulator.Simulator;
-import example.simulator.exceptions.InvalidException;
 import example.statistics.Statistics;
 
 public class SingleViewer<S extends Statistics> {
@@ -208,7 +207,7 @@ public class SingleViewer<S extends Statistics> {
 		takeScreenshot();
 	}
 	
-	public void handleException(InvalidException exception) {
+	public void handleException(Exception exception) {
 		JOptionPane.showMessageDialog(frame, exception.getMessage(), "Exception", JOptionPane.WARNING_MESSAGE);
 		start.setEnabled(true);
 		stop.setEnabled(false);

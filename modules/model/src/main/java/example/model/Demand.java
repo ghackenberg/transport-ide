@@ -5,9 +5,10 @@ public class Demand {
 	// Dynamische Eigenschaften (simuliert)
 	public Vehicle vehicle;
 	public boolean done;
+	public LocationTime pickup;
 	
 	// Statische Eigenschaften (geparst)
-	public LocationTime pickup;
+	public LocationTime initialPickup;
 	public LocationTime dropoff;
 	public double size;
 	
@@ -22,6 +23,7 @@ public class Demand {
 	}
 	
 	public Demand(Segment pickupSegment, double pickupDistance, double pickupTime, Segment dropoffSegment, double dropoffDistance, double dropoffTime, double size) {
+		this.initialPickup = new LocationTime(pickupSegment, pickupDistance, pickupTime);
 		this.pickup = new LocationTime(pickupSegment, pickupDistance, pickupTime);
 		this.dropoff = new LocationTime(dropoffSegment, dropoffDistance, dropoffTime);
 		this.size = size;
@@ -29,7 +31,11 @@ public class Demand {
 	
 	public void reset() {
 		vehicle = null;
+		
 		done = false;
+		
+		pickup.location.segment = initialPickup.location.segment;
+		pickup.location.distance = initialPickup.location.distance;
 	}
 	
 	@Override

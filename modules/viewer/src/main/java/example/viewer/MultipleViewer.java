@@ -13,7 +13,6 @@ import bibliothek.gui.dock.DefaultDockable;
 import bibliothek.gui.dock.SplitDockStation;
 import bibliothek.gui.dock.station.split.SplitDockGrid;
 import example.simulator.Simulator;
-import example.simulator.exceptions.InvalidException;
 import example.statistics.implementations.ExampleStatistics;
 import example.viewer.charts.DemandTimesChartViewer;
 import example.viewer.charts.VehicleBatteriesChartViewer;
@@ -30,7 +29,11 @@ public class MultipleViewer {
 	
 	private final List<Viewer> viewers = new ArrayList<>();
 	
+	private List<Simulator<ExampleStatistics>> simulators;
+	
 	public MultipleViewer(List<Simulator<ExampleStatistics>> simulators) {
+		this.simulators = simulators;
+		
 		// Create grid
 		grid = new SplitDockGrid();
 		
@@ -60,6 +63,13 @@ public class MultipleViewer {
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 		
+		// Construct baseline data structure
+		List<ExampleStatistics> baseline = new ArrayList<>();
+		
+		for (Simulator<ExampleStatistics> simulator : simulators) {
+			baseline.add(simulator.getStatistics());
+		}
+		
 		// Process simulators
 		int index = 0;
 		
@@ -67,13 +77,11 @@ public class MultipleViewer {
 			final int number = index;
 			
 			addViewer(number, 0, 1, 1, new ModelViewer(simulator.getModel(), simulator.getStatistics()));
-			addViewer(number, 1, 1, 1, new DemandTimesChartViewer(simulator.getModel(), simulator.getStatistics()));
-			addViewer(number, 2, 1, 1, new VehicleBatteriesChartViewer(simulator.getModel(), simulator.getStatistics()));
+			addViewer(number, 1, 1, 1, new DemandTimesChartViewer(simulator.getModel(), simulator.getStatistics(), baseline));
+			addViewer(number, 2, 1, 1, new VehicleBatteriesChartViewer(simulator.getModel(), simulator.getStatistics(), baseline));
 			
 			simulator.setHandleUpdated(() -> {
-				handleUpdated(number * 3 + 0);
-				handleUpdated(number * 3 + 1);
-				handleUpdated(number * 3 + 2);
+				handleUpdated(number);
 			});
 			simulator.setHandleStopped(() -> {
 				handleStopped(number);
@@ -97,20 +105,77 @@ public class MultipleViewer {
 		station.dropTree(grid.toTree());
 	}
 	
-	private void handleUpdated(int index) {
-		viewers.get(index).update();
+	private int updated = 0;
+	private int processed = 0;
+	
+	private synchronized void handleUpdated(int simulator) throws InterruptedException {
+		// Wait
+		
+		while (processed > 0) {
+			wait();
+		}
+		
+		// Mark
+		
+		updated++;
+			
+		// Wait
+		
+		while (updated + processed + stopped + finished + excepted < simulators.size()) {
+			wait();
+		}
+		
+		// Update
+		
+		if (processed == 0) {
+			for (Viewer viewer : viewers) {
+				viewer.update();
+			}
+		}
+		
+		// Mark
+		
+		updated--;
+		
+		if (updated == 0) {
+			processed = 0;
+		} else {
+			processed++;
+		}
+		
+		// Wake-up
+		
+		notifyAll();
 	}
 	
-	private void handleStopped(int index) {
+	private int stopped = 0;
+	
+	private synchronized void handleStopped(int simulator) {
+		stopped++;
+		
+		notifyAll();
+		
 		//JOptionPane.showMessageDialog(frame, "Simulator stopped", "Stopped (" + index + ")", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	private void handleFinished(int index) {
+	private int finished = 0;
+	
+	private synchronized void handleFinished(int simulator) {
+		finished++;
+		
+		notifyAll();
+		
 		//JOptionPane.showMessageDialog(frame, "Simulator finished", "Finished (" + index + ")", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	private void handleException(int index, InvalidException exception) {
-		JOptionPane.showMessageDialog(frame, exception.getMessage(), "Exception (" + index + ")", JOptionPane.WARNING_MESSAGE);
+	private int excepted = 0;
+	
+	private synchronized void handleException(int simulator, Exception exception) {
+		excepted++;
+		
+		notifyAll();
+		
+		JOptionPane.showMessageDialog(frame, exception.getMessage(), "Exception (" + simulator + ")", JOptionPane.WARNING_MESSAGE);
 	}
 	
 }

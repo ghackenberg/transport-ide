@@ -26,6 +26,10 @@ import example.statistics.Statistics;
 
 public class Simulator<S extends Statistics> {
 	
+	private static int COUNT = 0;
+	
+	private final int number = COUNT++;
+	
 	private boolean stop;
 	private boolean pause;
 	private boolean step;
@@ -44,12 +48,15 @@ public class Simulator<S extends Statistics> {
 	private Map<Demand, Map<Double, Set<Vehicle>>> declines = new HashMap<>();
 	
 	public interface Handler {
-		void handle(InvalidException exception);
+		void handle(Exception exception);
+	}
+	public interface Runner {
+		void run() throws InterruptedException;
 	}
 	
-	private Runnable handleUpdated;
-	private Runnable handleFinished;
-	private Runnable handleStopped;
+	private Runner handleUpdated;
+	private Runner handleFinished;
+	private Runner handleStopped;
 	private Handler handleException;
 	
 	private Thread thread;
@@ -92,15 +99,15 @@ public class Simulator<S extends Statistics> {
 		ratioModelRealTime = value;
 	}
 	
-	public void setHandleUpdated(Runnable value) {
+	public void setHandleUpdated(Runner value) {
 		handleUpdated = value;
 	}
 	
-	public void setHandleFinished(Runnable value) {
+	public void setHandleFinished(Runner value) {
 		handleFinished = value;
 	}
 	
-	public void setHandleStopped(Runnable value) {
+	public void setHandleStopped(Runner value) {
 		handleStopped = value;
 	}
 	
@@ -137,6 +144,7 @@ public class Simulator<S extends Statistics> {
 		runFolder.mkdir();
 		
 		thread = new Thread(this::loop);
+		thread.setName("Simulator " + number);
 		thread.start();
 	}
 	
@@ -193,9 +201,11 @@ public class Simulator<S extends Statistics> {
 			}
 			while (!stop && !model.isFinished()) {
 				update();
+				//synchronizer.beforeUpdateHandler();
 				if (handleUpdated != null) {
 					handleUpdated.run();
 				}
+				//synchronizer.afterUpdateHandler();
 			}
 			if (model.isFinished()) {
 				if (handleFinished != null) {
@@ -206,9 +216,7 @@ public class Simulator<S extends Statistics> {
 					handleStopped.run();
 				}
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvalidException e) {
+		} catch (Exception e) {
 			if (handleException != null) {
 				handleException.handle(e);
 			}
@@ -253,9 +261,11 @@ public class Simulator<S extends Statistics> {
 		final double difference = modelTimeDelta - realTimeDelta;
 		
 		// Debug
+		/*
 		if (modelTimeDelta == 0) {
 			System.out.println("Model time delta is null");
 		}
+		*/
 		
 		// Sleep for the difference in time advances
 		if (!pause) {
@@ -415,6 +425,24 @@ public class Simulator<S extends Statistics> {
 						// Update model time step
 						modelTimeStep = 0;
 					}
+				}
+			}
+		}
+		
+		// Dropoff demands (empty battery vehicles)
+		for (Vehicle vehicle : model.vehicles) {
+			if (vehicle.batteryLevel == 0) {
+				while (vehicle.demands.size() > 0) {
+					Demand demand = vehicle.demands.remove(0);
+					
+					demand.vehicle = null;
+					
+					demand.pickup.location.segment = vehicle.location.segment;
+					demand.pickup.location.distance = vehicle.location.distance;
+					
+					vehicle.loadLevel -= demand.size;
+					
+					modelTimeStep = 0;
 				}
 			}
 		}

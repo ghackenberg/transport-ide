@@ -1,6 +1,8 @@
 package example.program;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import example.controller.implementations.GreedyController;
 import example.controller.implementations.ManualController;
@@ -61,6 +63,9 @@ public class StaticProgram {
 			// Create statistics
 			ExampleStatistics statistics = new ExampleStatistics(model);
 			statistics.reset();
+			// Create baseline
+			List<ExampleStatistics> baseline = new ArrayList<>();
+			baseline.add(statistics);
 			// Create simulator
 			Simulator<ExampleStatistics> simulator = new Simulator<>(model, controller, statistics, 1000.0 / 30.0, 1.0, runsFolder);
 			// Create exporter
@@ -68,12 +73,12 @@ public class StaticProgram {
 			// Create viewer
 			SingleViewer<ExampleStatistics> viewer = new SingleViewer<>(simulator, controller);
 			viewer.addViewer(0, 0, 1, 2, new ModelViewer(model, statistics));
-			viewer.addViewer(1, 0, 1, 1, new VehicleBatteriesChartViewer(model, statistics));
-			viewer.addViewer(1, 1, 1, 1, new VehicleDistancesChartViewer(model, statistics));
-			viewer.addViewer(2, 0, 1, 1, new DemandTimesChartViewer(model, statistics));
-			viewer.addViewer(2, 1, 1, 1, new DemandDistancesChartViewer(model, statistics));
-			viewer.addViewer(3, 0, 1, 1, new SegmentTraversalsChartViewer(model, statistics));
-			viewer.addViewer(3, 1, 1, 1, new IntersectionCrossingsChartViewer(model, statistics));
+			viewer.addViewer(1, 0, 1, 1, new VehicleBatteriesChartViewer(model, statistics, baseline));
+			viewer.addViewer(1, 1, 1, 1, new VehicleDistancesChartViewer(model, statistics, baseline));
+			viewer.addViewer(2, 0, 1, 1, new DemandTimesChartViewer(model, statistics, baseline));
+			viewer.addViewer(2, 1, 1, 1, new DemandDistancesChartViewer(model, statistics, baseline));
+			viewer.addViewer(3, 0, 1, 1, new SegmentTraversalsChartViewer(model, statistics, baseline));
+			viewer.addViewer(3, 1, 1, 1, new IntersectionCrossingsChartViewer(model, statistics, baseline));
 			// Start simulator 
 			simulator.setHandleUpdated(() -> {
 				viewer.handleUpdated();
