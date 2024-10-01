@@ -29,7 +29,7 @@
 	
 	\keywords{Model- and Simulation-based Systems Engineering}
 	
-	\abstract{TODO}
+	\abstract{Intelligent Transportation Systems (ITS) promote new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, and enable the transportation electrification by efficient operation of electric vehicles. Methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. In this work, we propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties as well as control strategies for ITS design. In addition to capturing different design decisions, it assumes a user-centric perspective, where users can guide design decisions employing a novel user interface. In this work, we discuss and apply our modeling and simulation framework with respect to two specific applications.}
 	
 	\onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
 	
@@ -37,11 +37,15 @@
 	\label{sec:introduction}
 	
 	The transformative patterns of future mobility are enabled by interconnected and integrated systems and services.
-	As such, Intelligent Transportation Systems (ITS) establish new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, and facilitate the transportation electrification by efficient operation of electric vehicles. For this, complex scenarios and their encoded requirements need to be holistically addressed, from which integrated system designs are derived, which allow transport infrastructures and their heterogenous actors to be more efficient and sustainable.
+	As such, Intelligent Transportation Systems (ITS) establish new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, as well as the transportation electrification by efficient operation of electric vehicles. In order to minimize environmental impacts \cite{kopelias2020connected}, complex scenarios between these systems and their requirements need to be holistically addressed, from which integrated system designs are derived, which enable transport infrastructures and their heterogenous actors to be efficient and sustainable.
 	
 	%Therefore, constituent systems need to be designed with respect to most efficient structures and control strategies within themselves, while accounting for and exploiting the emergent properties they achieve in conjunction and interdependence with other systems, as composed, integrated system-of-systems (SoS). 
+	
 	To systematically support the aforementioned systems engineering task, model- and simulation-based systems engineering~\cite{gianni2014modeling} can be employed for abstraction of design problems through the use of system models and their evaluation, i.e. their numerical approximation in terms of concrete behavior at run time. For this, well-defined system models are formulated at design time, for which then simulation aids projecting run-time information and performance metrics about the system under design and its environment. 
-	However, as systems and their underlying requirements are typically imperfectly understood at the beginning of the design task, methods and tools are needed to explore the possible design space, which support evaluation of system design alternatives and verification of system properties. 
+	
+	To investigate and simulate the travel behavior of transportation system users, traffic simulation may be used in order to support analysis and decision-making for transportation system engineering problems. In terms of the state-of-the-art, microscopic traffic simulation tools such as PTV Vissim \cite{fellendorf_vissim_1994}, MATSim \cite{w_axhausen_multi-agent_2016}, SUMO \cite{lopez_microscopic_2018} as well as AIMSUN \cite{barcelo2005dynamic} are well-established domain-wide.
+	
+	However, as systems and their underlying requirements are typically imperfectly understood at the beginning of the design task, methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. 
 	
 	%As an effect of underspecified requirements, system models are often not completely understood, and modeling uncertainties need be adressed. 
 	
@@ -49,7 +53,7 @@
 	%In terms of benefits, on the one hand side, system models faciliate gaining improved system understanding through specification, while allowing rapid system modification through defined variation points for designing a system. On the other hand side, simulation aids approximating information about the system dynamics and performance of a system under design.
 	For this, in previous work, we established an integrated systems modeling technique for integrated transportation and power systems, which allows one to model both transportation and power system scenarios, as well as mobility-on-demand scenarios to assess system design options systematically and improving system understanding holistically, based on a formal foundation~\cite{ascher_hackenberg_2014,ascher_hackenberg_2015,ascher_hackenberg_2016,ascher_hackenberg_2017}. The formal foundation was extended by a discrete event formalism \cite{ascher2023discrete} as well as integration with simulation tools and predictive models for control strategy optimization \cite{ascher_hackenberg_albayrak_2023}.
 	
-	\paragraph{Research objective}
+	\paragraph{Research objectives.}
 	
 	With our research, we want to help improve the efficiency and effectiveness of today's transportation systems.
 	To achieve this goal, we work on methodologies for designing such systems and verifying their properties.
@@ -57,14 +61,14 @@
 	Furthermore, we integrate scenario-based simulation of system dynamics and evaluation of emergent properties.
 	Finally, we exploit optimization algorithms for optimizing system dynamics as well as static design decisions.
 	
-	\paragraph{Research question}
+	\paragraph{Research questions.}
 	
 	In this paper, we ask how the next generation of design tools for intelligent transportation systems should look like.
 	Therefore, first we want to understand which system properties and design decisions should be represented in these tools.
 	Then, we want to learn how the design decisions could be verified with respect to the desired system properties.
 	Finally, we want to study how the relevant design information could be represented in a graphical user interface.
 	
-	\paragraph{Research methodology}
+	\paragraph{Research methodology.}
 	
 	In the following, we first propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties in Section~\ref{sec:approach}.
 	%Then, we propose a graphical user interface for building system designs, starting simulation runs, and visualizing simulation outcomes in Section~\ref{sec:gui}.
@@ -100,7 +104,7 @@
 	\label{sec:methodology}
 	
 	Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain.
-	Models are described based on the problem domain, where simulation aids obtaining information about and shaping designs of the solution domain.
+	Models are described based on the problem domain, where simulation aids obtaining information about designs of the solution domain. Figure \ref{fig:concept} shows an overview of the system design methodology.
 	
 	% TODO Figure
 	\begin{figure}[!ht]
