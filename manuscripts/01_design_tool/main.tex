@@ -75,6 +75,29 @@
 	Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
 	Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 	
+	\section{\uppercase{Related work}}
+
+	\textcolor{red}{TODO}
+
+	\subsection{Vehicle development}
+
+	\textcolor{red}{Luftwiederstand Aussenhülle, Motorgeometrie (Computational Fluid Dynamics, Luftströmung, ...), Federungsverhalten (Multi-Body-Dynamics), Crashsimulation (Finite Element Analysis), Autonome Steuerung und Regelung (NVIDIA OMNIVERSE, Microsoft AIRSIM, CARLA Simulator)}
+
+	\subsection{Infrastructure planning}
+
+	\textcolor{red}{Demand modeling and prediction (Origin-Destination-Matrix), Auswahl des Modalitätsmixes, Ladesäulen, Grob (Durchsatz) nach Fein (Spuren, Kreuzungen, Ampelschaltung)}
+
+	\subsection{Eco-routing and -driving}
+
+	\textcolor{red}{Fahrverhalten, Voraussschauendes Fahren, Aktueller Zustand des Verkehrsnetzes, Stauvorhersage, Strategien aus der perspektive eines einzelnen Fahrzeugen, nicht Kooperativ}
+
+	\subsection{Cooperative driving}
+
+	\textcolor{red}{Platooning, Car2X (Vector CANoe Simulationsumgebung), fleet management}
+
+	\subsection{Mobility on demand}
+
+	\textcolor{red}{rebalancing, ride sharing, ride hailing, multi-modality}
 	
 	\section{\uppercase{General approach}}
 	\label{sec:approach}
@@ -88,6 +111,13 @@
 	
 	\subsection{Intended usage}
 	\label{sec:scope}
+
+	\textcolor{red}{Wo setzte ich Kreuzungen? Wo sollen Straßen verlaufen? Wie breit sollen die Straßen sein? Wo sollen Ladestationen sein? Wieviele Fahrzeuge soll meine Flotte umfassen? Welche Fahrzeugklassen?}
+
+	\begin{figure}[!ht]
+		\missingfigure{Designer input + output}
+		\caption{TODO}
+	\end{figure}
 	
 	Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
 	In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
@@ -102,6 +132,8 @@
 	
 	\subsection{Design methodology}
 	\label{sec:methodology}
+
+	\textcolor{red}{Simulation-based, Scenario-based, Formal, Configuration Space (Parameters), State Space, Objectives, Constraints, Actions, Heuristic Search, Approximate Dynamic Programming, Probabilistic, Monte-Carlo-Simulation}
 	
 	Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain.
 	Models are described based on the problem domain, where simulation aids obtaining information about designs of the solution domain. Figure \ref{fig:concept} shows an overview of the system design methodology.
@@ -156,15 +188,15 @@
 	
 	\paragraph{States}
 	
-	TODO
+	\textcolor{red}{TODO}
 	
 	\paragraph{Events}
 	
-	TODO
+	\textcolor{red}{TODO}
 	
 	\paragraph{Constraints}
 	
-	TODO
+	\textcolor{red}{TODO}
 	
 	\section{\uppercase{Tool prototype}}
 	\label{sec:tool-prototype}
@@ -377,6 +409,11 @@
 	
 	\subsection{Simulation engine}
 	\label{sec:simulation-engine}
+
+	\begin{figure}[!ht]
+		\missingfigure{Simulation loop}
+		\caption{Simulation loop}
+	\end{figure}
 	
 	As explained previously, the simulation engine is responsible for computing event times, delegating control decisions to the control strategy, updating the model state, and dispatching relevant data to the recorder.
 	The core of the simulation engine is the simulation loop, which advances the model time and updates the model state until no more events are to be processed.
@@ -384,6 +421,7 @@
 	
 	\paragraph{Step 1}
 	
+	\textcolor{red}{TODO}
 	Make routing decisions and update vehicle locations.
 	Make charging decisions and update connections between vehicles and charging stations.
 	Make pick up decisions, perform drop offs (also if vehicle battery empty), and update connections between vehicles and demands.
@@ -391,6 +429,7 @@
 	
 	\paragraph{Step 2}
 	
+	\textcolor{red}{TODO}
 	Compute the time of the next event to be processed:
 	Speed update timeout,
 	charging speed update or charging station disconnect timeout,
@@ -404,6 +443,7 @@
 	
 	\paragraph{Step 3}
 	
+	\textcolor{red}{TODO}
 	Based on the current time and the time until the next event do the following:
 	Update vehicle locations, vehicle battery levels, and record travelled distances of vehicles.
 	Detect vehicle collisions based on their location, their width, and their overlaps along the segment line.
@@ -415,6 +455,11 @@
 	Based on the previous components we implemented two specific applications:
 	The first application can be used for comparing the performance of different control strategies (see Section~\ref{sec:controller-comparison}).
 	The second application can be used for comparing the performance of different driving and charging infrastructures as well as fleet configurations (see Section~\ref{sec:infrastructure-comparison}).
+
+	\subsubsection{Control strategy evaluation}
+	\label{sec:controller-evaluation}
+
+	\textcolor{red}{TODO}
 	
 	\subsubsection{Control strategy comparison}
 	\label{sec:controller-comparison}
@@ -456,7 +501,7 @@
 	\section{\uppercase{Conclusion}}
 	\label{sec:conclusion}
 	
-	TODO
+	\textcolor{red}{TODO}
 	
 	
 	\bibliographystyle{apalike}
