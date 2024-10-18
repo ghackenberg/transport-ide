@@ -216,6 +216,7 @@ public class Parser {
 		
 		Demand demand = new Demand();
 		
+		demand.initialPickup = resolveLocationTime(model, parts[0]);
 		demand.pickup = resolveLocationTime(model, parts[0]);
 		demand.dropoff = resolveLocationTime(model, parts[1]);
 		demand.size = Double.parseDouble(parts[2]);

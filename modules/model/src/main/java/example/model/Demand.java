@@ -17,6 +17,7 @@ public class Demand {
 	}
 	
 	public Demand(LocationTime pickup, LocationTime dropoff, double size) {
+		this.initialPickup = new LocationTime(pickup.location, pickup.time);
 		this.pickup = pickup;
 		this.dropoff = dropoff;
 		this.size = size;
