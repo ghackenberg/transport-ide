@@ -29,7 +29,7 @@
 	
 	\keywords{Model- and Simulation-based Systems Engineering}
 	
-	\abstract{Intelligent Transportation Systems (ITS) promote new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, and enable the transportation electrification by efficient operation of electric vehicles. Methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. In this work, we propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties as well as control strategies for ITS design. In addition to capturing different design decisions, it assumes a user-centric perspective, where users can guide design decisions employing a novel user interface. In this work, we discuss and apply our modeling and simulation framework with respect to two specific applications.}
+	\abstract{Intelligent Transportation Systems (ITS) promote new transportation paradigms such as connected and autonomous vehicles (CAV), multi-modal and demand-responsive transport systems, and enable the transportation electrification by efficient operation of electric vehicles. Methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. In this work, we propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties as well as control strategies for ITS design. In addition to capturing different design decisions, it assumes a user-centric perspective, where users can guide design decisions employing a novel user interface. We discuss and apply our modeling and simulation framework with respect to two specific applications.}
 	
 	\onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
 	
@@ -42,9 +42,7 @@
 	%Therefore, constituent systems need to be designed with respect to most efficient structures and control strategies within themselves, while accounting for and exploiting the emergent properties they achieve in conjunction and interdependence with other systems, as composed, integrated system-of-systems (SoS). 
 	
 	To systematically support the aforementioned systems engineering task, model- and simulation-based systems engineering~\cite{gianni2014modeling} can be employed for abstraction of design problems through the use of system models and their evaluation, i.e. their numerical approximation in terms of concrete behavior at run time. For this, well-defined system models are formulated at design time, for which then simulation aids projecting run-time information and performance metrics about the system under design and its environment. 
-	
-	To investigate and simulate the travel behavior of transportation system users, traffic simulation may be used in order to support analysis and decision-making for transportation system engineering problems. In terms of the state-of-the-art, microscopic traffic simulation tools such as PTV Vissim \cite{fellendorf_vissim_1994}, MATSim \cite{w_axhausen_multi-agent_2016}, SUMO \cite{lopez_microscopic_2018} as well as AIMSUN \cite{barcelo2005dynamic} are well-established domain-wide.
-	
+
 	However, as systems and their underlying requirements are typically imperfectly understood at the beginning of the design task, methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. 
 	
 	%As an effect of underspecified requirements, system models are often not completely understood, and modeling uncertainties need be adressed. 
@@ -77,27 +75,46 @@
 	
 	\section{\uppercase{Related work}}
 
-	\textcolor{red}{TODO}
+	This section provides an overview of related work, where we discuss infrastructure planning in Section 	\ref{sec:infrastructure-planning}, eco-routing and driving in Section \ref{sec:eco-routing}, cooperative driving in Section \ref{sec:cooperative-driving} as well as mobility-on-demand systems in Section \ref{sec:mobility-on-demand-systems}.
 
-	\subsection{Vehicle development}
-
-	\textcolor{red}{Luftwiederstand Aussenhülle, Motorgeometrie (Computational Fluid Dynamics, Luftströmung, ...), Federungsverhalten (Multi-Body-Dynamics), Crashsimulation (Finite Element Analysis), Autonome Steuerung und Regelung (NVIDIA OMNIVERSE, Microsoft AIRSIM, CARLA Simulator)}
+%	\subsection{Vehicle development}
+%	
+%	% Autonomous vehicles 
+%
+%	\textcolor{red}{Luftwiederstand Aussenhülle, Motorgeometrie (Computational Fluid Dynamics, Luftströmung, ...), Federungsverhalten (Multi-Body-Dynamics), Crashsimulation (Finite Element Analysis), Autonome Steuerung und Regelung (NVIDIA OMNIVERSE, Microsoft AIRSIM, CARLA Simulator)}
+%	
+%	For autonomous vehicle simulation, nvidia drive sim, CARLA \cite{dosovitskiy_carla_2017} and Airsim \cite{missing} are frequently used. .
 
 	\subsection{Infrastructure planning}
-
-	\textcolor{red}{Demand modeling and prediction (Origin-Destination-Matrix), Auswahl des Modalitätsmixes, Ladesäulen, Grob (Durchsatz) nach Fein (Spuren, Kreuzungen, Ampelschaltung)}
+\label{sec:infrastructure-planning}
+	
+	To investigate and simulate the travel behavior of transportation system users, traffic simulation may be used in order to support analysis and decision-making for transportation system engineering problems. In terms of the state-of-the-art, microscopic traffic simulation tools such as PTV Vissim \cite{fellendorf_vissim_1994}, MATSim \cite{w_axhausen_multi-agent_2016}, SUMO \cite{lopez_microscopic_2018} as well as AIMSUN \cite{barcelo2005dynamic} are well-established domain-wide. Typically, Origin-Destination matrics are used for modeling transportation demands.
+	
+	For instance, SUMO can be used to assess mesoscopic to microscopic traffic senarios. The infrastructure model of SUMO can separate between individual lanes for individual transport, defines intersections as well as traffic light controls. 
+	
+%	\textcolor{red}{Demand modeling and prediction (Origin-Destination-Matrix), Auswahl des Modalitätsmixes, Ladesäulen, Grob (Durchsatz) nach Fein (Spuren, Kreuzungen, Ampelschaltung)}
 
 	\subsection{Eco-routing and -driving}
+\label{sec:eco-routing}
+	%\textcolor{red}{Fahrverhalten, Voraussschauendes Fahren, Aktueller Zustand des Verkehrsnetzes, Stauvorhersage, Strategien aus der perspektive eines einzelnen Fahrzeugen, nicht Kooperativ}
 
-	\textcolor{red}{Fahrverhalten, Voraussschauendes Fahren, Aktueller Zustand des Verkehrsnetzes, Stauvorhersage, Strategien aus der perspektive eines einzelnen Fahrzeugen, nicht Kooperativ}
+Eco-Routing describes a concept, which focuses on traffic participants, their routes and intermediate driving behavior in terms of targeting energy-efficient route selection and reduction of emissions, whereas the concept of Eco-Driving focuses on energy-efficient intermediate driving behavior \cite{ericsson2006optimizing,Boriboonsomsin2012}. For this, real-time and historical traffic information for routing and operation strategies to avoid congestions can be considered \cite{Boriboonsomsin2012}. However, if a single modality of transport is utilized excessively, compared to other modalities of transport, potential congestions may arise within transport networks of single modalities. Thus, energy-efficient utilization of all available transport modalities should be targeted within cross-system operation strategies and is enabled by the interconnection of everyday objects. 
 
 	\subsection{Cooperative driving}
+\label{sec:cooperative-driving}
 
-	\textcolor{red}{Platooning, Car2X (Vector CANoe Simulationsumgebung), fleet management}
-
-	\subsection{Mobility on demand}
-
-	\textcolor{red}{rebalancing, ride sharing, ride hailing, multi-modality}
+	%\textcolor{red}{Platooning, Car2X (Vector CANoe Simulationsumgebung), fleet management}
+	
+	 The Internet of Things (IoT) refers to a term, which describes networked interconnection of everyday objects \cite{xia2012internet}, made possible by ubiquitous availability of sensor data from and actuation possibilities within physical objects being connected to the internet \cite{kopetz2011internet}. Here, Connected Mobility refers to an umbrella term for the potentially transformative patterns of future mobility made possible by interconnection of everyday objects. Examples include vehicular networking protocols such as Vehicle-to-Vehicle (V2V), Vehicle-to-Infrastructure (V2I) or Vehicle-to-Everything (V2X) communication protocols, but also concern specific use-cases such as vehicle platooning \cite{?}, management of distributed vehicle fleets \cite{?}, as well as using ICT for alignment of different transportation modalities \cite{harris2015ict}. Futhermore, use-cases integrating additional domains can be enabled such as using electric vehicle fleets to stabilize ancillary systems such as the power grid \cite{tomic2007using}.
+	
+	 In terms of co-simulation approaches, Eclipse MOSAIC \cite{noauthor_eclipse_nodate} is an open architecture for multiscale simulations for smart and connected mobility. Originally intended to simulate V2X interactions \cite{schunemann_v2x_2011}, integrations with SUMO, as well as autonomous vehicle simulation tools such as CARLA \cite{dosovitskiy_carla_2017} have been proposed. Here, based on MOSAIC, Cui et al. \cite{cui_extensible_2023} propose an extension to the simulation tool CARLA for investigation of cooperative driving scenarios. 
+	
+	\subsection{Mobility-on-demand}
+\label{sec:mobility-on-demand-systems}
+	%\textcolor{red}{rebalancing, ride sharing, ride hailing, multi-modality}
+	Mobility-on-demand systems refer to systems, where the transportation demand gets covered by a set of different transportation modalities, which make up the transportation supply.
+	Canzler et al. \cite{canzler2016mobility} argue the close link of modernity and private car use is beginning to dissolve. Particularly, inter-modality and variable modes of transport are becoming more important for urban development \cite{rode2015towards}. New transportation models such as ridesharing favor shared mobility over personal mobility, and bring together passengers with a shared route in shared vehicles \cite{cohen2014ride}. For instance, prospective control strategies for ridesharing systems have been established in \cite{furuhata2013ridesharing,agatz2012optimization}.
+	 In this context, autonomous vehicles enable the idea of \textit{autonomous mobility-on-demand} systems, where fully-autonomous transportation modalities, i.e. autonomous vehicles, effectively cover transportation supply, whose control strategies have shown to provide interrelated benefits for the transportation system in terms of increased efficiency \cite{fagnant2014travel}. However, autonomous mobility-on-demand systems introduce the challenge of distributing a supply of autonomous vehicles in a given area to cover passenger transportation demands evenly. Thus, developed control strategies have to balance transportation supply with transportation demands, while not becoming skewed towards the most popular origins and destinations of demands \cite{pavone2012robotic,zhang2016control}. In addition, besides passenger transport, freight transport has to be considered within mobility-on-demand systems, as for instance, in urban environments, freight movements are main drivers of pollution  \cite{amaral2015city}. In turn, according systems can be used to optimize supply-chains, thereby providing added value in terms of decreased transport costs. 
 	
 	\section{\uppercase{General approach}}
 	\label{sec:approach}
@@ -111,32 +128,55 @@
 	
 	\subsection{Intended usage}
 	\label{sec:scope}
+%	\begin{figure}[!ht]
+%		\missingfigure{Designer input + output}
+%		\caption{TODO}
+%	\end{figure}
+	
+	Our approach is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
+	
+	In terms of scope, our modeling technique supports both static property, i.e. structural and infrastructure design, and dynamic property design, i.e. behavior and control strategy design. For this, we subsequently consider a set of different roles including transportation system engineers, charge point operators as well as mobility fleet operators. For each of the roles, we briefly describe exemplary use-cases for our system modeling technique in terms of static as well as dynamic property design.
 
-	\textcolor{red}{Wo setzte ich Kreuzungen? Wo sollen Straßen verlaufen? Wie breit sollen die Straßen sein? Wo sollen Ladestationen sein? Wieviele Fahrzeuge soll meine Flotte umfassen? Welche Fahrzeugklassen?}
+\subsubsection{Transportation System Engineer}
+Transportation engineers are responsible for maintaining and designing the transportation infrastructure.
 
-	\begin{figure}[!ht]
-		\missingfigure{Designer input + output}
-		\caption{TODO}
-	\end{figure}
+%Wo setzte ich Kreuzungen? Wo sollen Straßen verlaufen? Wie breit sollen die Straßen sein?urban traffic control
+
+\begin{itemize}
+	\item \textbf{Static Properties:} In terms of devising static properties, transportation system engineers are supported in the investigation of transportation infrastructure properties such as determing optimal transportation links between different locations such as placement of intersections and roads. In addition, transportation capacities of transportation links such as number of lanes may be considered as well.
+	\item \textbf{Dynamic Properties:} For determining dynamic properties instead, transportation system engineers may be supported in determining control strategies for urban traffic control such as cycle times for traffic lights based on expected transport demands. 
+\end{itemize}
 	
-	Our underlying modeling technique is based on integrated transportation system modeling techniques, which allow assessment of integrated, electrified ITS systems for the purpose of designing emergent integrated system properties.
-	In terms of considered domain problems, for instance, future transportation electrification as well as demand-responsive transport scenarios may be investigated.
-	In terms of use-cases, our modeling technique supports both transportation system and control strategy design.
-	For instance, transportation engineers may be supported by investigation of transportation infrastructure properties.
-	On the other hand side, mobility and vehicle fleet operators may be supported by deriving control strategies in the context of on-demand transportation problems.
+\subsubsection{Charge Point Operators}
+Charge point operators are responsible for maintaining and operating a set of charging station in a defined area, i.e. the charging station infrastructure. 
+
+\begin{itemize}
+	\item \textbf{Static Properties:} In terms of determining static properties, charge point operators may be supported in devising charging infrastructure such as placement of charging stations along most popular routes and points of interest. 
+	\item \textbf{Dynamic Properties:} In terms of determining dynamic properties, control strategies may be devised for future transportation electrification scenarios. This includes distributed charging coordination between multiple charging stations during times of increased charging demands as well as coordinated utilization of renewable energy sources and self-sufficiency.
+\end{itemize}
+%Wo sollen Ladestationen sein?
+
+\subsubsection{Mobility Fleet Operators}
+Mobility fleet operators are responsible for coordinating and managing a fleet of vehicles under their supervision, which is able to serve transportation demands. 
+
+\begin{itemize}
+	\item \textbf{Static Properties:} To devise static properties, moblity fleet operators are supported in determination of fleet capacity as well as determination of used vehicle types.
+	\item \textbf{Dynamic Properties:} For devising dynamic properties instead, mobility fleet operators are supported by investigated demand-responsive transport scenarios. This includes determing routing and driving behaviors for the mobility fleet with respect to underlying goals such as energy-efficiency or shortest traveling times. Furthermore, optimal assignment of transportation demands to available transportation capacities in the context of on-demand transportation problems is supported as well.
+\end{itemize}
 	
-	% \begin{itemize}
-		% 	\item Transportation System Engineer
-		%	\item Mobility Provider
-		% \end{itemize}
+	%Wieviele Fahrzeuge soll meine Flotte umfassen? Welche Fahrzeugklassen? Welche Fahr und Routing Strategien?
 	
+		
 	\subsection{Design methodology}
 	\label{sec:methodology}
 
-	\textcolor{red}{Simulation-based, Scenario-based, Formal, Configuration Space (Parameters), State Space, Objectives, Constraints, Actions, Heuristic Search, Approximate Dynamic Programming, Probabilistic, Monte-Carlo-Simulation}
+	%\textcolor{red}{Formal, Probabilistic}
 	
+	% Simulation-based Approach
 	Our approach employs model- and simulation-based systems engineering~\cite{gianni2014modeling} for decision-making with respect to system designs for the ITS domain.
-	Models are described based on the problem domain, where simulation aids obtaining information about designs of the solution domain. Figure \ref{fig:concept} shows an overview of the system design methodology.
+	Models are described based on the problem domain, where simulation aids obtaining information about designs of the solution domain. 
+	% Scenario-based
+	For the latter, we employ a scenario-based approach, where a set of requirements is typically mapped from and to scenarios \cite{sutcliffe_supporting_1998}. Figure \ref{fig:concept} shows an overview of the system design methodology.
 	
 	% TODO Figure
 	\begin{figure}[!ht]
@@ -146,18 +186,79 @@
 		\label{fig:concept}
 	\end{figure}
 	
-	For system models, each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) properties concerning state evolution during simulation including states and actions.
-	As simulation complexity increases with the number and dimensionality of considered parameters, states, and actions of modeled systems, Discrete-Event Simulation (DES)~\cite{fishman2001discrete} is employed, where events are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation.
-	Thus, simulation complexity is reduced by limiting action space dimensionality and by abstracting from discrete-time resolutions~\cite{ascher2023discrete}.
+	% Formal foundation
+	\subsubsection{Problem Formulation}
+	For system models, each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) properties concerning state evolution during simulation including states and actions. In addition, we describe requirements of a system design in terms of contribution functions as well as constraint functions, which are mapped to static or dynamic properties.
 	
-	%Each concept is described in terms of their static (i.e.\ time-independent) properties and calculations as well as their dynamic (i.e.\ time-dependent) state functions typically sampled during computer simulations. In addition, we define events as functions over a system's trajectory of states, which precisely indicate when actions need to be taken in the system simulation. Thus, events significantly reduce simulation complexity by limiting action space dimensionality and by abstracting from discrete-time resolutions. 
+	In terms of static properties, we define a one-tuple $(COM)$ consisting of the components, as well as their parameters and configurations, which we describe subsequently:
+	\begin{itemize}
+		\item Component. The core element of the underlying systems modeling technique is the \textit{component}, where components are denoted by $com \in COM$. 
+		\item Parameters. Parameters typically describe static information about components which does not change based on dynamic behavior, i.e. time steps.
+		\item Configurations. Components are configured in with respect to specific sets of parameters by using within \textit{configurations} $\mathcal{COM}_{conf}: COM$. Here, a configuration refers to a specific set of \textit{parameters}. For example, a configuration for a component $com_{id}$ containing a single parameter $com_{param} \in \mathbb{D}$, with arbitrary domain $\mathbb{D}$, could be defined as a mapping $\mathcal{COM}_{conf}: COM \rightarrow \mathbb{D}$.
+		
+		
+	\end{itemize}
 	
-	Based on the concepts, our approach supports different design tasks, where evaluation of designs is performed using approximate and heuristic optimization techniques. We utilize optimization to evaluate solutions for the following design problems:
 	
+	For dynamic properties, we define the four-tuple $(S, A, T, E)$, consisting of the sets of states $S$, actions $A$, transition functions $T$ and events $E$, which we describe subsequently:	
+	\begin{itemize}
+		\item State variables $S_t$ constitute the states at time $t$ within a state space of all possible states $S$ such that $S_t \subset S$. Here, the state variables describe a vector of system or observable environment variables at a given time instant. 
+		\item Action variables $a_t$ describe the actions available to choose from at time $t$ within a discrete action space $A$ such that $a_t \subset A$. Actions $a_t$ depend on the state variables $S_t$ as indexed by time $t$.
+		\item Transition functions describe how one state $S_t$ at time $t$ evolves to another state $S_{t+1}$ at time $t+1$, given an action $a_t$. Transition functions describe a mapping such that $T : S \times A \to S$. 
+		\item Events $E$ are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation. They describe a mapping $E : S \to A$. 
+	\end{itemize}
+	
+	% Objectives, Constraints, Actions, 
+	The parameters and actions \textit{which} need to be taken are determined based on a set of requirements, where we define objectives as contribution functions, as well as constraint functions. Thus, we define the tuple $(C, CSF)$, which is subsequently described:
+	
+	\begin{itemize}
+		\item Contribution functions describe a numerical value for being in a state $S_{t}$ while taking action $a_{t}$ in a particular time instant $t$. Here, a contribution function is a mapping $C : S \times A \to \mathbb{R}_0$.
+		%Note that, in this context, $costs$ can be formulated as negative contributions instead.
+		\item Constraint functions describe mappings such that $CSF : S \times A \to \mathbb{B}$ with Boolean set $\mathbb{B} = \{\mathit{true},\mathit{false}\}$, and therefore restrict admissable, i.e. valid, states and actions. 
+	\end{itemize}
+	
+	\subsubsection{Problem Solution}
+	The design problem then involves determining the set of states and actions which conform to the imposed objectives and constraints. 
+	
+	%Monte-Carlo-Simulation
+	For solving according design problems, Dynamic Programming \cite{bellman_dynamic_1957} methods might be used for small-scale problems, which iteratively explore the state space to find an optimal solution, where such a problem is solved over a defined time horizon $[t_0,T]$, i.e. from initial time increment $t_0$ to the final time increment $T$. For this, the \textit{value function} $V_t(S_t)$ has to be calculated for each value of $S_t$, and consists of all aggregated contributions over time, where a discount factor $\gamma$ for scaling the value of future contributions is usually employed. Then, the optimal value function $V_t$ refers to the longterm value of being in state $S_t$ in time $t$ and is a mapping $V : S \times A \times S \to \mathbb{R}$, such that
+	\begin{equation}
+		V_t(S_t) = \max_{a_t}\ C_t(S_t,a_t) + \gamma \sum_{S_t \in S}^{}V_{t+1}(T(S_t,a_t)) \mathrm{.}
+	\end{equation}
+	
+	Then, a \textit{policy function} can refer to any method for determining an action, given a state. For instance, a deterministic policy function $\pi$ can be defined as a mapping such that $\pi : S \to A$, where each state is mapped to an action. Note that probabalistic formulations for policy functions are possible as well.
+	To solve the problem using classic dynamic programming, an optimal \textit{policy function} $\pi^* : S \to A$ has to be introduced, which chooses an action $a_t \in \mathit{A_t}$ resulting in the highest contribution at every time step, thereby maximizing the value function over time, i.e. $\textit{for each} \enskip S_t \in S:$
+	\begin{equation}
+		\pi^*(S_t) = \arg \max_{a_t}\ C_t(S_t,a_t) + \gamma \sum_{S_t \in S}^{}V_{t+1}(T(S_t,a_t)) \mathrm{.}
+	\end{equation}
+	
+	However, Dynamic Programming methods are subject to increasing problem complexity with increasing dimensionality of parameter, state and action spaces, i.e. the curse of dimensionality \cite{bellman_dynamic_1957}, and are therefore not scalable for complex problems.
+	
+	Due to this, the whole state, action and parameter space cannot be iterated for complex problems due to expontially increasing problem complexity and limited computional resources. 
+	To reduce simulation complexity we apply the following methods:
+
+\begin{itemize}
+	\item Discrete-Event Simulation. As simulation complexity increases with the number and dimensionality of considered parameters, states, and actions of modeled systems, our approach employs Discrete-Event Simulation (DES)~\cite{fishman2001discrete}, where events are defined as functions over a system's trajectory of states, which indicate \textit{when} actions need to be taken in the system simulation.	Thus, simulation complexity is reduced by limiting action space dimensionality and by abstracting from discrete-time resolutions~\cite{ascher2023discrete}.
+	\item Monte-Carlo Simulation. In addition, Monte-Carlo methods are used, which partially and/or randomly \textit{sample} the state space until an sufficient number of samples is reached for exploration to limit problem complexity. 
+\end{itemize}
+
+As noted, a policy function $\pi$ may be a simple function or may involve extensive computation as a search process \cite{mania2018simple}. To reduce policy function computation complexity we apply the following methods:
+\begin{itemize}
+	%Heuristic Search
+	\item Heuristic Search. For instance, the policy function may be defined as a heuristic search procedure, which is iteratively and manually designed by a domain expert, which uses simulation results to adapt heuristic control logic as needed. 
+	% Approximate Dynamic Programming
+	\item Approximate Dynamic Programming. Alternatively, approximations of the policy function may be automatically derived as well. Here, Approximate Dynamic Programming (ADP) methods \cite{powell_approximate_2007} are used, which aim to approximate either, or both, optimal policy and value functions to reduce problem complexity. 
+\end{itemize}
+
+	\subsubsection{Application to Design Problems}
+	Based on the described concepts, our approach supports different design tasks, where evaluation of designs is performed using approximate and heuristic optimization techniques. We utilize optimization to evaluate solutions for the following design problems:
+
 	\begin{enumerate}
-		\item \textbf{Static property optimization} concerns static design decisions such as optimization of transportation infrastructure properties.
-		\item \textbf{Dynamic property optimization} concerns dynamic design decisions, i.e. optimization of control strategies such as efficient transportation entity behavior.
-		\item \textbf{Mixed property optimization} concerns the integrated design task for optimization of both static and dynamic design decisions.
+		% Configuration Space (Parameters)
+		\item \textbf{Static property optimization} concerns static design decisions such as optimization of transportation infrastructure properties. For this, the methodology assumes a \textit{configuration space}, which describes components, their parameters, as well as connection possibilities between components. From the configuration space, components are instantiated using concrete parameters, which are determined based on requirements, i.e. objectives and constraints, thereby creating a structure. The outcome of static property  optimization describes a system model configuration.
+		% State space
+		\item \textbf{Dynamic property optimization} concerns dynamic design decisions, i.e. optimization of control strategies such as determining efficient transportation entity behavior. This task involves exploring the state space of a system model configuration based on a set of requirements, where the outcome is a control strategy. Here, control strategy engineering involves determining trajectories of states and actions which conform to imposed requirements, i.e. goals and constraints. 
+		\item \textbf{Mixed property optimization} concerns the integrated design task for optimization of both static and dynamic design decisions. Thus it describes the integrated task which involves both static and dynamic property optimization.
 	\end{enumerate}
 	
 	%In addition, relationships between components can be incorporated by specifying well-defined component interfaces and their connection.
@@ -170,8 +271,8 @@
 	
 	%Figure~\ref{fig:modeling-technique} provides an overview of main domain concepts, where the formalism is intended to capture a concise and an essential set of static properties, static calculations, and dynamic states as well as events for establishing sound models and control strategies for on-demand transportation systems. For details on the underlying modeling concepts, we refer to \cite{ascher2023discrete}. Subsequently, we describe a brief overview of these concepts.
 	
-	On a domain-specific modeling level, the approach allows modeling integrated transportation system problems on mesoscopic to microscopic levels, \cite{ascher_hackenberg_2014,ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016,ascher_hackenberg_2017} (See Section  \ref{sec:scope}).
-	Figure \ref{fig:domain-specific-modeling} shows an overview of the domain-specific modeling concepts.
+	On a domain-specific modeling level, the approach allows modeling integrated transportation system problems on mesoscopic to microscopic levels, \cite{ascher_hackenberg_2014,ascher_hackenberg_2015}, supported by a formal systems modeling foundation \cite{ascher_hackenberg_2016,ascher_hackenberg_2017} (See Section  \ref{sec:scope}). 
+	Figure \ref{fig:domain-specific-modeling} shows an overview of the domain-specific modeling concepts. In the following, we provide a brief overview of domain concepts, states, as well as events, where we refer to \cite{ascher2023discrete} for a detailed overview. 
 	% TODO Figure
 	\begin{figure}[!ht]
 		\centering
@@ -183,20 +284,31 @@
 	\paragraph{Concepts}
 	
 	Considered domain concepts for the formalism include intersections $i \in I$, segments $s \in S$ as well as locations $l \in L$ for describing properties about the transportation infrastructure.
-	Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. In addition, we describe transportation demands $d \in D$ on the transportation infrastructure.
-	Finally, we use vehicles $v \in V$ for describing transportation supply and capacities.
+	Based on the transportation infrastructure, we use charging stations $cs \in CS$ for describing the charging infrastructure. Furthermore, we use vehicles $v \in V$ to describe the transportation supply and capacities. Transportation demands $d \in D$ are based on the transportation infrastructure, and temporarily consume available transportation capacities such as vehicles.
 	
 	\paragraph{States}
+	Based on the described domain concepts, we describe dynamic (i.e. time-dependent) state functions for charging stations $S_{CS}$, demands $S_{D}$, as well as vehicles $S_V$:
 	
-	\textcolor{red}{TODO}
+	\begin{itemize}
+		\item In terms of charging station states $S_{CS}$, we describe the current vehicle which is connected to the charging station $S_{CS.CV}$, as well as the current charge speed $S_{CS.CCS}$.
+		\item In terms of demand states $S_{D}$, we describe the current vehicle carrying the demand $S_{D.CV}$, as well as the current location of the demand $S_{D.CL}$.
+		\item For vehicle states $S_{DV}$, we describe the current battery level of the vehicle $S_{V.CBL}$, the current location of the vehicle $S_{V.CL}$, as well as the current drive speed of the vehicle $S_{V.CDS}$.
+	\end{itemize}
 	
 	\paragraph{Events}
-	
-	\textcolor{red}{TODO}
-	
-	\paragraph{Constraints}
-	
-	\textcolor{red}{TODO}
+	We define the following domain-specific events $E$:
+	%	Events $E$ are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation. For this, we define the following events:
+	\begin{itemize}
+		\item Events indicating when vehicles arrive at an intersection $E_{V.AI}$ or when vehicles depart at an intersection $E_{V.DI}$ to derive routing decisions. 
+		\item Events indicating when vehicles arrive at a charging station $E_{V.ACS}$ to derive charging decisions. 
+		\item Events indicating when vehicles arrive at a demand pick-up location $E_{V.ADP}$ and when vehicles arrive at a demand drop-off location $E_{V.ADD}$ to derive demand pick-up and drop-off decisions. 
+		\item Events indicating when vehicles arrive at another vehicle on the same segment, including a faster vehicle arriving at a  slower vehicle $E_{V.AVS}$, as well as a faster vehicle departing at a slower vehicle $E_{V.DVS}$ to derive overtaking decisions.
+		\item Events indicating when a demand appears $E_{D.AD}$ to derive decisions for vehicles to serve demands.
+		\item Events indicating when vehicles change their drive speed $E_{V.CDS}$ and when vehicles change their charge speed $E_{V.CCS}$ to derive decisions for overtaking and charging behaviors. 
+		\item Events indicating when vehicles batteries are either empty $E_{V.CBE}$ or vehicles batteries are full $E_{V.CBF}$ to derive decisions for stopping driving and charging behaviors.
+	\end{itemize}
+
+	%\paragraph{Constraints}
 	
 	\section{\uppercase{Tool prototype}}
 	\label{sec:tool-prototype}
@@ -501,7 +613,8 @@
 	\section{\uppercase{Conclusion}}
 	\label{sec:conclusion}
 	
-	\textcolor{red}{TODO}
+	%Placeholder from abstract
+Methods and tools are needed to explore the possible design space for emerging transportation paradigms, which support evaluation of system design alternatives and verification of system properties. In this work, we propose a modeling and simulation framework for capturing design decisions and evaluating emergent properties as well as control strategies for ITS design. In addition to capturing different design decisions, it assumes a user-centric perspective, where users can guide design decisions employing a novel user interface. We discuss and apply our modeling and simulation framework with respect to two specific applications.
 	
 	
 	\bibliographystyle{apalike}
