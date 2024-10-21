@@ -12,19 +12,18 @@
 \usepackage{apalike}
 \usepackage{algorithm2e}
 \usepackage[bottom]{footmisc}
-\usepackage{SCITEPRESS}     % Please add other packages that you may need BEFORE the SCITEPRESS.sty package.
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 \usepackage{todonotes}
-
+\usepackage{SCITEPRESS}
 
 \begin{document}
 	
 	\title{Next-generation design tools for intelligent transportation systems}
 	
-	\author{\authorname{First Author Name\sup{1}, Second Author Name\sup{1} and Third Author Name\sup{2}}
+	\author{\authorname{Dominik Ascher\sup{1} and Georg Hackenberg\sup{2}}
 		\affiliation{\sup{1}Institute of Problem Solving, XYZ University, My Street, MyTown, MyCountry}
-		\affiliation{\sup{2}Department of Computing, Main University, MySecondTown, MyCountry}
-		\email{\{first\_author, second\_author\}@ips.xyz.edu, third\_author@dc.mu.edu}
+		\affiliation{\sup{2}School of Engineering, University of Applied Sciences Upper Austria, Stelzhamerstraße 23, 4600 Wels, Austria}
+		\email{dominik.ascher@tu-berlin.de, georg.hackenberg@fh-wels.at}
 	}
 	
 	\keywords{Model- and Simulation-based Systems Engineering}
@@ -33,7 +32,7 @@
 	
 	\onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
 	
-	\section{\uppercase{Introduction}}
+	\section{Introduction}
 	\label{sec:introduction}
 	
 	The transformative patterns of future mobility are enabled by interconnected and integrated systems and services.
@@ -73,7 +72,7 @@
 	Thereafter, we propose two specific applications of our modeling and simulation framework as well as user interface technology in Section~\ref{sec:application}.
 	Finally, we draw our conclusions and describe future direction of research and development on the design of ITS in Section~\ref{sec:conclusion}. 
 	
-	\section{\uppercase{Related work}}
+	\section{Related work}
 
 	This section provides an overview of related work, where we discuss infrastructure planning in Section 	\ref{sec:infrastructure-planning}, eco-routing and driving in Section \ref{sec:eco-routing}, cooperative driving in Section \ref{sec:cooperative-driving} as well as mobility-on-demand systems in Section \ref{sec:mobility-on-demand-systems}.
 
@@ -116,7 +115,7 @@ Eco-Routing describes a concept, which focuses on traffic participants, their ro
 	Canzler et al. \cite{canzler2016mobility} argue the close link of modernity and private car use is beginning to dissolve. Particularly, inter-modality and variable modes of transport are becoming more important for urban development \cite{rode2015towards}. New transportation models such as ridesharing favor shared mobility over personal mobility, and bring together passengers with a shared route in shared vehicles \cite{cohen2014ride}. For instance, prospective control strategies for ridesharing systems have been established in \cite{furuhata2013ridesharing,agatz2012optimization}.
 	 In this context, autonomous vehicles enable the idea of \textit{autonomous mobility-on-demand} systems, where fully-autonomous transportation modalities, i.e. autonomous vehicles, effectively cover transportation supply, whose control strategies have shown to provide interrelated benefits for the transportation system in terms of increased efficiency \cite{fagnant2014travel}. However, autonomous mobility-on-demand systems introduce the challenge of distributing a supply of autonomous vehicles in a given area to cover passenger transportation demands evenly. Thus, developed control strategies have to balance transportation supply with transportation demands, while not becoming skewed towards the most popular origins and destinations of demands \cite{pavone2012robotic,zhang2016control}. In addition, besides passenger transport, freight transport has to be considered within mobility-on-demand systems, as for instance, in urban environments, freight movements are main drivers of pollution  \cite{amaral2015city}. In turn, according systems can be used to optimize supply-chains, thereby providing added value in terms of decreased transport costs. 
 	
-	\section{\uppercase{General approach}}
+	\section{General approach}
 	\label{sec:approach}
 	
 	In this section, we propose a modeling and simulation framework for the design of intelligent transportation systems.
@@ -310,7 +309,7 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 
 	%\paragraph{Constraints}
 	
-	\section{\uppercase{Tool prototype}}
+	\section{Tool prototype}
 	\label{sec:tool-prototype}
 	
 	Based on the general approach explained in Section~\ref{sec:approach} we started developing an open source tool prototype hosted on GitHub\footnote{\url{https://github.com/ghackenberg/transport-ide}}.
@@ -610,7 +609,7 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	In this simulation run, the system configuration in the middle, which adds only one additional road segment, has the best performance.
 	This example mainly shows, that the smart control strategy not always delivers optimal results, which is necessary for a fair comparison of infrastructures.
 	
-	\section{\uppercase{Conclusion}}
+	\section{Conclusion}
 	\label{sec:conclusion}
 	
 	%Placeholder from abstract
