@@ -21,9 +21,9 @@
 	\title{Next-generation design tools for intelligent transportation systems}
 	
 	\author{\authorname{Dominik Ascher\sup{1} and Georg Hackenberg\sup{2}}
-		\affiliation{\sup{1}Institute of Problem Solving, XYZ University, My Street, MyTown, MyCountry}
+		\affiliation{\sup{1}Faculty of Electrical Engineering and Computer Science, Technical University of Berlin, 10587 Berlin, Germany}
 		\affiliation{\sup{2}School of Engineering, University of Applied Sciences Upper Austria, Stelzhamerstraße 23, 4600 Wels, Austria}
-		\email{dominik.ascher@tu-berlin.de, georg.hackenberg@fh-wels.at}
+		\email{ascher@tu-berlin.de, georg.hackenberg@fh-wels.at}
 	}
 	
 	\keywords{Model- and Simulation-based Systems Engineering}
@@ -104,7 +104,7 @@ Eco-Routing describes a concept, which focuses on traffic participants, their ro
 
 	%\textcolor{red}{Platooning, Car2X (Vector CANoe Simulationsumgebung), fleet management}
 	
-	 The Internet of Things (IoT) refers to a term, which describes networked interconnection of everyday objects \cite{xia2012internet}, made possible by ubiquitous availability of sensor data from and actuation possibilities within physical objects being connected to the internet \cite{kopetz2011internet}. Here, Connected Mobility refers to an umbrella term for the potentially transformative patterns of future mobility made possible by interconnection of everyday objects. Examples include vehicular networking protocols such as Vehicle-to-Vehicle (V2V), Vehicle-to-Infrastructure (V2I) or Vehicle-to-Everything (V2X) communication protocols, but also concern specific use-cases such as vehicle platooning \cite{?}, management of distributed vehicle fleets \cite{?}, as well as using ICT for alignment of different transportation modalities \cite{harris2015ict}. Futhermore, use-cases integrating additional domains can be enabled such as using electric vehicle fleets to stabilize ancillary systems such as the power grid \cite{tomic2007using}.
+	 The Internet of Things (IoT) refers to a term, which describes networked interconnection of everyday objects \cite{xia2012internet}, made possible by ubiquitous availability of sensor data from and actuation possibilities within physical objects being connected to the internet \cite{kopetz2011internet}. Here, Connected Mobility refers to an umbrella term for the potentially transformative patterns of future mobility made possible by interconnection of everyday objects. Examples include vehicular networking protocols such as Vehicle-to-Vehicle (V2V), Vehicle-to-Infrastructure (V2I) or Vehicle-to-Everything (V2X) communication protocols, but also concern specific use-cases such as vehicle platooning \cite{jia2015survey}, management of distributed electric vehicle fleets \cite{hu2016electric}, as well as using ICT for alignment of different transportation modalities \cite{harris2015ict}. Futhermore, use-cases integrating additional domains can be enabled such as using electric vehicle fleets to stabilize ancillary systems such as the power grid \cite{tomic2007using}.
 	
 	 In terms of co-simulation approaches, Eclipse MOSAIC \cite{noauthor_eclipse_nodate} is an open architecture for multiscale simulations for smart and connected mobility. Originally intended to simulate V2X interactions \cite{schunemann_v2x_2011}, integrations with SUMO, as well as autonomous vehicle simulation tools such as CARLA \cite{dosovitskiy_carla_2017} have been proposed. Here, based on MOSAIC, Cui et al. \cite{cui_extensible_2023} propose an extension to the simulation tool CARLA for investigation of cooperative driving scenarios. 
 	
@@ -113,7 +113,7 @@ Eco-Routing describes a concept, which focuses on traffic participants, their ro
 	%\textcolor{red}{rebalancing, ride sharing, ride hailing, multi-modality}
 	Mobility-on-demand systems refer to systems, where the transportation demand gets covered by a set of different transportation modalities, which make up the transportation supply.
 	Canzler et al. \cite{canzler2016mobility} argue the close link of modernity and private car use is beginning to dissolve. Particularly, inter-modality and variable modes of transport are becoming more important for urban development \cite{rode2015towards}. New transportation models such as ridesharing favor shared mobility over personal mobility, and bring together passengers with a shared route in shared vehicles \cite{cohen2014ride}. For instance, prospective control strategies for ridesharing systems have been established in \cite{furuhata2013ridesharing,agatz2012optimization}.
-	 In this context, autonomous vehicles enable the idea of \textit{autonomous mobility-on-demand} systems, where fully-autonomous transportation modalities, i.e. autonomous vehicles, effectively cover transportation supply, whose control strategies have shown to provide interrelated benefits for the transportation system in terms of increased efficiency \cite{fagnant2014travel}. However, autonomous mobility-on-demand systems introduce the challenge of distributing a supply of autonomous vehicles in a given area to cover passenger transportation demands evenly. Thus, developed control strategies have to balance transportation supply with transportation demands, while not becoming skewed towards the most popular origins and destinations of demands \cite{pavone2012robotic,zhang2016control}. In addition, besides passenger transport, freight transport has to be considered within mobility-on-demand systems, as for instance, in urban environments, freight movements are main drivers of pollution  \cite{amaral2015city}. In turn, according systems can be used to optimize supply-chains, thereby providing added value in terms of decreased transport costs. 
+	 In this context, autonomous vehicles enable the idea of \textit{autonomous mobility-on-demand} systems, where fully-autonomous transportation modalities, i.e. autonomous vehicles, effectively cover transportation supply, whose control strategies have shown to provide interrelated benefits for the transportation system in terms of increased efficiency \cite{fagnant2014travel}. However, autonomous mobility-on-demand systems introduce the challenge of distributing a supply of autonomous vehicles in a given area to cover passenger transportation demands evenly. Thus, developed control strategies have to balance transportation supply with transportation demands, while not becoming skewed towards the most popular origins and destinations of demands \cite{pavone2012robotic,zhang2016control}. In addition, besides passenger transport, freight transport has to be considered within mobility-on-demand systems, as for instance, in urban environments, freight movements are main drivers of pollution  \cite{amaral2015city}. %In turn, according systems can be used to optimize supply-chains, thereby providing added value in terms of decreased transport costs. 
 	
 	\section{General approach}
 	\label{sec:approach}
@@ -137,7 +137,7 @@ Eco-Routing describes a concept, which focuses on traffic participants, their ro
 	In terms of scope, our modeling technique supports both static property, i.e. structural and infrastructure design, and dynamic property design, i.e. behavior and control strategy design. For this, we subsequently consider a set of different roles including transportation system engineers, charge point operators as well as mobility fleet operators. For each of the roles, we briefly describe exemplary use-cases for our system modeling technique in terms of static as well as dynamic property design.
 
 \subsubsection{Transportation System Engineer}
-Transportation engineers are responsible for maintaining and designing the transportation infrastructure.
+Transportation system engineers are responsible for maintaining and designing the transportation infrastructure.
 
 %Wo setzte ich Kreuzungen? Wo sollen Straßen verlaufen? Wie breit sollen die Straßen sein?urban traffic control
 
@@ -192,8 +192,8 @@ Mobility fleet operators are responsible for coordinating and managing a fleet o
 	In terms of static properties, we define a one-tuple $(COM)$ consisting of the components, as well as their parameters and configurations, which we describe subsequently:
 	\begin{itemize}
 		\item Component. The core element of the underlying systems modeling technique is the \textit{component}, where components are denoted by $com \in COM$. 
-		\item Parameters. Parameters typically describe static information about components which does not change based on dynamic behavior, i.e. time steps.
-		\item Configurations. Components are configured in with respect to specific sets of parameters by using within \textit{configurations} $\mathcal{COM}_{conf}: COM$. Here, a configuration refers to a specific set of \textit{parameters}. For example, a configuration for a component $com_{id}$ containing a single parameter $com_{param} \in \mathbb{D}$, with arbitrary domain $\mathbb{D}$, could be defined as a mapping $\mathcal{COM}_{conf}: COM \rightarrow \mathbb{D}$.
+		\item Parameters. Parameters describe static information about components which does not change based on dynamic behavior, i.e. time steps.
+		\item Configurations. Components are configured with respect to specific sets of parameters by using within \textit{configurations} $\mathcal{COM}_{conf}: COM$. Here, a configuration refers to a specific set of \textit{parameters}. For example, a configuration for a component $com_{id}$ containing a single parameter $com_{param} \in \mathbb{D}$, with arbitrary domain $\mathbb{D}$, could be defined as a mapping $\mathcal{COM}_{conf}: COM \rightarrow \mathbb{D}$.
 		
 		
 	\end{itemize}
@@ -203,7 +203,7 @@ Mobility fleet operators are responsible for coordinating and managing a fleet o
 	\begin{itemize}
 		\item State variables $S_t$ constitute the states at time $t$ within a state space of all possible states $S$ such that $S_t \subset S$. Here, the state variables describe a vector of system or observable environment variables at a given time instant. 
 		\item Action variables $a_t$ describe the actions available to choose from at time $t$ within a discrete action space $A$ such that $a_t \subset A$. Actions $a_t$ depend on the state variables $S_t$ as indexed by time $t$.
-		\item Transition functions describe how one state $S_t$ at time $t$ evolves to another state $S_{t+1}$ at time $t+1$, given an action $a_t$. Transition functions describe a mapping such that $T : S \times A \to S$. 
+		\item Transition functions $T$ describe how one state $S_t$ at time $t$ evolves to another state $S_{t+1}$ at time $t+1$, given an action $a_t$. Transition functions describe a mapping such that $T : S \times A \to S$. 
 		\item Events $E$ are defined as functions over a system's trajectory of states, which indicate when actions need to be taken in the system simulation. They describe a mapping $E : S \to A$. 
 	\end{itemize}
 	
@@ -211,13 +211,13 @@ Mobility fleet operators are responsible for coordinating and managing a fleet o
 	The parameters and actions \textit{which} need to be taken are determined based on a set of requirements, where we define objectives as contribution functions, as well as constraint functions. Thus, we define the tuple $(C, CSF)$, which is subsequently described:
 	
 	\begin{itemize}
-		\item Contribution functions describe a numerical value for being in a state $S_{t}$ while taking action $a_{t}$ in a particular time instant $t$. Here, a contribution function is a mapping $C : S \times A \to \mathbb{R}_0$.
+		\item Contribution functions $C$ describe a numerical value for being in a state $S_{t}$ while taking action $a_{t}$ in a particular time instant $t$. Here, a contribution function is a mapping $C : S \times A \to \mathbb{R}_0$.
 		%Note that, in this context, $costs$ can be formulated as negative contributions instead.
-		\item Constraint functions describe mappings such that $CSF : S \times A \to \mathbb{B}$ with Boolean set $\mathbb{B} = \{\mathit{true},\mathit{false}\}$, and therefore restrict admissable, i.e. valid, states and actions. 
+		\item Constraint functions $CSF$ describe mappings such that $CSF : S \times A \to \mathbb{B}$ with Boolean set $\mathbb{B} = \{\mathit{true},\mathit{false}\}$, and therefore restrict admissable, i.e. valid, states and actions. 
 	\end{itemize}
 	
 	\subsubsection{Problem Solution}
-	The design problem then involves determining the set of states and actions which conform to the imposed objectives and constraints. 
+	The design problem then consists in determining the set of states and actions which conform to the imposed objectives and constraints. 
 	
 	%Monte-Carlo-Simulation
 	For solving according design problems, Dynamic Programming \cite{bellman_dynamic_1957} methods might be used for small-scale problems, which iteratively explore the state space to find an optimal solution, where such a problem is solved over a defined time horizon $[t_0,T]$, i.e. from initial time increment $t_0$ to the final time increment $T$. For this, the \textit{value function} $V_t(S_t)$ has to be calculated for each value of $S_t$, and consists of all aggregated contributions over time, where a discount factor $\gamma$ for scaling the value of future contributions is usually employed. Then, the optimal value function $V_t$ refers to the longterm value of being in state $S_t$ in time $t$ and is a mapping $V : S \times A \times S \to \mathbb{R}$, such that
@@ -244,9 +244,9 @@ Mobility fleet operators are responsible for coordinating and managing a fleet o
 As noted, a policy function $\pi$ may be a simple function or may involve extensive computation as a search process \cite{mania2018simple}. To reduce policy function computation complexity we apply the following methods:
 \begin{itemize}
 	%Heuristic Search
-	\item Heuristic Search. For instance, the policy function may be defined as a heuristic search procedure, which is iteratively and manually designed by a domain expert, which uses simulation results to adapt heuristic control logic as needed. 
+	\item Heuristic Search. Here, the policy function is defined as a heuristic search procedure, which is iteratively designed by a domain expert, which uses simulation results to adapt heuristic control logic as needed. 
 	% Approximate Dynamic Programming
-	\item Approximate Dynamic Programming. Alternatively, approximations of the policy function may be automatically derived as well. Here, Approximate Dynamic Programming (ADP) methods \cite{powell_approximate_2007} are used, which aim to approximate either, or both, optimal policy and value functions to reduce problem complexity. 
+	\item Approximate Dynamic Programming. Alternatively, approximations of the policy as well as value functions may be automatically derived. Here, Approximate Dynamic Programming (ADP) methods \cite{powell_approximate_2007} are used, which aim to approximate policy and/or value functions to reduce problem complexity. 
 \end{itemize}
 
 	\subsubsection{Application to Design Problems}
@@ -521,10 +521,10 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	\subsection{Simulation engine}
 	\label{sec:simulation-engine}
 
-	\begin{figure}[!ht]
-		\missingfigure{Simulation loop}
-		\caption{Simulation loop}
-	\end{figure}
+%	\begin{figure}[!ht]
+%		\missingfigure{Simulation loop}
+%		\caption{Simulation loop}
+%	\end{figure}
 	
 	As explained previously, the simulation engine is responsible for computing event times, delegating control decisions to the control strategy, updating the model state, and dispatching relevant data to the recorder.
 	The core of the simulation engine is the simulation loop, which advances the model time and updates the model state until no more events are to be processed.
@@ -532,7 +532,7 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	
 	\paragraph{Step 1}
 	
-	\textcolor{red}{TODO}
+	%\textcolor{red}{TODO}
 	Make routing decisions and update vehicle locations.
 	Make charging decisions and update connections between vehicles and charging stations.
 	Make pick up decisions, perform drop offs (also if vehicle battery empty), and update connections between vehicles and demands.
@@ -540,7 +540,7 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	
 	\paragraph{Step 2}
 	
-	\textcolor{red}{TODO}
+	%\textcolor{red}{TODO}
 	Compute the time of the next event to be processed:
 	Speed update timeout,
 	charging speed update or charging station disconnect timeout,
@@ -554,7 +554,7 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	
 	\paragraph{Step 3}
 	
-	\textcolor{red}{TODO}
+	%\textcolor{red}{TODO}
 	Based on the current time and the time until the next event do the following:
 	Update vehicle locations, vehicle battery levels, and record travelled distances of vehicles.
 	Detect vehicle collisions based on their location, their width, and their overlaps along the segment line.
@@ -567,10 +567,10 @@ As noted, a policy function $\pi$ may be a simple function or may involve extens
 	The first application can be used for comparing the performance of different control strategies (see Section~\ref{sec:controller-comparison}).
 	The second application can be used for comparing the performance of different driving and charging infrastructures as well as fleet configurations (see Section~\ref{sec:infrastructure-comparison}).
 
-	\subsubsection{Control strategy evaluation}
-	\label{sec:controller-evaluation}
-
-	\textcolor{red}{TODO}
+%	\subsubsection{Control strategy evaluation}
+%	\label{sec:controller-evaluation}
+%
+%	\textcolor{red}{TODO}
 	
 	\subsubsection{Control strategy comparison}
 	\label{sec:controller-comparison}
