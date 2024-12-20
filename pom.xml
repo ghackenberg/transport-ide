@@ -19,6 +19,7 @@
 		<module>modules/statistics</module>
 		<module>modules/exporter</module>
 		<module>modules/simulator</module>
+		<module>modules/editor</module>
 		<module>modules/viewer</module>
 		<module>modules/program</module>
 	</modules>
